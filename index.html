@@ -694,6 +694,33 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
+        // LocalStorage Helper Functions
+        const saveToLocalStorage = (key, value) => {
+            try {
+                localStorage.setItem(key, JSON.stringify(value));
+            } catch (e) {
+                console.error('Error saving to localStorage:', e);
+            }
+        };
+
+        const loadFromLocalStorage = (key, defaultValue) => {
+            try {
+                const item = localStorage.getItem(key);
+                return item ? JSON.parse(item) : defaultValue;
+            } catch (e) {
+                console.error('Error loading from localStorage:', e);
+                return defaultValue;
+            }
+        };
+
+        // Check if user played today
+        const getTodayString = () => new Date().toISOString().split('T')[0];
+        
+        const hasPlayedToday = (gameType) => {
+            const lastPlayed = loadFromLocalStorage(`${gameType}_lastPlayed`, null);
+            return lastPlayed === getTodayString();
+        };
+
         // Icons as SVG components
         const MenuIcon = () => (
             <svg className="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -834,7 +861,18 @@
             const [gameOver, setGameOver] = useState(false);
             const [message, setMessage] = useState('');
             const [shake, setShake] = useState(false);
+            const [stats, setStats] = useState(() => 
+                loadFromLocalStorage('wordleStats', { played: 0, won: 0, streak: 0, maxStreak: 0 })
+            );
             const maxGuesses = 6;
+
+            useEffect(() => {
+                // Check if already played today
+                if (hasPlayedToday('wordle')) {
+                    setGameOver(true);
+                    setMessage('Come back tomorrow for a new puzzle! 🌟');
+                }
+            }, []);
 
             useEffect(() => {
                 if (gameOver) return;
@@ -882,6 +920,18 @@
                 return result;
             };
 
+            const updateStats = (won) => {
+                const newStats = {
+                    played: stats.played + 1,
+                    won: won ? stats.won + 1 : stats.won,
+                    streak: won ? stats.streak + 1 : 0,
+                    maxStreak: won ? Math.max(stats.streak + 1, stats.maxStreak) : stats.maxStreak
+                };
+                setStats(newStats);
+                saveToLocalStorage('wordleStats', newStats);
+                saveToLocalStorage('wordle_lastPlayed', getTodayString());
+            };
+
             const submitGuess = () => {
                 if (currentGuess.length !== 5) {
                     setShake(true);
@@ -896,9 +946,11 @@
                 if (currentGuess === WORD) {
                     setGameOver(true);
                     setMessage('Brilliant! 🎉');
+                    updateStats(true);
                 } else if (newGuesses.length >= maxGuesses) {
                     setGameOver(true);
                     setMessage(`The word was ${WORD}`);
+                    updateStats(false);
                 }
 
                 setCurrentGuess('');
@@ -936,6 +988,8 @@
                 return rows;
             };
 
+            const winRate = stats.played > 0 ? Math.round((stats.won / stats.played) * 100) : 0;
+
             return (
                 <div className="game-container">
                     <div className="game-header">
@@ -945,15 +999,15 @@
 
                     <div className="stats-bar">
                         <div className="stat-item">
-                            <div className="stat-value">12</div>
+                            <div className="stat-value">{stats.played}</div>
                             <div className="stat-label">Played</div>
                         </div>
                         <div className="stat-item">
-                            <div className="stat-value">7</div>
+                            <div className="stat-value">{stats.streak}</div>
                             <div className="stat-label">Streak</div>
                         </div>
                         <div className="stat-item">
-                            <div className="stat-value">83%</div>
+                            <div className="stat-value">{winRate}%</div>
                             <div className="stat-label">Win Rate</div>
                         </div>
                     </div>
@@ -1009,7 +1063,19 @@
             const [mistakes, setMistakes] = useState(0);
             const [message, setMessage] = useState('');
             const [shake, setShake] = useState(false);
+            const [gameOver, setGameOver] = useState(false);
+            const [stats, setStats] = useState(() => 
+                loadFromLocalStorage('connectionsStats', { played: 0, won: 0, streak: 0, maxStreak: 0 })
+            );
             const maxMistakes = 4;
+
+            useEffect(() => {
+                // Check if already played today
+                if (hasPlayedToday('connections')) {
+                    setGameOver(true);
+                    setMessage('Come back tomorrow for a new puzzle! 🌟');
+                }
+            }, []);
 
             function shuffleArray(array) {
                 const shuffled = [...array];
@@ -1020,7 +1086,21 @@
                 return shuffled;
             }
 
+            const updateStats = (won) => {
+                const newStats = {
+                    played: stats.played + 1,
+                    won: won ? stats.won + 1 : stats.won,
+                    streak: won ? stats.streak + 1 : 0,
+                    maxStreak: won ? Math.max(stats.streak + 1, stats.maxStreak) : stats.maxStreak
+                };
+                setStats(newStats);
+                saveToLocalStorage('connectionsStats', newStats);
+                saveToLocalStorage('connections_lastPlayed', getTodayString());
+            };
+
             const toggleWord = (word) => {
+                if (gameOver) return;
+                
                 if (selected.includes(word)) {
                     setSelected(selected.filter(w => w !== word));
                 } else if (selected.length < 4) {
@@ -1029,6 +1109,7 @@
             };
 
             const handleShuffle = () => {
+                if (gameOver) return;
                 const remainingWords = words.filter(w => !isWordSolved(w));
                 const solvedWords = words.filter(w => isWordSolved(w));
                 setWords([...solvedWords, ...shuffleArray(remainingWords)]);
@@ -1036,7 +1117,7 @@
             };
 
             const handleSubmit = () => {
-                if (selected.length !== 4) return;
+                if (selected.length !== 4 || gameOver) return;
 
                 const matchedGroup = puzzleData.groups.findIndex((group, idx) => {
                     if (solved.includes(idx)) return false;
@@ -1048,11 +1129,24 @@
                     setSelected([]);
                     setMessage(`Correct! ${puzzleData.groups[matchedGroup].category}`);
                     setTimeout(() => setMessage(''), 2000);
+
+                    if (solved.length + 1 === puzzleData.groups.length) {
+                        setGameOver(true);
+                        setMessage('Brilliant! You found all connections! 🎉');
+                        updateStats(true);
+                    }
                 } else {
                     setShake(true);
                     setTimeout(() => setShake(false), 200);
-                    setMistakes(mistakes + 1);
+                    const newMistakes = mistakes + 1;
+                    setMistakes(newMistakes);
                     setSelected([]);
+
+                    if (newMistakes >= maxMistakes) {
+                        setGameOver(true);
+                        setMessage('Game Over! Better luck tomorrow!');
+                        updateStats(false);
+                    }
                 }
             };
 
@@ -1061,6 +1155,8 @@
                     solved.includes(idx) && group.words.includes(word)
                 );
             };
+
+            const winRate = stats.played > 0 ? Math.round((stats.won / stats.played) * 100) : 0;
 
             return (
                 <div className="game-container">
@@ -1071,15 +1167,15 @@
 
                     <div className="stats-bar">
                         <div className="stat-item">
-                            <div className="stat-value">8</div>
+                            <div className="stat-value">{stats.played}</div>
                             <div className="stat-label">Played</div>
                         </div>
                         <div className="stat-item">
-                            <div className="stat-value">4</div>
+                            <div className="stat-value">{stats.streak}</div>
                             <div className="stat-label">Streak</div>
                         </div>
                         <div className="stat-item">
-                            <div className="stat-value">75%</div>
+                            <div className="stat-value">{winRate}%</div>
                             <div className="stat-label">Win Rate</div>
                         </div>
                     </div>
@@ -1118,17 +1214,19 @@
 
                     {message && <div className="message">{message}</div>}
 
-                    <div className="button-group">
-                        <button className="button button-secondary" onClick={handleShuffle}>
-                            Shuffle
-                        </button>
-                        <button className="button button-secondary" onClick={() => setSelected([])} disabled={selected.length === 0}>
-                            Deselect All
-                        </button>
-                        <button className="button button-primary" onClick={handleSubmit} disabled={selected.length !== 4}>
-                            Submit
-                        </button>
-                    </div>
+                    {!gameOver && (
+                        <div className="button-group">
+                            <button className="button button-secondary" onClick={handleShuffle}>
+                                Shuffle
+                            </button>
+                            <button className="button button-secondary" onClick={() => setSelected([])} disabled={selected.length === 0}>
+                                Deselect All
+                            </button>
+                            <button className="button button-primary" onClick={handleSubmit} disabled={selected.length !== 4}>
+                                Submit
+                            </button>
+                        </div>
+                    )}
                 </div>
             );
         }
@@ -1203,6 +1301,28 @@
             const [score, setScore] = useState(0);
             const [answered, setAnswered] = useState(false);
             const [gameOver, setGameOver] = useState(false);
+            const [stats, setStats] = useState(() => 
+                loadFromLocalStorage('triviaStats', { played: 0, totalScore: 0, perfectGames: 0, bestScore: 0 })
+            );
+
+            useEffect(() => {
+                // Check if already played today
+                if (hasPlayedToday('trivia')) {
+                    setGameOver(true);
+                }
+            }, []);
+
+            const updateStats = (finalScore) => {
+                const newStats = {
+                    played: stats.played + 1,
+                    totalScore: stats.totalScore + finalScore,
+                    perfectGames: finalScore === 10 ? stats.perfectGames + 1 : stats.perfectGames,
+                    bestScore: Math.max(finalScore, stats.bestScore)
+                };
+                setStats(newStats);
+                saveToLocalStorage('triviaStats', newStats);
+                saveToLocalStorage('trivia_lastPlayed', getTodayString());
+            };
 
             const handleAnswerClick = (index) => {
                 if (answered) return;
@@ -1222,6 +1342,7 @@
                     setAnswered(false);
                 } else {
                     setGameOver(true);
+                    updateStats(score);
                 }
             };
 
@@ -1370,6 +1491,11 @@
 
         // Profile Component  
         function Profile() {
+            const wordleStats = loadFromLocalStorage('wordleStats', { played: 0, won: 0, streak: 0, maxStreak: 0 });
+            const connectionsStats = loadFromLocalStorage('connectionsStats', { played: 0, won: 0, streak: 0, maxStreak: 0 });
+            const triviaStats = loadFromLocalStorage('triviaStats', { played: 0, totalScore: 0, perfectGames: 0, bestScore: 0 });
+            const avgTriviaScore = triviaStats.played > 0 ? Math.round((triviaStats.totalScore / triviaStats.played / 10) * 100) : 0;
+
             return (
                 <div className="game-container">
                     <div className="game-header">
@@ -1379,26 +1505,26 @@
                     <div style={{background: 'white', padding: '24px', borderRadius: '16px', textAlign: 'center', marginBottom: '24px'}}>
                         <div className="avatar" style={{width: '80px', height: '80px', margin: '0 auto 16px'}}></div>
                         <h3 style={{fontSize: '20px', fontWeight: '700', marginBottom: '8px'}}>Puzzle Master</h3>
-                        <p style={{color: '#666'}}>puzzle.master@email.com</p>
+                        <p style={{color: '#666', fontSize: '14px'}}>Your stats are saved locally</p>
                     </div>
 
                     <div style={{background: 'white', padding: '24px', borderRadius: '16px', marginBottom: '16px'}}>
                         <h3 style={{fontWeight: '700', marginBottom: '16px'}}>Wordle Stats</h3>
                         <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px'}}>
                             <div className="stat-item">
-                                <div className="stat-value">12</div>
+                                <div className="stat-value">{wordleStats.played}</div>
                                 <div className="stat-label">Played</div>
                             </div>
                             <div className="stat-item">
-                                <div className="stat-value">10</div>
+                                <div className="stat-value">{wordleStats.won}</div>
                                 <div className="stat-label">Won</div>
                             </div>
                             <div className="stat-item">
-                                <div className="stat-value">7</div>
+                                <div className="stat-value">{wordleStats.streak}</div>
                                 <div className="stat-label">Current Streak</div>
                             </div>
                             <div className="stat-item">
-                                <div className="stat-value">9</div>
+                                <div className="stat-value">{wordleStats.maxStreak}</div>
                                 <div className="stat-label">Best Streak</div>
                             </div>
                         </div>
@@ -1408,19 +1534,19 @@
                         <h3 style={{fontWeight: '700', marginBottom: '16px'}}>Connections Stats</h3>
                         <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px'}}>
                             <div className="stat-item">
-                                <div className="stat-value">8</div>
+                                <div className="stat-value">{connectionsStats.played}</div>
                                 <div className="stat-label">Played</div>
                             </div>
                             <div className="stat-item">
-                                <div className="stat-value">6</div>
+                                <div className="stat-value">{connectionsStats.won}</div>
                                 <div className="stat-label">Won</div>
                             </div>
                             <div className="stat-item">
-                                <div className="stat-value">4</div>
+                                <div className="stat-value">{connectionsStats.streak}</div>
                                 <div className="stat-label">Current Streak</div>
                             </div>
                             <div className="stat-item">
-                                <div className="stat-value">5</div>
+                                <div className="stat-value">{connectionsStats.maxStreak}</div>
                                 <div className="stat-label">Best Streak</div>
                             </div>
                         </div>
@@ -1430,19 +1556,19 @@
                         <h3 style={{fontWeight: '700', marginBottom: '16px'}}>Trivia Stats</h3>
                         <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px'}}>
                             <div className="stat-item">
-                                <div className="stat-value">15</div>
+                                <div className="stat-value">{triviaStats.played}</div>
                                 <div className="stat-label">Played</div>
                             </div>
                             <div className="stat-item">
-                                <div className="stat-value">85%</div>
+                                <div className="stat-value">{avgTriviaScore}%</div>
                                 <div className="stat-label">Avg Score</div>
                             </div>
                             <div className="stat-item">
-                                <div className="stat-value">10/10</div>
+                                <div className="stat-value">{triviaStats.bestScore}/10</div>
                                 <div className="stat-label">Best Score</div>
                             </div>
                             <div className="stat-item">
-                                <div className="stat-value">6</div>
+                                <div className="stat-value">{triviaStats.perfectGames}</div>
                                 <div className="stat-label">Perfect Games</div>
                             </div>
                         </div>
