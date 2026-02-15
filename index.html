@@ -70,6 +70,14 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar.game-mode {
+            transform: translateY(-100%);
+            position: fixed;
+            width: 100%;
+            max-width: 500px;
         }
 
         .nav-button {
@@ -186,6 +194,12 @@
             overflow-y: auto;
             padding-bottom: 80px;
             -webkit-overflow-scrolling: touch;
+            transition: padding-bottom 0.3s ease;
+        }
+
+        .main-content.game-mode {
+            padding-bottom: 0;
+            overflow-y: auto;
         }
 
         /* Home Screen */
@@ -299,6 +313,40 @@
             max-width: 450px;
             margin: 0 auto;
             padding: 20px 16px;
+            padding-bottom: 90px;
+        }
+
+        .game-container.fullscreen {
+            padding: 60px 16px 20px 16px;
+            min-height: 100vh;
+        }
+
+        /* Floating Back Button for Game Mode */
+        .floating-back-btn {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid #e5e5e5;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            font-size: 20px;
+        }
+
+        .floating-back-btn.visible {
+            display: flex;
+        }
+
+        .floating-back-btn:active {
+            transform: scale(0.95);
+            background: #f8f8f8;
         }
 
         .game-header {
@@ -731,6 +779,46 @@
             cursor: not-allowed;
         }
 
+        .hint-button {
+            padding: 8px 16px;
+            border: 2px solid #f59e0b;
+            border-radius: 20px;
+            background: white;
+            color: #f59e0b;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hint-button:active {
+            transform: scale(0.95);
+            background: #fffbeb;
+        }
+
+        .hint-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .hint-container {
+            background: #fffbeb;
+            border: 2px solid #fcd34d;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        .hint-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #92400e;
+        }
+
         .mistakes-remaining {
             text-align: center;
             margin-top: 16px;
@@ -1067,6 +1155,11 @@
             justify-content: space-around;
             padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
             z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .bottom-nav.game-mode {
+            transform: translateY(100%);
         }
 
         .nav-item {
@@ -1558,6 +1651,7 @@
             const [activeTab, setActiveTab] = useState('home');
             const [menuOpen, setMenuOpen] = useState(false);
             const [userStats, setUserStats] = useState(null);
+            const [inGameMode, setInGameMode] = useState(false);
 
             useEffect(() => {
                 const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -1665,7 +1759,13 @@
 
             return (
                 <div className="app-container">
-                    <nav className="navbar">
+                    {inGameMode && (
+                        <button className="floating-back-btn visible" onClick={() => setInGameMode(false)}>
+                            ←
+                        </button>
+                    )}
+                    
+                    <nav className={`navbar ${inGameMode ? 'game-mode' : ''}`}>
                         <button className="nav-button" onClick={() => setMenuOpen(true)}>
                             <MenuIcon />
                         </button>
@@ -1700,20 +1800,22 @@
                         </>
                     )}
 
-                    <main className="main-content">
-                        {activeTab === 'home' && <Home user={user} userStats={userStats} onSignIn={handleSignIn} onStatsUpdate={loadUserStats} />}
+                    <main className={`main-content ${inGameMode ? 'game-mode' : ''}`}>
+                        {activeTab === 'home' && <Home user={user} userStats={userStats} onSignIn={handleSignIn} onStatsUpdate={loadUserStats} onGameModeChange={setInGameMode} />}
                         {activeTab === 'trashtalk' && <TrashTalk user={user} />}
                         {activeTab === 'leaderboard' && <Leaderboard user={user} />}
                         {activeTab === 'profile' && <Profile user={user} userStats={userStats} onSignOut={handleSignOut} />}
                     </main>
 
-                    <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
+                    <div className={`bottom-nav ${inGameMode ? 'game-mode' : ''}`}>
+                        <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
+                    </div>
                 </div>
             );
         }
 
         // Home Component
-        function Home({ user, userStats, onSignIn, onStatsUpdate }) {
+        function Home({ user, userStats, onSignIn, onStatsUpdate, onGameModeChange }) {
             const [selectedGame, setSelectedGame] = useState(null);
             const today = getTodayString();
             
@@ -1722,6 +1824,14 @@
             const strandsCompleted = userStats?.strands?.lastPlayed === today;
             const connectionsCompleted = userStats?.connections?.lastPlayed === today;
             const triviaCompleted = userStats?.trivia?.lastPlayed === today;
+
+            useEffect(() => {
+                if (selectedGame) {
+                    onGameModeChange(true);
+                } else {
+                    onGameModeChange(false);
+                }
+            }, [selectedGame, onGameModeChange]);
 
             if (selectedGame === 'wordle') {
                 return <WordleGame user={user} onBack={() => { setSelectedGame(null); if (user) onStatsUpdate(user.uid); }} />;
@@ -2265,9 +2375,15 @@
             const [foundWords, setFoundWords] = useState([]);
             const [foundSpangram, setFoundSpangram] = useState(false);
             const [gameOver, setGameOver] = useState(false);
+            const [hint, setHint] = useState('');
+            const [hintsUsed, setHintsUsed] = useState(0);
+            const [foundWordsCells, setFoundWordsCells] = useState([]); // Track which cells belong to found words
 
             const handleCellClick = (row, col) => {
                 const cellKey = `${row}-${col}`;
+                // Don't allow selecting cells that are part of found words
+                if (foundWordsCells.includes(cellKey)) return;
+                
                 const isAlreadySelected = selectedCells.some(c => c.key === cellKey);
 
                 if (isAlreadySelected) {
@@ -2287,6 +2403,7 @@
                 
                 if (puzzle.words.includes(word) && !foundWords.includes(word)) {
                     setFoundWords([...foundWords, word]);
+                    setFoundWordsCells([...foundWordsCells, ...selectedCells.map(c => c.key)]);
                     
                     if (word === puzzle.spangram) {
                         setFoundSpangram(true);
@@ -2301,6 +2418,18 @@
                 
                 setSelectedCells([]);
                 setCurrentWord('');
+            };
+
+            const handleHint = () => {
+                // Find an unfound word and reveal its first letter
+                const unfoundWords = puzzle.words.filter(w => !foundWords.includes(w));
+                if (unfoundWords.length > 0) {
+                    const randomWord = unfoundWords[Math.floor(Math.random() * unfoundWords.length)];
+                    const isSpangram = randomWord === puzzle.spangram;
+                    setHint(`Try finding a word that starts with "${randomWord[0]}"${isSpangram ? ' (This is the spangram!)' : ''}`);
+                    setHintsUsed(hintsUsed + 1);
+                    setTimeout(() => setHint(''), 5000);
+                }
             };
 
             const updateStats = async (won) => {
@@ -2345,11 +2474,7 @@
             };
 
             return (
-                <div className="game-container">
-                    <button onClick={onBack} style={{marginBottom: '20px', padding: '8px 16px', border: 'none', background: '#f0f0f0', borderRadius: '8px', cursor: 'pointer'}}>
-                        ← Back
-                    </button>
-
+                <div className="game-container fullscreen">
                     <div className="game-header">
                         <h2 className="game-title-main">Strands</h2>
                         <p className="game-subtitle">Find all theme words</p>
@@ -2360,6 +2485,12 @@
                         <div className="strands-theme-text">{puzzle.theme}</div>
                     </div>
 
+                    {hint && (
+                        <div className="hint-container">
+                            <div className="hint-text">💡 {hint}</div>
+                        </div>
+                    )}
+
                     <div className="strands-current-word">
                         {currentWord || '...'}
                     </div>
@@ -2369,11 +2500,20 @@
                             row.map((cell, colIndex) => {
                                 const cellKey = `${rowIndex}-${colIndex}`;
                                 const isSelected = selectedCells.some(c => c.key === cellKey);
+                                const isFoundCell = foundWordsCells.includes(cellKey);
+                                
+                                // Determine if this cell is part of spangram or theme word
+                                let cellClass = 'strands-cell';
+                                if (isSelected) cellClass += ' selected';
+                                if (isFoundCell) {
+                                    // Check if it's part of the spangram
+                                    cellClass += foundSpangram && foundWords.includes(puzzle.spangram) ? ' found-spangram' : ' found-theme';
+                                }
 
                                 return (
                                     <div
                                         key={cellKey}
-                                        className={`strands-cell ${isSelected ? 'selected' : ''}`}
+                                        className={cellClass}
                                         onClick={() => handleCellClick(rowIndex, colIndex)}
                                     >
                                         {cell}
@@ -2384,6 +2524,9 @@
                     </div>
 
                     <div className="connections-controls">
+                        <button className="hint-button" onClick={handleHint} disabled={foundWords.length === puzzle.words.length}>
+                            💡 Hint
+                        </button>
                         <button className="control-button secondary" onClick={() => { setSelectedCells([]); setCurrentWord(''); }}>
                             Clear
                         </button>
@@ -2393,6 +2536,9 @@
                     </div>
 
                     <div className="strands-found-words">
+                        <div style={{fontSize: '14px', fontWeight: '600', marginBottom: '8px', textAlign: 'center'}}>
+                            Found: {foundWords.length} / {puzzle.words.length}
+                        </div>
                         {foundWords.map(word => (
                             <div key={word} className={`found-word-chip ${word === puzzle.spangram ? 'spangram' : 'theme'}`}>
                                 {word}
@@ -2408,6 +2554,10 @@
                                     <div className="stat-item">
                                         <div className="stat-value">{foundWords.length}</div>
                                         <div className="stat-label">Words Found</div>
+                                    </div>
+                                    <div className="stat-item">
+                                        <div className="stat-value">{hintsUsed}</div>
+                                        <div className="stat-label">Hints Used</div>
                                     </div>
                                 </div>
                                 <button className="modal-button" onClick={onBack}>Back to Home</button>
@@ -2426,6 +2576,8 @@
             const [mistakes, setMistakes] = useState(0);
             const [gameOver, setGameOver] = useState(false);
             const [won, setWon] = useState(false);
+            const [hint, setHint] = useState('');
+            const [hintsUsed, setHintsUsed] = useState(0);
             const maxMistakes = 4;
 
             useEffect(() => {
@@ -2480,6 +2632,20 @@
                 setSelected([]);
             };
 
+            const handleHint = () => {
+                // Find an unfound group and reveal one word from it
+                const unfoundGroups = CONNECTIONS_PUZZLE.groups.filter(
+                    g => !foundGroups.some(fg => fg.category === g.category)
+                );
+                if (unfoundGroups.length > 0) {
+                    const randomGroup = unfoundGroups[Math.floor(Math.random() * unfoundGroups.length)];
+                    const randomWord = randomGroup.words[Math.floor(Math.random() * randomGroup.words.length)];
+                    setHint(`"${randomWord}" belongs to the ${randomGroup.color} group`);
+                    setHintsUsed(hintsUsed + 1);
+                    setTimeout(() => setHint(''), 5000);
+                }
+            };
+
             const updateStats = async (won) => {
                 if (!user) return;
 
@@ -2522,15 +2688,17 @@
             };
 
             return (
-                <div className="game-container">
-                    <button onClick={onBack} style={{marginBottom: '20px', padding: '8px 16px', border: 'none', background: '#f0f0f0', borderRadius: '8px', cursor: 'pointer'}}>
-                        ← Back
-                    </button>
-
+                <div className="game-container fullscreen">
                     <div className="game-header">
                         <h2 className="game-title-main">Connections</h2>
                         <p className="game-subtitle">Find groups of four</p>
                     </div>
+
+                    {hint && (
+                        <div className="hint-container">
+                            <div className="hint-text">💡 {hint}</div>
+                        </div>
+                    )}
 
                     {foundGroups.map((group, i) => (
                         <div key={i} className={`found-group ${group.color}`}>
@@ -2560,7 +2728,10 @@
                         </div>
                     </div>
 
-                    <div className="connections-controls">
+                    <div className="connections-controls" style={{display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center'}}>
+                        <button className="hint-button" onClick={handleHint} disabled={gameOver || foundGroups.length === CONNECTIONS_PUZZLE.groups.length}>
+                            💡 Hint
+                        </button>
                         <button className="control-button secondary" onClick={handleShuffle} disabled={gameOver}>
                             Shuffle
                         </button>
@@ -3260,7 +3431,7 @@
         // Bottom Navigation Component
         function BottomNav({ activeTab, setActiveTab }) {
             return (
-                <div className="bottom-nav">
+                <>
                     <button className={`nav-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>
                         <CalendarIcon />
                         <span className="nav-label">Today</span>
@@ -3279,7 +3450,7 @@
                         <UserIcon />
                         <span className="nav-label">Profile</span>
                     </button>
-                </div>
+                </>
             );
         }
 
