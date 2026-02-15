@@ -70,11 +70,6 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 12px;
-            transition: transform 0.3s ease;
-        }
-
-        .navbar.hidden {
-            transform: translateY(-100%);
         }
 
         .nav-button {
@@ -193,59 +188,6 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        .main-content.fullscreen {
-            padding-bottom: 0;
-        }
-
-        /* Bottom Nav */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            border-top: 1px solid #e5e5e5;
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0 max(8px, env(safe-area-inset-bottom));
-            z-index: 40;
-            max-width: 500px;
-            margin: 0 auto;
-            transition: transform 0.3s ease;
-        }
-
-        .bottom-nav.hidden {
-            transform: translateY(100%);
-        }
-
-        .nav-item {
-            background: none;
-            border: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 12px;
-            cursor: pointer;
-            color: #666;
-            transition: color 0.2s;
-            min-width: 64px;
-        }
-
-        .nav-item.active {
-            color: #121213;
-        }
-
-        .nav-item svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        .nav-label {
-            font-size: 11px;
-            font-weight: 600;
-        }
-
         /* Home Screen */
         .home-container {
             max-width: 450px;
@@ -267,79 +209,60 @@
             margin-bottom: 8px;
         }
 
-        .today-date {
-            font-size: 14px;
-            color: #121213;
-            margin-bottom: 24px;
-        }
-
-        .welcome-message {
-            font-size: 32px;
-            font-weight: 700;
+        .main-title {
             font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 700;
             margin-bottom: 8px;
         }
 
-        .puzzle-count {
-            font-size: 16px;
+        .subtitle {
             color: #666;
+            font-size: 14px;
         }
 
         .game-grid {
-            display: flex;
-            flex-direction: column;
+            display: grid;
             gap: 16px;
+            margin-bottom: 24px;
         }
 
         .game-card {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             cursor: pointer;
-            transition: all 0.2s;
-            border: 2px solid #e5e5e5;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            min-height: 120px;
         }
 
         .game-card:active {
             transform: scale(0.98);
-            border-color: #121213;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
+
+        .game-card.completed {
+            border-color: #6aaa64;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f8f0 100%);
         }
 
         .game-card-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             margin-bottom: 12px;
         }
 
         .game-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 8px;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
-        }
-
-        .game-status {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .status-incomplete {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .status-complete {
-            background: #d4edda;
-            color: #155724;
         }
 
         .game-title {
@@ -354,17 +277,28 @@
             line-height: 1.4;
         }
 
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.completed {
+            background: #6aaa64;
+            color: white;
+        }
+
+        .status-badge.available {
+            background: #e5e5e5;
+            color: #666;
+        }
+
         /* Game Container */
         .game-container {
             max-width: 450px;
             margin: 0 auto;
-            padding: 24px 16px;
-            min-height: calc(100vh - 136px);
-        }
-
-        .game-container.fullscreen {
-            min-height: 100vh;
-            padding: 16px;
+            padding: 20px 16px;
         }
 
         .game-header {
@@ -373,296 +307,43 @@
         }
 
         .game-title-main {
+            font-family: 'Playfair Display', serif;
             font-size: 28px;
             font-weight: 700;
-            font-family: 'Playfair Display', serif;
             margin-bottom: 8px;
         }
 
         .game-subtitle {
-            font-size: 14px;
             color: #666;
-        }
-
-        /* Connections Styles */
-        .connections-board {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-bottom: 24px;
-        }
-
-        .connections-word {
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: white;
-            border: 2px solid #e5e5e5;
-            border-radius: 8px;
             font-size: 14px;
-            font-weight: 700;
-            text-align: center;
-            padding: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        .connections-word:active {
-            transform: scale(0.95);
-        }
-
-        .connections-word.selected {
-            background: #5a594e;
-            color: white;
-            border-color: #5a594e;
-        }
-
-        .connections-word.correct {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
-        .found-groups {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 24px;
-        }
-
-        .found-group {
-            background: #f9df6d;
-            padding: 16px;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .found-group.yellow { background: #f9df6d; color: #121213; }
-        .found-group.green { background: #b0c4b1; color: #121213; }
-        .found-group.blue { background: #a0c4dd; color: #121213; }
-        .found-group.purple { background: #ba81c5; color: white; }
-
-        .group-category {
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 8px;
-        }
-
-        .group-words {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .mistakes-remaining {
-            text-align: center;
-            margin-bottom: 16px;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .mistake-dots {
-            display: inline-flex;
-            gap: 6px;
-            margin-left: 8px;
-        }
-
-        .mistake-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #121213;
-        }
-
-        .game-controls {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin-bottom: 16px;
-        }
-
-        .game-button {
-            padding: 14px 28px;
-            border: 2px solid #121213;
-            background: white;
-            border-radius: 24px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            min-width: 120px;
-        }
-
-        .game-button:active {
-            transform: scale(0.95);
-        }
-
-        .game-button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        .game-button.primary {
-            background: #121213;
-            color: white;
-        }
-
-        /* Strands Styles */
-        .theme-box {
-            background: #a7d8bd;
-            padding: 16px;
-            border-radius: 12px;
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .theme-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 6px;
-        }
-
-        .theme-text {
-            font-size: 20px;
-            font-weight: 700;
-            font-family: 'Playfair Display', serif;
-            color: #121213;
-        }
-
-        .spangram-found {
-            background: #ffd60a;
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 16px;
-            font-weight: 600;
-            color: #121213;
-        }
-
-        .strands-board {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 4px;
-            margin-bottom: 24px;
-            touch-action: none;
-        }
-
-        .strands-letter {
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: white;
-            border: 2px solid #e5e5e5;
-            border-radius: 8px;
-            font-size: 20px;
-            font-weight: 700;
-            cursor: pointer;
-            user-select: none;
-            -webkit-user-select: none;
-            transition: all 0.1s;
-        }
-
-        .strands-letter:active {
-            transform: scale(0.95);
-        }
-
-        .strands-letter.selected {
-            background: #5a94fc;
-            color: white;
-            border-color: #5a94fc;
-        }
-
-        .strands-letter.found {
-            background: #a7d8bd;
-            color: #121213;
-            border-color: #a7d8bd;
-            pointer-events: none;
-        }
-
-        .strands-letter.spangram {
-            background: #ffd60a;
-            color: #121213;
-            border-color: #ffd60a;
-            pointer-events: none;
-        }
-
-        .current-word-display {
-            text-align: center;
-            min-height: 32px;
-            margin-bottom: 16px;
-            font-size: 18px;
-            font-weight: 600;
-            color: #5a94fc;
-        }
-
-        .words-found {
-            text-align: center;
-            margin-bottom: 16px;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .hint-button {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e5e5e5;
-            background: white;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .hint-button:active {
-            transform: scale(0.98);
-            background: #f8f8f8;
-        }
-
-        .hint-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
         }
 
         /* Wordle Styles */
         .wordle-board {
             display: grid;
-            grid-template-rows: repeat(6, 1fr);
-            gap: 6px;
-            margin-bottom: 24px;
+            gap: 5px;
+            margin: 24px auto;
             max-width: 350px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .wordle-row {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
+            gap: 5px;
         }
 
         .wordle-tile {
             aspect-ratio: 1;
+            border: 2px solid #d3d6da;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid #d3d6da;
-            background: white;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
             text-transform: uppercase;
+            background: white;
+            border-radius: 4px;
+            transition: all 0.3s;
         }
 
         .wordle-tile.filled {
@@ -687,143 +368,934 @@
             color: white;
         }
 
-        .keyboard {
-            max-width: 500px;
-            margin: 0 auto;
+        /* Mobile Keyboard */
+        .mobile-keyboard {
+            margin-top: 24px;
+            padding: 0 8px;
         }
 
         .keyboard-row {
             display: flex;
-            justify-content: center;
             gap: 6px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            justify-content: center;
         }
 
-        .key {
+        .keyboard-key {
             flex: 1;
             max-width: 43px;
             height: 58px;
+            border: none;
+            border-radius: 4px;
+            background: #d3d6da;
+            color: #000;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.1s;
+            text-transform: uppercase;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #d3d6da;
-            border: none;
-            border-radius: 4px;
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.1s;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .key:active {
+        .keyboard-key:active {
             transform: scale(0.95);
+            background: #bbb;
         }
 
-        .key.wide {
+        .keyboard-key.wide {
             flex: 1.5;
             max-width: 65px;
             font-size: 12px;
         }
 
-        .key.correct {
+        .keyboard-key.correct {
             background: #6aaa64;
             color: white;
         }
 
-        .key.present {
+        .keyboard-key.present {
             background: #c9b458;
             color: white;
         }
 
-        .key.absent {
+        .keyboard-key.absent {
             background: #787c7e;
             color: white;
         }
 
-        /* Chat Styles */
+        /* Crossword Styles */
+        .crossword-grid {
+            display: grid;
+            gap: 2px;
+            margin: 24px auto;
+            max-width: 350px;
+            background: #000;
+            padding: 2px;
+            border-radius: 4px;
+        }
+
+        .crossword-cell {
+            aspect-ratio: 1;
+            background: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .crossword-cell.black {
+            background: #000;
+            cursor: default;
+        }
+
+        .crossword-cell.selected {
+            background: #bee3f8;
+        }
+
+        .crossword-cell.highlight {
+            background: #e6f3ff;
+        }
+
+        .cell-number {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .crossword-clues {
+            margin-top: 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .clues-section h3 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .clue-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #f8f8f8;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .clue-item:active {
+            background: #e5e5e5;
+        }
+
+        .clue-item.selected {
+            background: #bee3f8;
+        }
+
+        .clue-item.completed {
+            background: #d4edda;
+        }
+
+        /* Strands Styles */
+        .strands-theme {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .strands-theme h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .strands-theme-text {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .strands-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 4px;
+            margin: 20px auto;
+            max-width: 400px;
+            user-select: none;
+        }
+
+        .strands-cell {
+            aspect-ratio: 1;
+            background: white;
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .strands-cell:active {
+            transform: scale(0.95);
+        }
+
+        .strands-cell.selected {
+            background: #bee3f8;
+            border-color: #3182ce;
+        }
+
+        .strands-cell.found-theme {
+            background: #90cdf4;
+            border-color: #3182ce;
+            color: white;
+        }
+
+        .strands-cell.found-spangram {
+            background: #ffd700;
+            border-color: #daa520;
+            color: #000;
+        }
+
+        .strands-current-word {
+            text-align: center;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .strands-found-words {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .found-word-chip {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .found-word-chip.theme {
+            background: #90cdf4;
+            color: white;
+        }
+
+        .found-word-chip.spangram {
+            background: #ffd700;
+            color: #000;
+        }
+
+        /* Connections Styles */
+        .connections-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 24px auto;
+            max-width: 400px;
+        }
+
+        .connection-card {
+            aspect-ratio: 1.2;
+            background: white;
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .connection-card:active {
+            transform: scale(0.95);
+        }
+
+        .connection-card.selected {
+            background: #5a594e;
+            color: white;
+            border-color: #5a594e;
+        }
+
+        .connection-card.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .found-group {
+            margin-bottom: 12px;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .found-group.yellow {
+            background: #f9df6d;
+        }
+
+        .found-group.green {
+            background: #a0c35a;
+        }
+
+        .found-group.blue {
+            background: #b0c4ef;
+        }
+
+        .found-group.purple {
+            background: #ba81c5;
+        }
+
+        .found-group h3 {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .found-group p {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .connections-controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .control-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 120px;
+        }
+
+        .control-button:active {
+            transform: scale(0.95);
+        }
+
+        .control-button.primary {
+            background: #000;
+            color: white;
+        }
+
+        .control-button.secondary {
+            background: white;
+            color: #000;
+            border: 2px solid #000;
+        }
+
+        .control-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .mistakes-remaining {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .mistakes-dots {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 8px;
+        }
+
+        .mistake-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #000;
+        }
+
+        .mistake-dot.used {
+            background: #e5e5e5;
+        }
+
+        /* Trivia Styles */
+        .trivia-container {
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .answer-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .answer-button {
+            padding: 16px;
+            border: 2px solid #e5e5e5;
+            border-radius: 12px;
+            background: white;
+            text-align: left;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 56px;
+            display: flex;
+            align-items: center;
+        }
+
+        .answer-button:active {
+            transform: scale(0.98);
+        }
+
+        .answer-button.selected {
+            border-color: #000;
+            background: #f8f8f8;
+        }
+
+        .answer-button.correct {
+            border-color: #6aaa64;
+            background: #f0f8f0;
+        }
+
+        .answer-button.incorrect {
+            border-color: #d32f2f;
+            background: #fff0f0;
+        }
+
+        .answer-button:disabled {
+            cursor: not-allowed;
+        }
+
+        .trivia-progress {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 24px;
+            justify-content: center;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #e5e5e5;
+        }
+
+        .progress-dot.current {
+            background: #000;
+        }
+
+        .progress-dot.correct {
+            background: #6aaa64;
+        }
+
+        .progress-dot.incorrect {
+            background: #d32f2f;
+        }
+
+        /* Results Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            animation: fadeIn 0.2s;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            padding: 32px 24px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .modal-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-button {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            background: #000;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            min-height: 56px;
+        }
+
+        .modal-button:active {
+            opacity: 0.8;
+        }
+
+        .modal-button.secondary {
+            background: white;
+            color: #000;
+            border: 2px solid #e5e5e5;
+        }
+
+        .share-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Leaderboard */
+        .leaderboard-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 0 4px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            border: 2px solid #e5e5e5;
+            border-radius: 24px;
+            background: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            min-height: 44px;
+        }
+
+        .tab-button:active {
+            transform: scale(0.95);
+        }
+
+        .tab-button.active {
+            background: #000;
+            color: white;
+            border-color: #000;
+        }
+
+        .leaderboard-entry {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .leaderboard-entry.me {
+            border: 2px solid #6aaa64;
+            background: #f0f8f0;
+        }
+
+        .leaderboard-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .rank {
+            font-size: 18px;
+            font-weight: 700;
+            min-width: 35px;
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #e5e5e5;
+        }
+
+        .player-info h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .player-info p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .streak-info {
+            text-align: right;
+        }
+
+        .streak-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .streak-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-top: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+            z-index: 100;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.2s;
+            min-height: 56px;
+            justify-content: center;
+        }
+
+        .nav-item:active {
+            opacity: 0.6;
+        }
+
+        .nav-item.active {
+            color: #000;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* Loading & Messages */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #000;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .message {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        .message.error {
+            background: #fff0f0;
+            color: #d32f2f;
+            border: 1px solid #ffcdd2;
+        }
+
+        .message.success {
+            background: #f0f8f0;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+
+        /* Sign In */
+        .sign-in-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .sign-in-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 28px;
+            background: white;
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 24px;
+            min-height: 56px;
+        }
+
+        .sign-in-button:active {
+            transform: scale(0.98);
+        }
+
+        .sign-out-button {
+            width: 100%;
+            padding: 16px;
+            background: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            min-height: 56px;
+        }
+
+        .sign-out-button:active {
+            opacity: 0.8;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 380px) {
+            .keyboard-key {
+                max-width: 32px;
+                height: 52px;
+                font-size: 11px;
+            }
+            
+            .keyboard-key.wide {
+                max-width: 50px;
+            }
+            
+            .wordle-tile {
+                font-size: 28px;
+            }
+
+            .strands-cell {
+                font-size: 16px;
+            }
+        }
+
+        /* Trash Talk / Chat Styles */
         .chat-messages {
             display: flex;
             flex-direction: column;
             gap: 16px;
-            margin-bottom: 80px;
+            margin-bottom: 16px;
+            max-height: calc(100vh - 320px);
+            overflow-y: auto;
+            padding-bottom: 20px;
         }
 
         .chat-message {
             display: flex;
             gap: 12px;
-            padding: 12px;
-            background: white;
-            border-radius: 12px;
+            animation: slideInChat 0.3s ease-out;
         }
 
-        .chat-message.own {
-            flex-direction: row-reverse;
+        @keyframes slideInChat {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .chat-message-avatar {
-            flex-shrink: 0;
+        .chat-message.own .chat-message-content {
+            background: #e3f2fd;
         }
 
-        .chat-message-avatar img {
+        .chat-message-avatar img,
+        .chat-message-avatar .avatar-placeholder {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-        }
-
-        .avatar-placeholder {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #e5e5e5;
         }
 
         .chat-message-content {
             flex: 1;
-            min-width: 0;
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
 
         .chat-message-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .chat-username {
             font-weight: 700;
             font-size: 14px;
+            color: #000;
         }
 
         .chat-timestamp {
-            font-size: 12px;
+            font-size: 11px;
             color: #999;
         }
 
         .chat-message-text {
             font-size: 15px;
             line-height: 1.4;
-            margin-bottom: 8px;
+            color: #121213;
             word-wrap: break-word;
         }
 
         .chat-reactions {
             display: flex;
             gap: 6px;
+            margin-top: 8px;
             flex-wrap: wrap;
         }
 
         .reaction-button {
-            background: #f0f0f0;
+            background: #f8f8f8;
             border: 1px solid #e5e5e5;
-            border-radius: 16px;
-            padding: 4px 10px;
+            border-radius: 12px;
+            padding: 4px 8px;
             font-size: 14px;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             gap: 4px;
+            min-height: 28px;
         }
 
         .reaction-button:active {
@@ -831,23 +1303,23 @@
         }
 
         .reaction-button.active {
-            background: #e3f2fd;
-            border-color: #2196f3;
+            background: #ffd700;
+            border-color: #daa520;
         }
 
         .chat-input-container {
             position: fixed;
-            bottom: 60px;
+            bottom: 72px;
             left: 0;
             right: 0;
-            background: white;
-            padding: 12px 16px;
-            border-top: 1px solid #e5e5e5;
-            display: flex;
-            gap: 12px;
             max-width: 500px;
             margin: 0 auto;
-            z-index: 30;
+            background: white;
+            border-top: 1px solid #e5e5e5;
+            padding: 12px 16px;
+            display: flex;
+            gap: 8px;
+            z-index: 90;
         }
 
         .chat-input {
@@ -856,23 +1328,26 @@
             border: 2px solid #e5e5e5;
             border-radius: 24px;
             font-size: 15px;
+            font-family: 'Libre Franklin', sans-serif;
             outline: none;
+            transition: border-color 0.2s;
         }
 
         .chat-input:focus {
-            border-color: #121213;
+            border-color: #3182ce;
         }
 
         .chat-send-button {
             padding: 12px 24px;
-            background: #121213;
+            background: #000;
             color: white;
             border: none;
             border-radius: 24px;
             font-size: 15px;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            white-space: nowrap;
         }
 
         .chat-send-button:active {
@@ -880,290 +1355,14 @@
         }
 
         .chat-send-button:disabled {
-            opacity: 0.4;
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
-        /* Leaderboard Styles */
-        .leaderboard-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .leaderboard-item {
-            background: white;
-            padding: 16px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .rank-badge {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 16px;
-            flex-shrink: 0;
-        }
-
-        .rank-1 { background: #ffd700; color: #121213; }
-        .rank-2 { background: #c0c0c0; color: #121213; }
-        .rank-3 { background: #cd7f32; color: white; }
-        .rank-default { background: #f0f0f0; color: #666; }
-
-        .user-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .user-name {
-            font-weight: 700;
-            font-size: 16px;
-            margin-bottom: 4px;
-        }
-
-        .user-stats {
-            font-size: 13px;
-            color: #666;
-        }
-
-        .score-badge {
-            font-size: 20px;
-            font-weight: 700;
-            color: #121213;
-        }
-
-        /* Profile Styles */
-        .profile-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 32px 24px;
-            text-align: center;
-            color: white;
-            border-radius: 0 0 24px 24px;
-            margin-bottom: 24px;
-        }
-
-        .profile-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin: 0 auto 16px;
-            border: 4px solid white;
-        }
-
-        .profile-name {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .profile-email {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 28px;
-            font-weight: 700;
-            color: #121213;
-            margin-bottom: 4px;
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .sign-in-prompt {
-            text-align: center;
-            padding: 60px 24px;
-        }
-
-        .sign-in-title {
-            font-size: 24px;
-            font-weight: 700;
-            font-family: 'Playfair Display', serif;
-            margin-bottom: 16px;
-        }
-
-        .sign-in-text {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 32px;
-            line-height: 1.5;
-        }
-
-        .sign-in-button {
-            padding: 16px 32px;
-            background: #121213;
-            color: white;
-            border: none;
-            border-radius: 24px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .sign-in-button:active {
-            transform: scale(0.95);
-        }
-
-        .sign-out-button {
-            width: 100%;
-            padding: 16px;
-            background: white;
-            color: #d32f2f;
-            border: 2px solid #d32f2f;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .sign-out-button:active {
-            transform: scale(0.98);
-            background: #fef0f0;
-        }
-
-        /* Loading & Completion States */
-        .loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 60px 24px;
-            gap: 16px;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f0f0f0;
-            border-top-color: #121213;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .completion-screen {
-            text-align: center;
-            padding: 40px 24px;
-        }
-
-        .completion-title {
-            font-size: 32px;
-            font-weight: 700;
-            font-family: 'Playfair Display', serif;
-            margin-bottom: 16px;
-        }
-
-        .completion-message {
-            font-size: 18px;
-            color: #666;
-            margin-bottom: 32px;
-        }
-
-        .share-button {
-            width: 100%;
-            max-width: 300px;
-            padding: 16px;
-            background: #121213;
-            color: white;
-            border: none;
-            border-radius: 24px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .share-button:active {
-            transform: scale(0.98);
-        }
-
-        /* Utility Classes */
-        .hidden {
-            display: none !important;
-        }
-
-        @media (max-width: 380px) {
-            .connections-word {
-                font-size: 12px;
-                padding: 4px;
-            }
-            
-            .strands-letter {
-                font-size: 18px;
-            }
-            
-            .wordle-tile {
-                font-size: 24px;
-            }
-            
-            .key {
-                height: 52px;
-                font-size: 12px;
-            }
-        }
-
-        /* Toast notification */
-        .toast {
-            position: fixed;
-            top: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #121213;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            z-index: 1000;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -20px);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, 0);
+        /* Fix iOS safari bottom bar */
+        @supports (padding: max(0px)) {
+            .main-content {
+                padding-bottom: max(80px, env(safe-area-inset-bottom));
             }
         }
     </style>
@@ -1174,30 +1373,25 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // Firebase Configuration
+        // Firebase config
         const firebaseConfig = {
-            apiKey: "AIzaSyBLCVMRmR7kIcOiNYdmqVJ46dEjPH0ld2k",
-            authDomain: "friendle-55532.firebaseapp.com",
-            projectId: "friendle-55532",
-            storageBucket: "friendle-55532.firebasestorage.app",
-            messagingSenderId: "598437536267",
-            appId: "1:598437536267:web:d11a5a5dfba5b3c03f10f7",
+            apiKey: "AIzaSyCndOWS881gWZO98ub8o_-tCdJMYiCgobg",
+            authDomain: "friendle-1eef2.firebaseapp.com",
+            projectId: "friendle-1eef2",
+            storageBucket: "friendle-1eef2.firebasestorage.app",
+            messagingSenderId: "413852218027",
+            appId: "1:413852218027:web:889bc573b21255db08bdee",
             measurementId: "G-WH2523K0GB"
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
         const auth = firebase.auth();
         const db = firebase.firestore();
         const analytics = firebase.analytics();
-
-        // Get today's date string
-        const today = new Date().toLocaleDateString('en-US', { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-        });
 
         // Icons
         function MenuIcon() {
@@ -1237,7 +1431,7 @@
         function UserIcon() {
             return (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
                 </svg>
             );
@@ -1245,82 +1439,217 @@
 
         function CheckIcon() {
             return (
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                     <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
             );
         }
 
-        // Toast notification component
-        function Toast({ message, onClose }) {
-            useEffect(() => {
-                const timer = setTimeout(onClose, 2000);
-                return () => clearTimeout(timer);
-            }, [onClose]);
-
-            return <div className="toast">{message}</div>;
+        function ShareIcon() {
+            return (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+            );
         }
+
+        // Helper functions
+        function getTodayString() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        // Game data generators
+        const WORDLE_WORDS = [
+            'REACT', 'BRAVE', 'CLOUD', 'DREAM', 'FLASH', 'GRACE', 'HEART', 'IMAGE',
+            'JUICE', 'KNIFE', 'LIGHT', 'MAGIC', 'NIGHT', 'OCEAN', 'PEACE', 'QUEEN',
+            'RIVER', 'STORM', 'TIGER', 'UNITY', 'VOICE', 'WATER', 'YOUTH', 'ZEBRA'
+        ];
+
+        function getWordOfTheDay() {
+            const today = getTodayString();
+            const seed = today.split('-').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+            return WORDLE_WORDS[seed % WORDLE_WORDS.length];
+        }
+
+        // Mini Crossword data (5x5 grid)
+        const CROSSWORD_PUZZLES = [
+            {
+                grid: [
+                    ['S', 'P', 'O', 'R', 'T'],
+                    ['C', null, 'P', null, 'R'],
+                    ['A', 'L', 'E', 'R', 'T'],
+                    ['R', null, 'N', null, 'A'],
+                    ['Y', 'E', 'A', 'R', 'S']
+                ],
+                across: [
+                    { number: 1, clue: "Athletic activity", answer: "SPORT", row: 0, col: 0 },
+                    { number: 3, clue: "Watchful", answer: "ALERT", row: 2, col: 0 },
+                    { number: 5, clue: "Decades", answer: "YEARS", row: 4, col: 0 }
+                ],
+                down: [
+                    { number: 1, clue: "Frightening", answer: "SCARY", row: 0, col: 0 },
+                    { number: 2, clue: "Unlocked", answer: "OPEN", row: 0, col: 2 },
+                    { number: 4, clue: "Path", answer: "TRAIL", row: 0, col: 4 }
+                ]
+            }
+        ];
+
+        function getCrosswordOfTheDay() {
+            const today = getTodayString();
+            const seed = today.split('-').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+            return CROSSWORD_PUZZLES[seed % CROSSWORD_PUZZLES.length];
+        }
+
+        // Strands data
+        const STRANDS_PUZZLES = [
+            {
+                theme: "Coffee Drinks",
+                grid: [
+                    ['L', 'A', 'T', 'T', 'E', 'S', 'P', 'R'],
+                    ['M', 'O', 'C', 'H', 'A', 'R', 'E', 'I'],
+                    ['A', 'M', 'E', 'R', 'I', 'C', 'A', 'N'],
+                    ['C', 'A', 'P', 'P', 'U', 'C', 'C', 'O'],
+                    ['C', 'O', 'R', 'T', 'A', 'D', 'O', 'T'],
+                    ['H', 'I', 'A', 'T', 'O', 'L', 'A', 'O']
+                ],
+                words: ['LATTE', 'MOCHA', 'CAPPUCCINO', 'AMERICANO', 'CORTADO', 'ESPRESSO'],
+                spangram: 'CAPPUCCINO'
+            }
+        ];
+
+        function getStrandsOfTheDay() {
+            const today = getTodayString();
+            const seed = today.split('-').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+            return STRANDS_PUZZLES[seed % STRANDS_PUZZLES.length];
+        }
+
+        // Trivia questions
+        const TRIVIA_QUESTIONS = [
+            { question: "What is the capital of France?", options: ["London", "Berlin", "Paris", "Madrid"], correct: 2 },
+            { question: "Which planet is known as the Red Planet?", options: ["Venus", "Mars", "Jupiter", "Saturn"], correct: 1 },
+            { question: "Who painted the Mona Lisa?", options: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"], correct: 2 },
+            { question: "What is the largest ocean on Earth?", options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"], correct: 3 },
+            { question: "In what year did World War II end?", options: ["1943", "1944", "1945", "1946"], correct: 2 },
+            { question: "What is the smallest prime number?", options: ["0", "1", "2", "3"], correct: 2 },
+            { question: "Which element has the chemical symbol 'O'?", options: ["Gold", "Oxygen", "Silver", "Iron"], correct: 1 },
+            { question: "How many continents are there?", options: ["5", "6", "7", "8"], correct: 2 },
+            { question: "What is the fastest land animal?", options: ["Lion", "Cheetah", "Leopard", "Tiger"], correct: 1 },
+            { question: "Which country is home to the kangaroo?", options: ["New Zealand", "South Africa", "Australia", "Brazil"], correct: 2 }
+        ];
+
+        // Connections puzzle
+        const CONNECTIONS_PUZZLE = {
+            groups: [
+                { category: "TYPES OF COFFEE", words: ["LATTE", "MOCHA", "ESPRESSO", "CAPPUCCINO"], color: "yellow" },
+                { category: "PROGRAMMING LANGUAGES", words: ["PYTHON", "JAVA", "RUBY", "SWIFT"], color: "green" },
+                { category: "PLANETS", words: ["MARS", "VENUS", "JUPITER", "SATURN"], color: "blue" },
+                { category: "MUSIC GENRES", words: ["JAZZ", "ROCK", "BLUES", "FOLK"], color: "purple" }
+            ]
+        };
 
         // Main App Component
         function App() {
             const [user, setUser] = useState(null);
             const [loading, setLoading] = useState(true);
             const [activeTab, setActiveTab] = useState('home');
-            const [activeGame, setActiveGame] = useState(null);
             const [menuOpen, setMenuOpen] = useState(false);
-            const [gameProgress, setGameProgress] = useState({});
-            const [isInGame, setIsInGame] = useState(false);
+            const [userStats, setUserStats] = useState(null);
 
             useEffect(() => {
-                const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-                    setUser(currentUser);
-                    setLoading(false);
-                    if (currentUser) {
-                        loadGameProgress(currentUser.uid);
+                const unsubscribe = auth.onAuthStateChanged(async (user) => {
+                    setUser(user);
+                    if (user) {
+                        await loadUserStats(user.uid);
                     }
+                    setLoading(false);
                 });
+
                 return () => unsubscribe();
             }, []);
 
-            const loadGameProgress = async (userId) => {
+            const loadUserStats = async (uid) => {
                 try {
-                    const doc = await db.collection('progress').doc(userId).get();
+                    const doc = await db.collection('users').doc(uid).get();
                     if (doc.exists) {
-                        setGameProgress(doc.data());
+                        setUserStats(doc.data());
                     }
                 } catch (error) {
-                    console.error('Error loading progress:', error);
+                    console.error('Error loading user stats:', error);
                 }
             };
 
-            const signInWithGoogle = async () => {
+            const handleSignIn = async () => {
                 try {
+                    console.log('🔐 Starting sign-in process...');
                     const provider = new firebase.auth.GoogleAuthProvider();
-                    await auth.signInWithPopup(provider);
+                    
+                    // Force account selection
+                    provider.setCustomParameters({
+                        prompt: 'select_account'
+                    });
+                    
+                    console.log('🔐 Attempting popup sign-in...');
+                    
+                    // Try popup first
+                    try {
+                        const result = await auth.signInWithPopup(provider);
+                        console.log('✅ Sign-in successful!', result.user.displayName);
+                    } catch (popupError) {
+                        console.log('⚠️ Popup failed:', popupError.code, popupError.message);
+                        
+                        // If popup blocked or closed, try redirect
+                        if (popupError.code === 'auth/popup-blocked' || 
+                            popupError.code === 'auth/popup-closed-by-user' ||
+                            popupError.code === 'auth/cancelled-popup-request') {
+                            console.log('🔄 Trying redirect instead...');
+                            await auth.signInWithRedirect(provider);
+                        } else {
+                            throw popupError;
+                        }
+                    }
                 } catch (error) {
-                    console.error('Error signing in:', error);
+                    console.error('❌ Sign-in error:', error);
+                    console.error('Error code:', error.code);
+                    console.error('Error message:', error.message);
+                    
+                    // Show user-friendly error
+                    let errorMessage = 'Sign-in failed. ';
+                    
+                    switch (error.code) {
+                        case 'auth/popup-blocked':
+                            errorMessage += 'Please allow popups for this site.';
+                            break;
+                        case 'auth/popup-closed-by-user':
+                            errorMessage += 'Sign-in was cancelled.';
+                            break;
+                        case 'auth/unauthorized-domain':
+                            errorMessage += 'This domain is not authorized. Check Firebase Console → Authentication → Settings → Authorized domains.';
+                            break;
+                        case 'auth/network-request-failed':
+                            errorMessage += 'Network error. Check your internet connection.';
+                            break;
+                        case 'auth/operation-not-allowed':
+                            errorMessage += 'Google sign-in is not enabled. Check Firebase Console → Authentication → Sign-in method.';
+                            break;
+                        default:
+                            errorMessage += error.message;
+                    }
+                    
+                    alert(errorMessage);
                 }
             };
 
-            const signOut = async () => {
+            const handleSignOut = async () => {
                 try {
                     await auth.signOut();
                     setActiveTab('home');
                 } catch (error) {
                     console.error('Error signing out:', error);
                 }
-            };
-
-            const handleGameSelect = (game) => {
-                setActiveGame(game);
-                setActiveTab('game');
-                setIsInGame(true);
-            };
-
-            const handleBackToHome = () => {
-                setActiveGame(null);
-                setActiveTab('home');
-                setIsInGame(false);
             };
 
             if (loading) {
@@ -1336,16 +1665,14 @@
 
             return (
                 <div className="app-container">
-                    {/* Navigation Bar */}
-                    <nav className={`navbar ${isInGame ? 'hidden' : ''}`}>
+                    <nav className="navbar">
                         <button className="nav-button" onClick={() => setMenuOpen(true)}>
                             <MenuIcon />
                         </button>
                         <div className="nav-title">Friendle</div>
-                        <div style={{width: '44px'}}></div>
+                        <div style={{width: '40px'}}></div>
                     </nav>
 
-                    {/* Side Menu */}
                     {menuOpen && (
                         <>
                             <div className="menu-overlay" onClick={() => setMenuOpen(false)}></div>
@@ -1354,668 +1681,304 @@
                                     <h3>Menu</h3>
                                     <button className="close-button" onClick={() => setMenuOpen(false)}>×</button>
                                 </div>
-                                <button className="menu-item" onClick={() => { setActiveTab('home'); setMenuOpen(false); setIsInGame(false); }}>
-                                    <CalendarIcon />
-                                    <span>Today's Puzzles</span>
+                                <button className="menu-item" onClick={() => { setActiveTab('home'); setMenuOpen(false); }}>
+                                    <CalendarIcon /> Today's Puzzles
                                 </button>
-                                <button className="menu-item" onClick={() => { setActiveTab('leaderboard'); setMenuOpen(false); setIsInGame(false); }}>
-                                    <TrophyIcon />
-                                    <span>Leaderboard</span>
-                                </button>
-                                <button className="menu-item" onClick={() => { setActiveTab('trashtalk'); setMenuOpen(false); setIsInGame(false); }}>
+                                <button className="menu-item" onClick={() => { setActiveTab('trashtalk'); setMenuOpen(false); }}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                                     </svg>
-                                    <span>Trash Talk</span>
+                                    Trash Talk
                                 </button>
-                                <button className="menu-item" onClick={() => { setActiveTab('profile'); setMenuOpen(false); setIsInGame(false); }}>
-                                    <UserIcon />
-                                    <span>Profile</span>
+                                <button className="menu-item" onClick={() => { setActiveTab('leaderboard'); setMenuOpen(false); }}>
+                                    <TrophyIcon /> Leaderboard
+                                </button>
+                                <button className="menu-item" onClick={() => { setActiveTab('profile'); setMenuOpen(false); }}>
+                                    <UserIcon /> Profile
                                 </button>
                             </div>
                         </>
                     )}
 
-                    {/* Main Content */}
-                    <main className={`main-content ${isInGame ? 'fullscreen' : ''}`}>
-                        {activeTab === 'home' && !activeGame && (
-                            <HomeScreen 
-                                onGameSelect={handleGameSelect}
-                                gameProgress={gameProgress}
-                            />
-                        )}
-                        {activeTab === 'game' && activeGame && (
-                            <GameScreen 
-                                game={activeGame}
-                                user={user}
-                                onBack={handleBackToHome}
-                                gameProgress={gameProgress}
-                                setGameProgress={setGameProgress}
-                            />
-                        )}
-                        {activeTab === 'leaderboard' && (
-                            <LeaderboardScreen user={user} />
-                        )}
-                        {activeTab === 'trashtalk' && (
-                            <TrashTalkScreen user={user} />
-                        )}
-                        {activeTab === 'profile' && (
-                            <ProfileScreen 
-                                user={user} 
-                                signIn={signInWithGoogle}
-                                signOut={signOut}
-                                gameProgress={gameProgress}
-                            />
-                        )}
+                    <main className="main-content">
+                        {activeTab === 'home' && <Home user={user} userStats={userStats} onSignIn={handleSignIn} onStatsUpdate={loadUserStats} />}
+                        {activeTab === 'trashtalk' && <TrashTalk user={user} />}
+                        {activeTab === 'leaderboard' && <Leaderboard user={user} />}
+                        {activeTab === 'profile' && <Profile user={user} userStats={userStats} onSignOut={handleSignOut} />}
                     </main>
 
-                    {/* Bottom Navigation */}
-                    <BottomNav 
-                        activeTab={activeTab} 
-                        setActiveTab={(tab) => {
-                            setActiveTab(tab);
-                            setIsInGame(false);
-                        }}
-                        hidden={isInGame}
-                    />
+                    <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
                 </div>
             );
         }
 
-        // Home Screen Component
-        function HomeScreen({ onGameSelect, gameProgress }) {
-            const games = [
-                {
-                    id: 'connections',
-                    title: 'Connections',
-                    description: 'Group words that share something in common',
-                    icon: '🔗',
-                    color: '#f9df6d'
-                },
-                {
-                    id: 'strands',
-                    title: 'Strands',
-                    description: 'Find hidden theme words in the letter grid',
-                    icon: '🧵',
-                    color: '#a7d8bd'
-                },
-                {
-                    id: 'wordle',
-                    title: 'Wordle',
-                    description: 'Guess the word in 6 tries',
-                    icon: '📝',
-                    color: '#6aaa64'
-                }
-            ];
+        // Home Component
+        function Home({ user, userStats, onSignIn, onStatsUpdate }) {
+            const [selectedGame, setSelectedGame] = useState(null);
+            const today = getTodayString();
+            
+            const wordleCompleted = userStats?.wordle?.lastPlayed === today;
+            const crosswordCompleted = userStats?.crossword?.lastPlayed === today;
+            const strandsCompleted = userStats?.strands?.lastPlayed === today;
+            const connectionsCompleted = userStats?.connections?.lastPlayed === today;
+            const triviaCompleted = userStats?.trivia?.lastPlayed === today;
+
+            if (selectedGame === 'wordle') {
+                return <WordleGame user={user} onBack={() => { setSelectedGame(null); if (user) onStatsUpdate(user.uid); }} />;
+            }
+
+            if (selectedGame === 'crossword') {
+                return <CrosswordGame user={user} onBack={() => { setSelectedGame(null); if (user) onStatsUpdate(user.uid); }} />;
+            }
+
+            if (selectedGame === 'strands') {
+                return <StrandsGame user={user} onBack={() => { setSelectedGame(null); if (user) onStatsUpdate(user.uid); }} />;
+            }
+
+            if (selectedGame === 'connections') {
+                return <ConnectionsGame user={user} onBack={() => { setSelectedGame(null); if (user) onStatsUpdate(user.uid); }} />;
+            }
+
+            if (selectedGame === 'trivia') {
+                return <TriviaGame user={user} onBack={() => { setSelectedGame(null); if (user) onStatsUpdate(user.uid); }} />;
+            }
+
+            if (!user) {
+                return (
+                    <div className="sign-in-container">
+                        <h2 className="nyt-serif" style={{fontSize: '32px', marginBottom: '16px'}}>Welcome to Friendle</h2>
+                        <p style={{color: '#666', marginBottom: '24px'}}>Sign in to track your progress and compete with friends</p>
+                        <button className="sign-in-button" onClick={onSignIn}>
+                            <img src="https://www.google.com/favicon.ico" width="20" height="20" alt="" />
+                            Sign in with Google
+                        </button>
+                    </div>
+                );
+            }
 
             return (
                 <div className="home-container">
                     <div className="home-header">
-                        <div className="date-label">Today</div>
-                        <div className="today-date">{today}</div>
-                        <h1 className="welcome-message">Daily Puzzles</h1>
-                        <p className="puzzle-count">{games.length} games to play today</p>
+                        <div className="date-label">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</div>
+                        <h1 className="main-title">Today's Puzzles</h1>
+                        <p className="subtitle">Play all five games daily</p>
                     </div>
 
                     <div className="game-grid">
-                        {games.map(game => (
-                            <div 
-                                key={game.id} 
-                                className="game-card"
-                                onClick={() => onGameSelect(game.id)}
-                            >
-                                <div className="game-card-header">
-                                    <div className="game-icon" style={{ background: game.color }}>
-                                        {game.icon}
-                                    </div>
-                                    <div className={`game-status ${gameProgress[game.id]?.completed ? 'status-complete' : 'status-incomplete'}`}>
-                                        {gameProgress[game.id]?.completed ? (
-                                            <>
-                                                <CheckIcon />
-                                                <span>Complete</span>
-                                            </>
-                                        ) : (
-                                            <span>Play</span>
-                                        )}
-                                    </div>
-                                </div>
-                                <h3 className="game-title">{game.title}</h3>
-                                <p className="game-description">{game.description}</p>
+                        <div className={`game-card ${wordleCompleted ? 'completed' : ''}`} onClick={() => !wordleCompleted && setSelectedGame('wordle')}>
+                            <div className="game-card-header">
+                                <div className="game-icon" style={{background: '#6aaa64'}}>📝</div>
+                                {wordleCompleted && <div className="status-badge completed"><CheckIcon /></div>}
                             </div>
-                        ))}
+                            <h3 className="game-title">Wordle</h3>
+                            <p className="game-description">Guess the 5-letter word in 6 tries</p>
+                        </div>
+
+                        <div className={`game-card ${crosswordCompleted ? 'completed' : ''}`} onClick={() => !crosswordCompleted && setSelectedGame('crossword')}>
+                            <div className="game-card-header">
+                                <div className="game-icon" style={{background: '#000'}}>🔤</div>
+                                {crosswordCompleted && <div className="status-badge completed"><CheckIcon /></div>}
+                            </div>
+                            <h3 className="game-title">Mini Crossword</h3>
+                            <p className="game-description">Quick 5x5 crossword puzzle</p>
+                        </div>
+
+                        <div className={`game-card ${strandsCompleted ? 'completed' : ''}`} onClick={() => !strandsCompleted && setSelectedGame('strands')}>
+                            <div className="game-card-header">
+                                <div className="game-icon" style={{background: '#ffd700'}}>🔍</div>
+                                {strandsCompleted && <div className="status-badge completed"><CheckIcon /></div>}
+                            </div>
+                            <h3 className="game-title">Strands</h3>
+                            <p className="game-description">Find themed words in the grid</p>
+                        </div>
+
+                        <div className={`game-card ${connectionsCompleted ? 'completed' : ''}`} onClick={() => !connectionsCompleted && setSelectedGame('connections')}>
+                            <div className="game-card-header">
+                                <div className="game-icon" style={{background: '#ba81c5'}}>🧩</div>
+                                {connectionsCompleted && <div className="status-badge completed"><CheckIcon /></div>}
+                            </div>
+                            <h3 className="game-title">Connections</h3>
+                            <p className="game-description">Find groups of four related words</p>
+                        </div>
+
+                        <div className={`game-card ${triviaCompleted ? 'completed' : ''}`} onClick={() => !triviaCompleted && setSelectedGame('trivia')}>
+                            <div className="game-card-header">
+                                <div className="game-icon" style={{background: '#5a594e'}}>🧠</div>
+                                {triviaCompleted && <div className="status-badge completed"><CheckIcon /></div>}
+                            </div>
+                            <h3 className="game-title">Trivia</h3>
+                            <p className="game-description">Test your knowledge with 10 questions</p>
+                        </div>
                     </div>
                 </div>
             );
         }
 
-        // Game Screen Component
-        function GameScreen({ game, user, onBack, gameProgress, setGameProgress }) {
-            const renderGame = () => {
-                switch(game) {
-                    case 'connections':
-                        return <ConnectionsGame user={user} gameProgress={gameProgress} setGameProgress={setGameProgress} />;
-                    case 'strands':
-                        return <StrandsGame user={user} gameProgress={gameProgress} setGameProgress={setGameProgress} />;
-                    case 'wordle':
-                        return <WordleGame user={user} gameProgress={gameProgress} setGameProgress={setGameProgress} />;
-                    default:
-                        return <div>Game not found</div>;
-                }
-            };
-
-            return (
-                <div className="game-container fullscreen">
-                    <button 
-                        className="nav-button" 
-                        onClick={onBack}
-                        style={{ marginBottom: '16px' }}
-                    >
-                        ← Back
-                    </button>
-                    {renderGame()}
-                </div>
-            );
-        }
-
-        // Connections Game Component
-        function ConnectionsGame({ user, gameProgress, setGameProgress }) {
-            const puzzleData = {
-                groups: [
-                    { category: 'BOOK SECTIONS', words: ['CALLIOPE', 'OEDIPUS', 'ATLAS', 'ECHO'], color: 'yellow' },
-                    { category: 'TYPES OF EMINENCE', words: ['SUPERIORITY', 'DICTIONARY', 'INFERIORITY', 'THESAURUS'], color: 'green' },
-                    { category: 'BIRD TYPES', words: ['BUZZARD', 'ENCYCLOPEDIA', 'ELECTRA', 'REMINDER'], color: 'blue' },
-                    { category: 'GREEK MYTHOLOGY', words: ['TRACE', 'DIALECT', 'RINGMASTER', 'VESTIGE'], color: 'purple' }
-                ]
-            };
-
-            const allWords = puzzleData.groups.flatMap(g => g.words).sort(() => Math.random() - 0.5);
-            
-            const [words, setWords] = useState(allWords);
-            const [selected, setSelected] = useState([]);
-            const [foundGroups, setFoundGroups] = useState([]);
-            const [mistakes, setMistakes] = useState(4);
-            const [gameOver, setGameOver] = useState(false);
-            const [toast, setToast] = useState(null);
-
-            const toggleWord = (word) => {
-                if (selected.includes(word)) {
-                    setSelected(selected.filter(w => w !== word));
-                } else if (selected.length < 4) {
-                    setSelected([...selected, word]);
-                }
-            };
-
-            const shuffleWords = () => {
-                const remaining = words.filter(w => !foundGroups.flatMap(g => g.words).includes(w));
-                const found = words.filter(w => foundGroups.flatMap(g => g.words).includes(w));
-                setWords([...found, ...remaining.sort(() => Math.random() - 0.5)]);
-            };
-
-            const deselectAll = () => {
-                setSelected([]);
-            };
-
-            const checkSelection = () => {
-                if (selected.length !== 4) return;
-
-                const matchingGroup = puzzleData.groups.find(group => 
-                    selected.every(word => group.words.includes(word))
-                );
-
-                if (matchingGroup) {
-                    setFoundGroups([...foundGroups, matchingGroup]);
-                    setWords(words.filter(w => !selected.includes(w)));
-                    setSelected([]);
-                    setToast('Perfect! 🎉');
-                    
-                    if (foundGroups.length === 3) {
-                        setGameOver(true);
-                        if (user) {
-                            updateProgress(true);
-                        }
-                    }
-                } else {
-                    setMistakes(mistakes - 1);
-                    setSelected([]);
-                    setToast('Not quite... Try again!');
-                    
-                    if (mistakes === 1) {
-                        setGameOver(true);
-                        if (user) {
-                            updateProgress(false);
-                        }
-                    }
-                }
-            };
-
-            const updateProgress = async (won) => {
-                if (!user) return;
-                try {
-                    await db.collection('progress').doc(user.uid).set({
-                        connections: {
-                            completed: true,
-                            won: won,
-                            date: today
-                        }
-                    }, { merge: true });
-                } catch (error) {
-                    console.error('Error updating progress:', error);
-                }
-            };
-
-            if (gameOver) {
-                return (
-                    <div className="completion-screen">
-                        <div className="completion-title">
-                            {foundGroups.length === 4 ? '🎉 Amazing!' : '😅 Good Try!'}
-                        </div>
-                        <div className="completion-message">
-                            {foundGroups.length === 4 
-                                ? 'You found all the groups!' 
-                                : `You found ${foundGroups.length} out of 4 groups`}
-                        </div>
-                        <button className="share-button">
-                            Share Results
-                        </button>
-                    </div>
-                );
-            }
-
-            return (
-                <>
-                    <div className="game-header">
-                        <h2 className="game-title-main">Connections</h2>
-                        <p className="game-subtitle">Create four groups of four!</p>
-                    </div>
-
-                    {toast && <Toast message={toast} onClose={() => setToast(null)} />}
-
-                    <div className="found-groups">
-                        {foundGroups.map((group, i) => (
-                            <div key={i} className={`found-group ${group.color}`}>
-                                <div className="group-category">{group.category}</div>
-                                <div className="group-words">{group.words.join(', ')}</div>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="connections-board">
-                        {words.map((word, i) => (
-                            <button
-                                key={i}
-                                className={`connections-word ${selected.includes(word) ? 'selected' : ''} ${foundGroups.flatMap(g => g.words).includes(word) ? 'correct' : ''}`}
-                                onClick={() => toggleWord(word)}
-                            >
-                                {word}
-                            </button>
-                        ))}
-                    </div>
-
-                    <div className="mistakes-remaining">
-                        Mistakes remaining:
-                        <span className="mistake-dots">
-                            {Array(mistakes).fill(0).map((_, i) => (
-                                <span key={i} className="mistake-dot"></span>
-                            ))}
-                        </span>
-                    </div>
-
-                    <div className="game-controls">
-                        <button className="game-button" onClick={shuffleWords}>
-                            Shuffle
-                        </button>
-                        <button className="game-button" onClick={deselectAll} disabled={selected.length === 0}>
-                            Deselect All
-                        </button>
-                        <button className="game-button primary" onClick={checkSelection} disabled={selected.length !== 4}>
-                            Submit
-                        </button>
-                    </div>
-                </>
-            );
-        }
-
-        // Strands Game Component
-        function StrandsGame({ user, gameProgress, setGameProgress }) {
-            const puzzleData = {
-                theme: "Now I get it!",
-                grid: [
-                    ['S', 'E', 'E', 'A', 'H', 'E'],
-                    ['G', 'R', 'T', 'P', 'E', 'N'],
-                    ['S', 'A', 'H', 'P', 'R', 'D'],
-                    ['P', 'A', 'E', 'L', 'R', 'S'],
-                    ['H', 'T', 'F', 'I', 'E', 'T'],
-                    ['O', 'M', 'E', 'G', 'D', 'A'],
-                    ['I', 'Z', 'E', 'H', 'N', 'N'],
-                    ['L', 'A', 'R', 'T', 'U', 'D']
-                ],
-                words: ['GRASP', 'SEIZE', 'PARSE', 'FATHOM', 'GATHER'],
-                spangram: 'APPREHEND'
-            };
-
-            const [selectedPath, setSelectedPath] = useState([]);
-            const [foundWords, setFoundWords] = useState([]);
-            const [foundSpangram, setFoundSpangram] = useState(false);
-            const [hintsUsed, setHintsUsed] = useState(0);
-            const [toast, setToast] = useState(null);
-            const [isDragging, setIsDragging] = useState(false);
-
-            const getLetterIndex = (row, col) => `${row}-${col}`;
-            
-            const getCurrentWord = () => {
-                return selectedPath.map(([r, c]) => puzzleData.grid[r][c]).join('');
-            };
-
-            const isAdjacent = (pos1, pos2) => {
-                const [r1, c1] = pos1;
-                const [r2, c2] = pos2;
-                return Math.abs(r1 - r2) <= 1 && Math.abs(c1 - c2) <= 1 && !(r1 === r2 && c1 === c2);
-            };
-
-            const handleLetterPress = (row, col) => {
-                const position = [row, col];
-                const isAlreadySelected = selectedPath.some(([r, c]) => r === row && c === col);
-
-                if (isAlreadySelected) {
-                    const index = selectedPath.findIndex(([r, c]) => r === row && c === col);
-                    if (index === selectedPath.length - 1) {
-                        setSelectedPath(selectedPath.slice(0, -1));
-                    }
-                } else if (selectedPath.length === 0 || isAdjacent(selectedPath[selectedPath.length - 1], position)) {
-                    setSelectedPath([...selectedPath, position]);
-                }
-                setIsDragging(true);
-            };
-
-            const handleLetterEnter = (row, col) => {
-                if (!isDragging) return;
-                
-                const position = [row, col];
-                const isAlreadySelected = selectedPath.some(([r, c]) => r === row && c === col);
-                
-                if (!isAlreadySelected && selectedPath.length > 0 && isAdjacent(selectedPath[selectedPath.length - 1], position)) {
-                    setSelectedPath([...selectedPath, position]);
-                }
-            };
-
-            const handleLetterRelease = () => {
-                setIsDragging(false);
-                const word = getCurrentWord();
-                
-                if (word.length >= 4) {
-                    if (word === puzzleData.spangram && !foundSpangram) {
-                        setFoundSpangram(true);
-                        setToast('Spangram! 🌟');
-                        if (foundWords.length === puzzleData.words.length && user) {
-                            updateProgress(true);
-                        }
-                    } else if (puzzleData.words.includes(word) && !foundWords.includes(word)) {
-                        setFoundWords([...foundWords, word]);
-                        setToast('Found it! ✨');
-                        if (foundWords.length + 1 === puzzleData.words.length && foundSpangram && user) {
-                            updateProgress(true);
-                        }
-                    }
-                }
-                
-                setSelectedPath([]);
-            };
-
-            const isLetterFound = (row, col) => {
-                const letter = puzzleData.grid[row][col];
-                return foundWords.some(word => {
-                    // This is simplified - in reality you'd track exact positions
-                    return word.includes(letter);
-                });
-            };
-
-            const isLetterInSpangram = (row, col) => {
-                const letter = puzzleData.grid[row][col];
-                return foundSpangram && puzzleData.spangram.includes(letter);
-            };
-
-            const useHint = () => {
-                if (hintsUsed < 3) {
-                    setHintsUsed(hintsUsed + 1);
-                    const remainingWords = puzzleData.words.filter(w => !foundWords.includes(w));
-                    if (remainingWords.length > 0) {
-                        setToast(`Hint: Look for "${remainingWords[0][0]}${remainingWords[0][1]}..."`);
-                    }
-                }
-            };
-
-            const updateProgress = async (won) => {
-                if (!user) return;
-                try {
-                    await db.collection('progress').doc(user.uid).set({
-                        strands: {
-                            completed: true,
-                            won: won,
-                            date: today
-                        }
-                    }, { merge: true });
-                } catch (error) {
-                    console.error('Error updating progress:', error);
-                }
-            };
-
-            const gameComplete = foundWords.length === puzzleData.words.length && foundSpangram;
-
-            if (gameComplete) {
-                return (
-                    <div className="completion-screen">
-                        <div className="completion-title">🎉 Fantastic!</div>
-                        <div className="completion-message">
-                            You found all {puzzleData.words.length} theme words and the spangram!
-                        </div>
-                        <button className="share-button">
-                            Share Results
-                        </button>
-                    </div>
-                );
-            }
-
-            return (
-                <>
-                    <div className="game-header">
-                        <h2 className="game-title-main">Strands</h2>
-                        <p className="game-subtitle">Find words that fit the theme</p>
-                    </div>
-
-                    {toast && <Toast message={toast} onClose={() => setToast(null)} />}
-
-                    <div className="theme-box">
-                        <div className="theme-label">TODAY'S THEME</div>
-                        <div className="theme-text">"{puzzleData.theme}"</div>
-                    </div>
-
-                    {foundSpangram && (
-                        <div className="spangram-found">
-                            🌟 Spangram found: {puzzleData.spangram}
-                        </div>
-                    )}
-
-                    <div className="current-word-display">
-                        {getCurrentWord() || '\u00A0'}
-                    </div>
-
-                    <div 
-                        className="strands-board"
-                        onMouseUp={handleLetterRelease}
-                        onMouseLeave={handleLetterRelease}
-                        onTouchEnd={handleLetterRelease}
-                    >
-                        {puzzleData.grid.map((row, rowIndex) => 
-                            row.map((letter, colIndex) => {
-                                const isSelected = selectedPath.some(([r, c]) => r === rowIndex && c === colIndex);
-                                const isFound = isLetterFound(rowIndex, colIndex);
-                                const isSpangram = isLetterInSpangram(rowIndex, colIndex);
-                                
-                                return (
-                                    <button
-                                        key={`${rowIndex}-${colIndex}`}
-                                        className={`strands-letter ${isSelected ? 'selected' : ''} ${isFound ? 'found' : ''} ${isSpangram ? 'spangram' : ''}`}
-                                        onMouseDown={() => handleLetterPress(rowIndex, colIndex)}
-                                        onMouseEnter={() => handleLetterEnter(rowIndex, colIndex)}
-                                        onTouchStart={(e) => {
-                                            e.preventDefault();
-                                            handleLetterPress(rowIndex, colIndex);
-                                        }}
-                                        onTouchMove={(e) => {
-                                            e.preventDefault();
-                                            const touch = e.touches[0];
-                                            const element = document.elementFromPoint(touch.clientX, touch.clientY);
-                                            if (element && element.classList.contains('strands-letter')) {
-                                                const [r, c] = element.getAttribute('data-pos').split('-').map(Number);
-                                                handleLetterEnter(r, c);
-                                            }
-                                        }}
-                                        data-pos={`${rowIndex}-${colIndex}`}
-                                    >
-                                        {letter}
-                                    </button>
-                                );
-                            })
-                        )}
-                    </div>
-
-                    <div className="words-found">
-                        {foundWords.length} of {puzzleData.words.length} theme words found
-                    </div>
-
-                    <button 
-                        className="hint-button" 
-                        onClick={useHint}
-                        disabled={hintsUsed >= 3}
-                    >
-                        💡 Hint ({hintsUsed}/3 used)
-                    </button>
-                </>
-            );
-        }
-
-        // Wordle Game Component (simplified version)
-        function WordleGame({ user, gameProgress, setGameProgress }) {
-            const targetWord = 'REACT';
+        // Wordle Game Component (keeping previous implementation)
+        function WordleGame({ user, onBack }) {
             const [guesses, setGuesses] = useState([]);
             const [currentGuess, setCurrentGuess] = useState('');
             const [gameOver, setGameOver] = useState(false);
             const [won, setWon] = useState(false);
-
-            const keyboard = [
-                ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
-                ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
-                ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '⌫']
-            ];
+            const [message, setMessage] = useState('');
+            const [keyboardStatus, setKeyboardStatus] = useState({});
+            const targetWord = getWordOfTheDay();
+            const maxGuesses = 6;
 
             const handleKeyPress = (key) => {
                 if (gameOver) return;
 
                 if (key === 'ENTER') {
-                    if (currentGuess.length === 5) {
-                        const newGuesses = [...guesses, currentGuess];
-                        setGuesses(newGuesses);
-                        
-                        if (currentGuess === targetWord) {
-                            setWon(true);
-                            setGameOver(true);
-                            if (user) {
-                                updateProgress(true);
-                            }
-                        } else if (newGuesses.length === 6) {
-                            setGameOver(true);
-                            if (user) {
-                                updateProgress(false);
-                            }
-                        }
-                        
-                        setCurrentGuess('');
+                    if (currentGuess.length !== 5) {
+                        setMessage('Word must be 5 letters');
+                        setTimeout(() => setMessage(''), 2000);
+                        return;
                     }
-                } else if (key === '⌫') {
+
+                    const newGuesses = [...guesses, currentGuess];
+                    setGuesses(newGuesses);
+
+                    const newStatus = {...keyboardStatus};
+                    for (let i = 0; i < currentGuess.length; i++) {
+                        const letter = currentGuess[i];
+                        if (targetWord[i] === letter) {
+                            newStatus[letter] = 'correct';
+                        } else if (targetWord.includes(letter) && newStatus[letter] !== 'correct') {
+                            newStatus[letter] = 'present';
+                        } else if (!targetWord.includes(letter)) {
+                            newStatus[letter] = 'absent';
+                        }
+                    }
+                    setKeyboardStatus(newStatus);
+
+                    if (currentGuess === targetWord) {
+                        setWon(true);
+                        setGameOver(true);
+                        updateStats(true, newGuesses.length);
+                    } else if (newGuesses.length >= maxGuesses) {
+                        setWon(false);
+                        setGameOver(true);
+                        updateStats(false, maxGuesses);
+                    }
+
+                    setCurrentGuess('');
+                } else if (key === 'BACK') {
                     setCurrentGuess(currentGuess.slice(0, -1));
                 } else if (currentGuess.length < 5) {
                     setCurrentGuess(currentGuess + key);
                 }
             };
 
-            const updateProgress = async (won) => {
+            const updateStats = async (won, guessCount) => {
                 if (!user) return;
+
                 try {
-                    await db.collection('progress').doc(user.uid).set({
+                    const userRef = db.collection('users').doc(user.uid);
+                    const doc = await userRef.get();
+                    const data = doc.data() || {};
+                    const wordleStats = data.wordle || { played: 0, won: 0, streak: 0, maxStreak: 0, lastPlayed: '' };
+
+                    const today = getTodayString();
+                    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+                    
+                    let newStreak = wordleStats.streak;
+                    if (won) {
+                        if (wordleStats.lastPlayed === yesterday) {
+                            newStreak += 1;
+                        } else if (wordleStats.lastPlayed !== today) {
+                            newStreak = 1;
+                        }
+                    } else {
+                        newStreak = 0;
+                    }
+
+                    await userRef.set({
+                        ...data,
+                        displayName: user.displayName,
+                        email: user.email,
+                        photoURL: user.photoURL,
                         wordle: {
-                            completed: true,
-                            won: won,
-                            guesses: guesses.length + 1,
-                            date: today
+                            played: wordleStats.played + 1,
+                            won: wordleStats.won + (won ? 1 : 0),
+                            streak: newStreak,
+                            maxStreak: Math.max(newStreak, wordleStats.maxStreak),
+                            lastPlayed: today,
+                            lastGuesses: guessCount
                         }
                     }, { merge: true });
                 } catch (error) {
-                    console.error('Error updating progress:', error);
+                    console.error('Error updating stats:', error);
                 }
             };
 
-            const getLetterStatus = (letter, index, guess) => {
-                if (guess[index] === targetWord[index]) return 'correct';
+            const getTileStatus = (guess, index) => {
+                if (!guess || index >= guess.length) return '';
+                const letter = guess[index];
+                if (targetWord[index] === letter) return 'correct';
                 if (targetWord.includes(letter)) return 'present';
                 return 'absent';
             };
 
-            const getKeyStatus = (key) => {
-                let status = '';
+            const generateShareText = () => {
+                let text = `Friendle Wordle ${won ? guesses.length : 'X'}/${maxGuesses}\n\n`;
                 guesses.forEach(guess => {
-                    guess.split('').forEach((letter, i) => {
-                        if (letter === key) {
-                            const letterStatus = getLetterStatus(letter, i, guess);
-                            if (letterStatus === 'correct') status = 'correct';
-                            else if (letterStatus === 'present' && status !== 'correct') status = 'present';
-                            else if (!status) status = 'absent';
-                        }
-                    });
+                    for (let i = 0; i < 5; i++) {
+                        const status = getTileStatus(guess, i);
+                        if (status === 'correct') text += '🟩';
+                        else if (status === 'present') text += '🟨';
+                        else text += '⬜';
+                    }
+                    text += '\n';
                 });
-                return status;
+                return text;
             };
 
-            if (gameOver) {
-                return (
-                    <div className="completion-screen">
-                        <div className="completion-title">
-                            {won ? '🎉 You Won!' : '😅 Good Try!'}
-                        </div>
-                        <div className="completion-message">
-                            {won 
-                                ? `You guessed it in ${guesses.length} ${guesses.length === 1 ? 'try' : 'tries'}!`
-                                : `The word was: ${targetWord}`}
-                        </div>
-                        <button className="share-button">
-                            Share Results
-                        </button>
-                    </div>
-                );
-            }
+            const handleShare = async () => {
+                const text = generateShareText();
+                try {
+                    if (navigator.share) {
+                        await navigator.share({ text });
+                    } else {
+                        await navigator.clipboard.writeText(text);
+                        alert('Results copied to clipboard!');
+                    }
+                } catch (error) {
+                    console.error('Error sharing:', error);
+                }
+            };
+
+            const keyboard = [
+                ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+                ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+                ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'BACK']
+            ];
 
             return (
-                <>
+                <div className="game-container">
+                    <button onClick={onBack} style={{marginBottom: '20px', padding: '8px 16px', border: 'none', background: '#f0f0f0', borderRadius: '8px', cursor: 'pointer'}}>
+                        ← Back
+                    </button>
+
                     <div className="game-header">
                         <h2 className="game-title-main">Wordle</h2>
-                        <p className="game-subtitle">Guess the word in 6 tries</p>
+                        <p className="game-subtitle">Guess the 5-letter word</p>
                     </div>
 
+                    {message && <div className="message">{message}</div>}
+
                     <div className="wordle-board">
-                        {Array(6).fill(0).map((_, rowIndex) => {
+                        {Array.from({ length: maxGuesses }).map((_, rowIndex) => {
                             const guess = guesses[rowIndex] || (rowIndex === guesses.length ? currentGuess : '');
                             const isSubmitted = rowIndex < guesses.length;
-                            
+
                             return (
                                 <div key={rowIndex} className="wordle-row">
-                                    {Array(5).fill(0).map((_, colIndex) => {
+                                    {Array.from({ length: 5 }).map((_, colIndex) => {
                                         const letter = guess[colIndex] || '';
-                                        const status = isSubmitted ? getLetterStatus(letter, colIndex, guess) : '';
+                                        const status = isSubmitted ? getTileStatus(guess, colIndex) : '';
                                         
                                         return (
-                                            <div 
-                                                key={colIndex} 
-                                                className={`wordle-tile ${letter ? 'filled' : ''} ${status}`}
-                                            >
+                                            <div key={colIndex} className={`wordle-tile ${letter ? 'filled' : ''} ${status}`}>
                                                 {letter}
                                             </div>
                                         );
@@ -2025,45 +1988,812 @@
                         })}
                     </div>
 
-                    <div className="keyboard">
+                    <div className="mobile-keyboard">
                         {keyboard.map((row, i) => (
                             <div key={i} className="keyboard-row">
-                                {row.map(key => (
+                                {row.map((key) => (
                                     <button
                                         key={key}
-                                        className={`key ${key.length > 1 ? 'wide' : ''} ${getKeyStatus(key)}`}
+                                        className={`keyboard-key ${key.length > 1 ? 'wide' : ''} ${keyboardStatus[key] || ''}`}
                                         onClick={() => handleKeyPress(key)}
                                     >
-                                        {key}
+                                        {key === 'BACK' ? '⌫' : key}
                                     </button>
                                 ))}
                             </div>
                         ))}
                     </div>
-                </>
+
+                    {gameOver && (
+                        <div className="modal-overlay">
+                            <div className="modal">
+                                <h2 className="modal-title">{won ? '🎉 You Won!' : '😔 Game Over'}</h2>
+                                {!won && <p style={{marginBottom: '16px'}}>The word was: <strong>{targetWord}</strong></p>}
+                                <div className="modal-stats">
+                                    <div className="stat-item">
+                                        <div className="stat-value">{guesses.length}</div>
+                                        <div className="stat-label">Guesses</div>
+                                    </div>
+                                </div>
+                                <button className="modal-button secondary" onClick={handleShare}>
+                                    <div className="share-button">
+                                        <ShareIcon /> Share
+                                    </div>
+                                </button>
+                                <button className="modal-button" onClick={onBack}>Back to Home</button>
+                            </div>
+                        </div>
+                    )}
+                </div>
             );
         }
 
-        // Leaderboard Screen Component
-        function LeaderboardScreen({ user }) {
+        // NEW: Mini Crossword Game
+        function CrosswordGame({ user, onBack }) {
+            const puzzle = getCrosswordOfTheDay();
+            const [grid, setGrid] = useState(() => 
+                puzzle.grid.map(row => row.map(cell => cell === null ? null : ''))
+            );
+            const [selectedCell, setSelectedCell] = useState(null);
+            const [selectedClue, setSelectedClue] = useState(null);
+            const [direction, setDirection] = useState('across');
+            const [gameOver, setGameOver] = useState(false);
+            const [won, setWon] = useState(false);
+
+            const checkComplete = () => {
+                for (let row = 0; row < 5; row++) {
+                    for (let col = 0; col < 5; col++) {
+                        if (puzzle.grid[row][col] !== null && grid[row][col] !== puzzle.grid[row][col]) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            };
+
+            const handleCellClick = (row, col) => {
+                if (puzzle.grid[row][col] === null) return;
+                
+                if (selectedCell && selectedCell.row === row && selectedCell.col === col) {
+                    setDirection(direction === 'across' ? 'down' : 'across');
+                } else {
+                    setSelectedCell({ row, col });
+                }
+            };
+
+            const handleInput = (value) => {
+                if (!selectedCell) return;
+                
+                const newGrid = [...grid];
+                newGrid[selectedCell.row][selectedCell.col] = value.toUpperCase();
+                setGrid(newGrid);
+
+                // Move to next cell
+                if (direction === 'across') {
+                    let nextCol = selectedCell.col + 1;
+                    while (nextCol < 5 && puzzle.grid[selectedCell.row][nextCol] === null) {
+                        nextCol++;
+                    }
+                    if (nextCol < 5) {
+                        setSelectedCell({ row: selectedCell.row, col: nextCol });
+                    }
+                } else {
+                    let nextRow = selectedCell.row + 1;
+                    while (nextRow < 5 && puzzle.grid[nextRow][selectedCell.col] === null) {
+                        nextRow++;
+                    }
+                    if (nextRow < 5) {
+                        setSelectedCell({ row: nextRow, col: selectedCell.col });
+                    }
+                }
+
+                // Check if complete
+                setTimeout(() => {
+                    if (checkComplete()) {
+                        setWon(true);
+                        setGameOver(true);
+                        updateStats(true);
+                    }
+                }, 100);
+            };
+
+            const handleBackspace = () => {
+                if (!selectedCell) return;
+                
+                const newGrid = [...grid];
+                if (newGrid[selectedCell.row][selectedCell.col] === '') {
+                    // Move back
+                    if (direction === 'across') {
+                        let prevCol = selectedCell.col - 1;
+                        while (prevCol >= 0 && puzzle.grid[selectedCell.row][prevCol] === null) {
+                            prevCol--;
+                        }
+                        if (prevCol >= 0) {
+                            setSelectedCell({ row: selectedCell.row, col: prevCol });
+                            newGrid[selectedCell.row][prevCol] = '';
+                        }
+                    } else {
+                        let prevRow = selectedCell.row - 1;
+                        while (prevRow >= 0 && puzzle.grid[prevRow][selectedCell.col] === null) {
+                            prevRow--;
+                        }
+                        if (prevRow >= 0) {
+                            setSelectedCell({ row: prevRow, col: selectedCell.col });
+                            newGrid[prevRow][selectedCell.col] = '';
+                        }
+                    }
+                } else {
+                    newGrid[selectedCell.row][selectedCell.col] = '';
+                }
+                setGrid(newGrid);
+            };
+
+            const updateStats = async (won) => {
+                if (!user) return;
+
+                try {
+                    const userRef = db.collection('users').doc(user.uid);
+                    const doc = await userRef.get();
+                    const data = doc.data() || {};
+                    const crosswordStats = data.crossword || { played: 0, won: 0, streak: 0, maxStreak: 0, lastPlayed: '' };
+
+                    const today = getTodayString();
+                    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+                    
+                    let newStreak = crosswordStats.streak;
+                    if (won) {
+                        if (crosswordStats.lastPlayed === yesterday) {
+                            newStreak += 1;
+                        } else if (crosswordStats.lastPlayed !== today) {
+                            newStreak = 1;
+                        }
+                    } else {
+                        newStreak = 0;
+                    }
+
+                    await userRef.set({
+                        ...data,
+                        displayName: user.displayName,
+                        email: user.email,
+                        photoURL: user.photoURL,
+                        crossword: {
+                            played: crosswordStats.played + 1,
+                            won: crosswordStats.won + (won ? 1 : 0),
+                            streak: newStreak,
+                            maxStreak: Math.max(newStreak, crosswordStats.maxStreak),
+                            lastPlayed: today
+                        }
+                    }, { merge: true });
+                } catch (error) {
+                    console.error('Error updating stats:', error);
+                }
+            };
+
+            const keyboard = [
+                ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+                ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+                ['Z', 'X', 'C', 'V', 'B', 'N', 'M', 'BACK']
+            ];
+
+            return (
+                <div className="game-container">
+                    <button onClick={onBack} style={{marginBottom: '20px', padding: '8px 16px', border: 'none', background: '#f0f0f0', borderRadius: '8px', cursor: 'pointer'}}>
+                        ← Back
+                    </button>
+
+                    <div className="game-header">
+                        <h2 className="game-title-main">Mini Crossword</h2>
+                        <p className="game-subtitle">Fill in the 5x5 grid</p>
+                    </div>
+
+                    <div className="crossword-grid" style={{gridTemplateColumns: 'repeat(5, 1fr)'}}>
+                        {puzzle.grid.map((row, rowIndex) =>
+                            row.map((cell, colIndex) => {
+                                if (cell === null) {
+                                    return <div key={`${rowIndex}-${colIndex}`} className="crossword-cell black"></div>;
+                                }
+
+                                const isSelected = selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex;
+                                const clueNum = [...puzzle.across, ...puzzle.down].find(c => c.row === rowIndex && c.col === colIndex)?.number;
+
+                                return (
+                                    <div
+                                        key={`${rowIndex}-${colIndex}`}
+                                        className={`crossword-cell ${isSelected ? 'selected' : ''}`}
+                                        onClick={() => handleCellClick(rowIndex, colIndex)}
+                                    >
+                                        {clueNum && <span className="cell-number">{clueNum}</span>}
+                                        {grid[rowIndex][colIndex]}
+                                    </div>
+                                );
+                            })
+                        )}
+                    </div>
+
+                    <div className="crossword-clues">
+                        <div className="clues-section">
+                            <h3>Across</h3>
+                            {puzzle.across.map(clue => (
+                                <div key={clue.number} className="clue-item">
+                                    <strong>{clue.number}.</strong> {clue.clue}
+                                </div>
+                            ))}
+                        </div>
+                        <div className="clues-section">
+                            <h3>Down</h3>
+                            {puzzle.down.map(clue => (
+                                <div key={clue.number} className="clue-item">
+                                    <strong>{clue.number}.</strong> {clue.clue}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="mobile-keyboard" style={{marginTop: '24px'}}>
+                        {keyboard.map((row, i) => (
+                            <div key={i} className="keyboard-row">
+                                {row.map((key) => (
+                                    <button
+                                        key={key}
+                                        className={`keyboard-key ${key === 'BACK' ? 'wide' : ''}`}
+                                        onClick={() => key === 'BACK' ? handleBackspace() : handleInput(key)}
+                                    >
+                                        {key === 'BACK' ? '⌫' : key}
+                                    </button>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+
+                    {gameOver && (
+                        <div className="modal-overlay">
+                            <div className="modal">
+                                <h2 className="modal-title">🎉 Completed!</h2>
+                                <button className="modal-button" onClick={onBack}>Back to Home</button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // NEW: Strands Game
+        function StrandsGame({ user, onBack }) {
+            const puzzle = getStrandsOfTheDay();
+            const [selectedCells, setSelectedCells] = useState([]);
+            const [currentWord, setCurrentWord] = useState('');
+            const [foundWords, setFoundWords] = useState([]);
+            const [foundSpangram, setFoundSpangram] = useState(false);
+            const [gameOver, setGameOver] = useState(false);
+
+            const handleCellClick = (row, col) => {
+                const cellKey = `${row}-${col}`;
+                const isAlreadySelected = selectedCells.some(c => c.key === cellKey);
+
+                if (isAlreadySelected) {
+                    // Deselect
+                    setSelectedCells([]);
+                    setCurrentWord('');
+                } else {
+                    // Select cell
+                    const newSelected = [...selectedCells, { row, col, key: cellKey, letter: puzzle.grid[row][col] }];
+                    setSelectedCells(newSelected);
+                    setCurrentWord(newSelected.map(c => c.letter).join(''));
+                }
+            };
+
+            const handleSubmit = () => {
+                const word = currentWord.toUpperCase();
+                
+                if (puzzle.words.includes(word) && !foundWords.includes(word)) {
+                    setFoundWords([...foundWords, word]);
+                    
+                    if (word === puzzle.spangram) {
+                        setFoundSpangram(true);
+                    }
+
+                    // Check if game complete
+                    if (foundWords.length + 1 === puzzle.words.length) {
+                        setGameOver(true);
+                        updateStats(true);
+                    }
+                }
+                
+                setSelectedCells([]);
+                setCurrentWord('');
+            };
+
+            const updateStats = async (won) => {
+                if (!user) return;
+
+                try {
+                    const userRef = db.collection('users').doc(user.uid);
+                    const doc = await userRef.get();
+                    const data = doc.data() || {};
+                    const strandsStats = data.strands || { played: 0, won: 0, streak: 0, maxStreak: 0, lastPlayed: '' };
+
+                    const today = getTodayString();
+                    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+                    
+                    let newStreak = strandsStats.streak;
+                    if (won) {
+                        if (strandsStats.lastPlayed === yesterday) {
+                            newStreak += 1;
+                        } else if (strandsStats.lastPlayed !== today) {
+                            newStreak = 1;
+                        }
+                    } else {
+                        newStreak = 0;
+                    }
+
+                    await userRef.set({
+                        ...data,
+                        displayName: user.displayName,
+                        email: user.email,
+                        photoURL: user.photoURL,
+                        strands: {
+                            played: strandsStats.played + 1,
+                            won: strandsStats.won + (won ? 1 : 0),
+                            streak: newStreak,
+                            maxStreak: Math.max(newStreak, strandsStats.maxStreak),
+                            lastPlayed: today
+                        }
+                    }, { merge: true });
+                } catch (error) {
+                    console.error('Error updating stats:', error);
+                }
+            };
+
+            return (
+                <div className="game-container">
+                    <button onClick={onBack} style={{marginBottom: '20px', padding: '8px 16px', border: 'none', background: '#f0f0f0', borderRadius: '8px', cursor: 'pointer'}}>
+                        ← Back
+                    </button>
+
+                    <div className="game-header">
+                        <h2 className="game-title-main">Strands</h2>
+                        <p className="game-subtitle">Find all theme words</p>
+                    </div>
+
+                    <div className="strands-theme">
+                        <h3>Today's Theme</h3>
+                        <div className="strands-theme-text">{puzzle.theme}</div>
+                    </div>
+
+                    <div className="strands-current-word">
+                        {currentWord || '...'}
+                    </div>
+
+                    <div className="strands-grid">
+                        {puzzle.grid.map((row, rowIndex) =>
+                            row.map((cell, colIndex) => {
+                                const cellKey = `${rowIndex}-${colIndex}`;
+                                const isSelected = selectedCells.some(c => c.key === cellKey);
+
+                                return (
+                                    <div
+                                        key={cellKey}
+                                        className={`strands-cell ${isSelected ? 'selected' : ''}`}
+                                        onClick={() => handleCellClick(rowIndex, colIndex)}
+                                    >
+                                        {cell}
+                                    </div>
+                                );
+                            })
+                        )}
+                    </div>
+
+                    <div className="connections-controls">
+                        <button className="control-button secondary" onClick={() => { setSelectedCells([]); setCurrentWord(''); }}>
+                            Clear
+                        </button>
+                        <button className="control-button primary" onClick={handleSubmit} disabled={currentWord.length < 4}>
+                            Submit
+                        </button>
+                    </div>
+
+                    <div className="strands-found-words">
+                        {foundWords.map(word => (
+                            <div key={word} className={`found-word-chip ${word === puzzle.spangram ? 'spangram' : 'theme'}`}>
+                                {word}
+                            </div>
+                        ))}
+                    </div>
+
+                    {gameOver && (
+                        <div className="modal-overlay">
+                            <div className="modal">
+                                <h2 className="modal-title">🎉 Puzzle Complete!</h2>
+                                <div className="modal-stats">
+                                    <div className="stat-item">
+                                        <div className="stat-value">{foundWords.length}</div>
+                                        <div className="stat-label">Words Found</div>
+                                    </div>
+                                </div>
+                                <button className="modal-button" onClick={onBack}>Back to Home</button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // Connections Game Component (keeping previous)
+        function ConnectionsGame({ user, onBack }) {
+            const [cards, setCards] = useState([]);
+            const [selected, setSelected] = useState([]);
+            const [foundGroups, setFoundGroups] = useState([]);
+            const [mistakes, setMistakes] = useState(0);
+            const [gameOver, setGameOver] = useState(false);
+            const [won, setWon] = useState(false);
+            const maxMistakes = 4;
+
+            useEffect(() => {
+                const allWords = CONNECTIONS_PUZZLE.groups.flatMap(g => g.words);
+                const shuffled = allWords.sort(() => Math.random() - 0.5);
+                setCards(shuffled);
+            }, []);
+
+            const handleCardClick = (word) => {
+                if (selected.includes(word)) {
+                    setSelected(selected.filter(w => w !== word));
+                } else if (selected.length < 4) {
+                    setSelected([...selected, word]);
+                }
+            };
+
+            const handleSubmit = () => {
+                if (selected.length !== 4) return;
+
+                const matchedGroup = CONNECTIONS_PUZZLE.groups.find(group => 
+                    selected.every(word => group.words.includes(word)) && selected.length === 4
+                );
+
+                if (matchedGroup) {
+                    setFoundGroups([...foundGroups, matchedGroup]);
+                    setCards(cards.filter(word => !selected.includes(word)));
+                    setSelected([]);
+
+                    if (foundGroups.length + 1 === CONNECTIONS_PUZZLE.groups.length) {
+                        setWon(true);
+                        setGameOver(true);
+                        updateStats(true);
+                    }
+                } else {
+                    const newMistakes = mistakes + 1;
+                    setMistakes(newMistakes);
+                    setSelected([]);
+
+                    if (newMistakes >= maxMistakes) {
+                        setGameOver(true);
+                        setWon(false);
+                        updateStats(false);
+                    }
+                }
+            };
+
+            const handleShuffle = () => {
+                setCards([...cards].sort(() => Math.random() - 0.5));
+            };
+
+            const handleDeselectAll = () => {
+                setSelected([]);
+            };
+
+            const updateStats = async (won) => {
+                if (!user) return;
+
+                try {
+                    const userRef = db.collection('users').doc(user.uid);
+                    const doc = await userRef.get();
+                    const data = doc.data() || {};
+                    const connectionsStats = data.connections || { played: 0, won: 0, streak: 0, maxStreak: 0, lastPlayed: '' };
+
+                    const today = getTodayString();
+                    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+                    
+                    let newStreak = connectionsStats.streak;
+                    if (won) {
+                        if (connectionsStats.lastPlayed === yesterday) {
+                            newStreak += 1;
+                        } else if (connectionsStats.lastPlayed !== today) {
+                            newStreak = 1;
+                        }
+                    } else {
+                        newStreak = 0;
+                    }
+
+                    await userRef.set({
+                        ...data,
+                        displayName: user.displayName,
+                        email: user.email,
+                        photoURL: user.photoURL,
+                        connections: {
+                            played: connectionsStats.played + 1,
+                            won: connectionsStats.won + (won ? 1 : 0),
+                            streak: newStreak,
+                            maxStreak: Math.max(newStreak, connectionsStats.maxStreak),
+                            lastPlayed: today
+                        }
+                    }, { merge: true });
+                } catch (error) {
+                    console.error('Error updating stats:', error);
+                }
+            };
+
+            return (
+                <div className="game-container">
+                    <button onClick={onBack} style={{marginBottom: '20px', padding: '8px 16px', border: 'none', background: '#f0f0f0', borderRadius: '8px', cursor: 'pointer'}}>
+                        ← Back
+                    </button>
+
+                    <div className="game-header">
+                        <h2 className="game-title-main">Connections</h2>
+                        <p className="game-subtitle">Find groups of four</p>
+                    </div>
+
+                    {foundGroups.map((group, i) => (
+                        <div key={i} className={`found-group ${group.color}`}>
+                            <h3>{group.category}</h3>
+                            <p>{group.words.join(', ')}</p>
+                        </div>
+                    ))}
+
+                    <div className="connections-grid">
+                        {cards.map((word, i) => (
+                            <div
+                                key={i}
+                                className={`connection-card ${selected.includes(word) ? 'selected' : ''}`}
+                                onClick={() => handleCardClick(word)}
+                            >
+                                {word}
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="mistakes-remaining">
+                        <p>Mistakes remaining</p>
+                        <div className="mistakes-dots">
+                            {Array.from({ length: maxMistakes }).map((_, i) => (
+                                <div key={i} className={`mistake-dot ${i < mistakes ? 'used' : ''}`}></div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="connections-controls">
+                        <button className="control-button secondary" onClick={handleShuffle} disabled={gameOver}>
+                            Shuffle
+                        </button>
+                        <button className="control-button secondary" onClick={handleDeselectAll} disabled={selected.length === 0 || gameOver}>
+                            Deselect All
+                        </button>
+                        <button className="control-button primary" onClick={handleSubmit} disabled={selected.length !== 4 || gameOver}>
+                            Submit
+                        </button>
+                    </div>
+
+                    {gameOver && (
+                        <div className="modal-overlay">
+                            <div className="modal">
+                                <h2 className="modal-title">{won ? '🎉 You Won!' : '😔 Game Over'}</h2>
+                                <div className="modal-stats">
+                                    <div className="stat-item">
+                                        <div className="stat-value">{foundGroups.length}</div>
+                                        <div className="stat-label">Found</div>
+                                    </div>
+                                    <div className="stat-item">
+                                        <div className="stat-value">{mistakes}</div>
+                                        <div className="stat-label">Mistakes</div>
+                                    </div>
+                                </div>
+                                <button className="modal-button" onClick={onBack}>Back to Home</button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // Trivia Game Component (keeping previous)
+        function TriviaGame({ user, onBack }) {
+            const [currentQuestion, setCurrentQuestion] = useState(0);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [answers, setAnswers] = useState([]);
+            const [showResult, setShowResult] = useState(false);
+            const [gameOver, setGameOver] = useState(false);
+            const [score, setScore] = useState(0);
+
+            const question = TRIVIA_QUESTIONS[currentQuestion];
+
+            const handleAnswerSelect = (index) => {
+                if (showResult) return;
+                setSelectedAnswer(index);
+            };
+
+            const handleNext = () => {
+                if (selectedAnswer === null) return;
+
+                const isCorrect = selectedAnswer === question.correct;
+                const newAnswers = [...answers, { questionIndex: currentQuestion, selected: selectedAnswer, correct: isCorrect }];
+                setAnswers(newAnswers);
+
+                if (isCorrect) {
+                    setScore(score + 1);
+                }
+
+                if (currentQuestion + 1 >= TRIVIA_QUESTIONS.length) {
+                    setGameOver(true);
+                    updateStats(isCorrect ? score + 1 : score);
+                } else {
+                    setShowResult(true);
+                    setTimeout(() => {
+                        setCurrentQuestion(currentQuestion + 1);
+                        setSelectedAnswer(null);
+                        setShowResult(false);
+                    }, 1500);
+                }
+            };
+
+            const updateStats = async (finalScore) => {
+                if (!user) return;
+
+                try {
+                    const userRef = db.collection('users').doc(user.uid);
+                    const doc = await userRef.get();
+                    const data = doc.data() || {};
+                    const triviaStats = data.trivia || { played: 0, totalScore: 0, perfectGames: 0, bestScore: 0, lastPlayed: '' };
+
+                    const today = getTodayString();
+                    const isPerfect = finalScore === TRIVIA_QUESTIONS.length;
+
+                    await userRef.set({
+                        ...data,
+                        displayName: user.displayName,
+                        email: user.email,
+                        photoURL: user.photoURL,
+                        trivia: {
+                            played: triviaStats.played + 1,
+                            totalScore: triviaStats.totalScore + finalScore,
+                            perfectGames: triviaStats.perfectGames + (isPerfect ? 1 : 0),
+                            bestScore: Math.max(finalScore, triviaStats.bestScore),
+                            lastPlayed: today,
+                            lastScore: finalScore
+                        }
+                    }, { merge: true });
+                } catch (error) {
+                    console.error('Error updating stats:', error);
+                }
+            };
+
+            if (gameOver) {
+                const percentage = Math.round((score / TRIVIA_QUESTIONS.length) * 100);
+                
+                return (
+                    <div className="game-container">
+                        <div className="modal">
+                            <h2 className="modal-title">🎉 Quiz Complete!</h2>
+                            <div className="modal-stats">
+                                <div className="stat-item">
+                                    <div className="stat-value">{score}/{TRIVIA_QUESTIONS.length}</div>
+                                    <div className="stat-label">Correct</div>
+                                </div>
+                                <div className="stat-item">
+                                    <div className="stat-value">{percentage}%</div>
+                                    <div className="stat-label">Score</div>
+                                </div>
+                            </div>
+                            <button className="modal-button" onClick={onBack}>Back to Home</button>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="game-container">
+                    <button onClick={onBack} style={{marginBottom: '20px', padding: '8px 16px', border: 'none', background: '#f0f0f0', borderRadius: '8px', cursor: 'pointer'}}>
+                        ← Back
+                    </button>
+
+                    <div className="game-header">
+                        <h2 className="game-title-main">Trivia</h2>
+                        <p className="game-subtitle">Test your knowledge</p>
+                    </div>
+
+                    <div className="trivia-progress">
+                        {TRIVIA_QUESTIONS.map((_, i) => {
+                            const answer = answers.find(a => a.questionIndex === i);
+                            let className = 'progress-dot';
+                            if (i === currentQuestion) className += ' current';
+                            else if (answer) className += answer.correct ? ' correct' : ' incorrect';
+                            return <div key={i} className={className}></div>;
+                        })}
+                    </div>
+
+                    <div className="question-card">
+                        <div className="question-header">
+                            <span className="question-number">Question {currentQuestion + 1} of {TRIVIA_QUESTIONS.length}</span>
+                            <span className="question-number">Score: {score}</span>
+                        </div>
+                        <p className="question-text">{question.question}</p>
+                        <div className="answer-options">
+                            {question.options.map((option, index) => {
+                                let className = 'answer-button';
+                                if (selectedAnswer === index) className += ' selected';
+                                if (showResult) {
+                                    if (index === question.correct) className += ' correct';
+                                    else if (selectedAnswer === index) className += ' incorrect';
+                                }
+
+                                return (
+                                    <button
+                                        key={index}
+                                        className={className}
+                                        onClick={() => handleAnswerSelect(index)}
+                                        disabled={showResult}
+                                    >
+                                        {option}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    <button 
+                        className="modal-button"
+                        onClick={handleNext}
+                        disabled={selectedAnswer === null || showResult}
+                    >
+                        {currentQuestion + 1 === TRIVIA_QUESTIONS.length ? 'Finish' : 'Next Question'}
+                    </button>
+                </div>
+            );
+        }
+
+        // Leaderboard Component
+        function Leaderboard({ user }) {
+            const [activeGame, setActiveGame] = useState('wordle');
             const [leaderboard, setLeaderboard] = useState([]);
             const [loading, setLoading] = useState(true);
 
             useEffect(() => {
                 loadLeaderboard();
-            }, []);
+            }, [activeGame]);
 
             const loadLeaderboard = async () => {
+                setLoading(true);
                 try {
-                    // Mock leaderboard data
-                    const mockData = [
-                        { id: '1', displayName: 'Alex Chen', score: 150, gamesPlayed: 45 },
-                        { id: '2', displayName: 'Sarah Johnson', score: 142, gamesPlayed: 42 },
-                        { id: '3', displayName: 'Mike Wilson', score: 138, gamesPlayed: 44 },
-                        { id: '4', displayName: 'Emma Davis', score: 125, gamesPlayed: 40 },
-                        { id: '5', displayName: 'James Brown', score: 118, gamesPlayed: 38 }
-                    ];
-                    setLeaderboard(mockData);
+                    const snapshot = await db.collection('users').get();
+                    const entries = [];
+
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const gameStats = data[activeGame];
+                        
+                        if (!gameStats) return;
+
+                        let score = 0;
+                        if (activeGame === 'wordle' || activeGame === 'connections' || activeGame === 'crossword' || activeGame === 'strands') {
+                            score = gameStats.streak || 0;
+                        } else if (activeGame === 'trivia') {
+                            score = gameStats.bestScore || 0;
+                        }
+
+                        entries.push({
+                            uid: doc.id,
+                            displayName: data.displayName || 'Anonymous',
+                            photoURL: data.photoURL || '',
+                            score,
+                            played: gameStats.played || 0,
+                            won: gameStats.won || 0
+                        });
+                    });
+
+                    entries.sort((a, b) => {
+                        if (b.score !== a.score) return b.score - a.score;
+                        return b.played - a.played;
+                    });
+
+                    setLeaderboard(entries.slice(0, 50));
                     setLoading(false);
                 } catch (error) {
                     console.error('Error loading leaderboard:', error);
@@ -2086,61 +2816,282 @@
                 <div className="game-container">
                     <div className="game-header">
                         <h2 className="game-title-main">Leaderboard</h2>
-                        <p className="game-subtitle">Top players this week</p>
+                        <p className="game-subtitle">Top players by game</p>
                     </div>
 
-                    <div className="leaderboard-list">
-                        {leaderboard.map((player, index) => (
-                            <div key={player.id} className="leaderboard-item">
-                                <div className={`rank-badge rank-${index + 1 <= 3 ? index + 1 : 'default'}`}>
-                                    {index + 1}
-                                </div>
-                                <div className="user-info">
-                                    <div className="user-name">{player.displayName}</div>
-                                    <div className="user-stats">{player.gamesPlayed} games played</div>
-                                </div>
-                                <div className="score-badge">{player.score}</div>
-                            </div>
-                        ))}
+                    <div className="leaderboard-tabs">
+                        <button 
+                            className={`tab-button ${activeGame === 'wordle' ? 'active' : ''}`}
+                            onClick={() => setActiveGame('wordle')}
+                        >
+                            Wordle
+                        </button>
+                        <button 
+                            className={`tab-button ${activeGame === 'crossword' ? 'active' : ''}`}
+                            onClick={() => setActiveGame('crossword')}
+                        >
+                            Crossword
+                        </button>
+                        <button 
+                            className={`tab-button ${activeGame === 'strands' ? 'active' : ''}`}
+                            onClick={() => setActiveGame('strands')}
+                        >
+                            Strands
+                        </button>
+                        <button 
+                            className={`tab-button ${activeGame === 'connections' ? 'active' : ''}`}
+                            onClick={() => setActiveGame('connections')}
+                        >
+                            Connections
+                        </button>
+                        <button 
+                            className={`tab-button ${activeGame === 'trivia' ? 'active' : ''}`}
+                            onClick={() => setActiveGame('trivia')}
+                        >
+                            Trivia
+                        </button>
                     </div>
+
+                    {leaderboard.map((player, i) => {
+                        const isCurrentUser = user && player.uid === user.uid;
+                        return (
+                            <div key={player.uid} className={`leaderboard-entry ${isCurrentUser ? 'me' : ''}`}>
+                                <div className="leaderboard-left">
+                                    <div className="rank">#{i + 1}</div>
+                                    {player.photoURL ? (
+                                        <img src={player.photoURL} alt={player.displayName} className="avatar" />
+                                    ) : (
+                                        <div className="avatar"></div>
+                                    )}
+                                    <div className="player-info">
+                                        <h4>{player.displayName}{isCurrentUser && ' (You)'}</h4>
+                                        <p>Played: {player.played} | Won: {player.won}</p>
+                                    </div>
+                                </div>
+                                <div className="streak-info">
+                                    <div className="streak-value">{player.score}</div>
+                                    <div className="streak-label">
+                                        {activeGame === 'trivia' ? 'Best' : 'Streak'}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+
+                    {leaderboard.length === 0 && (
+                        <div style={{textAlign: 'center', padding: '40px', color: '#666'}}>
+                            <p>No players yet. Be the first!</p>
+                        </div>
+                    )}
                 </div>
             );
         }
 
-        // Trash Talk (Chat) Screen Component
-        function TrashTalkScreen({ user }) {
+        // Profile Component
+        function Profile({ user, userStats, onSignOut }) {
+            if (!user) {
+                return (
+                    <div className="game-container">
+                        <div className="game-header">
+                            <h2 className="game-title-main">Profile</h2>
+                        </div>
+                        <div style={{textAlign: 'center', padding: '40px'}}>
+                            <p style={{color: '#666'}}>Please sign in to view your profile</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            const wordleStats = userStats?.wordle || { played: 0, won: 0, streak: 0, maxStreak: 0 };
+            const crosswordStats = userStats?.crossword || { played: 0, won: 0, streak: 0, maxStreak: 0 };
+            const strandsStats = userStats?.strands || { played: 0, won: 0, streak: 0, maxStreak: 0 };
+            const connectionsStats = userStats?.connections || { played: 0, won: 0, streak: 0, maxStreak: 0 };
+            const triviaStats = userStats?.trivia || { played: 0, totalScore: 0, perfectGames: 0, bestScore: 0 };
+            const avgTriviaScore = triviaStats.played > 0 ? Math.round((triviaStats.totalScore / triviaStats.played / 10) * 100) : 0;
+
+            return (
+                <div className="game-container">
+                    <div className="game-header">
+                        <h2 className="game-title-main">Profile</h2>
+                    </div>
+
+                    <div style={{background: 'white', padding: '24px', borderRadius: '16px', textAlign: 'center', marginBottom: '24px'}}>
+                        <img src={user.photoURL} alt={user.displayName} style={{width: '80px', height: '80px', borderRadius: '50%', margin: '0 auto 16px'}} />
+                        <h3 style={{fontSize: '20px', fontWeight: '700', marginBottom: '8px'}}>{user.displayName}</h3>
+                        <p style={{color: '#666', fontSize: '14px'}}>{user.email}</p>
+                    </div>
+
+                    <div style={{background: 'white', padding: '24px', borderRadius: '16px', marginBottom: '16px'}}>
+                        <h3 style={{fontWeight: '700', marginBottom: '16px'}}>Wordle Stats</h3>
+                        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px'}}>
+                            <div className="stat-item">
+                                <div className="stat-value">{wordleStats.played}</div>
+                                <div className="stat-label">Played</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{wordleStats.won}</div>
+                                <div className="stat-label">Won</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{wordleStats.streak}</div>
+                                <div className="stat-label">Current Streak</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{wordleStats.maxStreak}</div>
+                                <div className="stat-label">Best Streak</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={{background: 'white', padding: '24px', borderRadius: '16px', marginBottom: '16px'}}>
+                        <h3 style={{fontWeight: '700', marginBottom: '16px'}}>Mini Crossword Stats</h3>
+                        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px'}}>
+                            <div className="stat-item">
+                                <div className="stat-value">{crosswordStats.played}</div>
+                                <div className="stat-label">Played</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{crosswordStats.won}</div>
+                                <div className="stat-label">Won</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{crosswordStats.streak}</div>
+                                <div className="stat-label">Current Streak</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{crosswordStats.maxStreak}</div>
+                                <div className="stat-label">Best Streak</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={{background: 'white', padding: '24px', borderRadius: '16px', marginBottom: '16px'}}>
+                        <h3 style={{fontWeight: '700', marginBottom: '16px'}}>Strands Stats</h3>
+                        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px'}}>
+                            <div className="stat-item">
+                                <div className="stat-value">{strandsStats.played}</div>
+                                <div className="stat-label">Played</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{strandsStats.won}</div>
+                                <div className="stat-label">Won</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{strandsStats.streak}</div>
+                                <div className="stat-label">Current Streak</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{strandsStats.maxStreak}</div>
+                                <div className="stat-label">Best Streak</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={{background: 'white', padding: '24px', borderRadius: '16px', marginBottom: '16px'}}>
+                        <h3 style={{fontWeight: '700', marginBottom: '16px'}}>Connections Stats</h3>
+                        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px'}}>
+                            <div className="stat-item">
+                                <div className="stat-value">{connectionsStats.played}</div>
+                                <div className="stat-label">Played</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{connectionsStats.won}</div>
+                                <div className="stat-label">Won</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{connectionsStats.streak}</div>
+                                <div className="stat-label">Current Streak</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{connectionsStats.maxStreak}</div>
+                                <div className="stat-label">Best Streak</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={{background: 'white', padding: '24px', borderRadius: '16px', marginBottom: '24px'}}>
+                        <h3 style={{fontWeight: '700', marginBottom: '16px'}}>Trivia Stats</h3>
+                        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px'}}>
+                            <div className="stat-item">
+                                <div className="stat-value">{triviaStats.played}</div>
+                                <div className="stat-label">Played</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{avgTriviaScore}%</div>
+                                <div className="stat-label">Avg Score</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{triviaStats.bestScore}/10</div>
+                                <div className="stat-label">Best Score</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{triviaStats.perfectGames}</div>
+                                <div className="stat-label">Perfect Games</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button className="sign-out-button" onClick={onSignOut}>
+                        Sign Out
+                    </button>
+                </div>
+            );
+        }
+
+        // NEW: Trash Talk Component
+        function TrashTalk({ user }) {
             const [messages, setMessages] = useState([]);
             const [newMessage, setNewMessage] = useState('');
             const [loading, setLoading] = useState(true);
             const messagesEndRef = useRef(null);
+            const today = getTodayString();
 
             useEffect(() => {
-                if (user) {
-                    // Set up real-time listener
-                    const unsubscribe = db.collection('chat')
-                        .where('date', '==', today)
-                        .orderBy('timestamp', 'asc')
-                        .limit(100)
-                        .onSnapshot((snapshot) => {
-                            const msgs = [];
-                            snapshot.forEach(doc => {
-                                msgs.push({ id: doc.id, ...doc.data() });
-                            });
-                            setMessages(msgs);
-                            setLoading(false);
-                            
-                            // Scroll to bottom when new messages arrive
-                            setTimeout(() => {
-                                messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-                            }, 100);
-                        }, (error) => {
-                            console.error('Error loading messages:', error);
-                            setLoading(false);
+                loadMessages();
+                // Set up real-time listener
+                const unsubscribe = db.collection('chat')
+                    .where('date', '==', today)
+                    .orderBy('timestamp', 'desc')
+                    .limit(100)
+                    .onSnapshot((snapshot) => {
+                        const msgs = [];
+                        snapshot.forEach(doc => {
+                            msgs.push({ id: doc.id, ...doc.data() });
                         });
+                        setMessages(msgs.reverse());
+                        setLoading(false);
+                    });
 
-                    return () => unsubscribe();
+                return () => unsubscribe();
+            }, [today]);
+
+            useEffect(() => {
+                scrollToBottom();
+            }, [messages]);
+
+            const scrollToBottom = () => {
+                messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+            };
+
+            const loadMessages = async () => {
+                try {
+                    const snapshot = await db.collection('chat')
+                        .where('date', '==', today)
+                        .orderBy('timestamp', 'desc')
+                        .limit(100)
+                        .get();
+
+                    const msgs = [];
+                    snapshot.forEach(doc => {
+                        msgs.push({ id: doc.id, ...doc.data() });
+                    });
+                    setMessages(msgs.reverse());
+                    setLoading(false);
+                } catch (error) {
+                    console.error('Error loading messages:', error);
+                    setLoading(false);
                 }
-            }, [user]);
+            };
 
             const handleSendMessage = async () => {
                 if (!user || !newMessage.trim()) return;
@@ -2187,6 +3138,7 @@
             };
 
             const parseMessage = (text) => {
+                // Simple @mention detection
                 const parts = text.split(/(@\w+)/g);
                 return parts.map((part, i) => {
                     if (part.startsWith('@')) {
@@ -2222,7 +3174,7 @@
             }
 
             return (
-                <div className="game-container" style={{paddingBottom: '140px'}}>
+                <div className="game-container" style={{paddingBottom: '120px'}}>
                     <div className="game-header">
                         <h2 className="game-title-main">Trash Talk 🔥</h2>
                         <p className="game-subtitle">Daily chat • Resets at midnight</p>
@@ -2305,74 +3257,10 @@
             );
         }
 
-        // Profile Screen Component
-        function ProfileScreen({ user, signIn, signOut, gameProgress }) {
-            if (!user) {
-                return (
-                    <div className="game-container">
-                        <div className="sign-in-prompt">
-                            <h2 className="sign-in-title">Join Friendle</h2>
-                            <p className="sign-in-text">
-                                Sign in to track your progress, compete on the leaderboard, and chat with friends!
-                            </p>
-                            <button className="sign-in-button" onClick={signIn}>
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                                </svg>
-                                Sign in with Google
-                            </button>
-                        </div>
-                    </div>
-                );
-            }
-
-            const totalGames = Object.values(gameProgress).filter(g => g.completed).length;
-            const wonGames = Object.values(gameProgress).filter(g => g.won).length;
-            const winRate = totalGames > 0 ? Math.round((wonGames / totalGames) * 100) : 0;
-
-            return (
-                <div className="game-container" style={{padding: 0}}>
-                    <div className="profile-header">
-                        <img 
-                            src={user.photoURL} 
-                            alt={user.displayName}
-                            className="profile-avatar"
-                        />
-                        <div className="profile-name">{user.displayName}</div>
-                        <div className="profile-email">{user.email}</div>
-                    </div>
-
-                    <div style={{padding: '0 16px'}}>
-                        <div className="stats-grid">
-                            <div className="stat-card">
-                                <div className="stat-value">{totalGames}</div>
-                                <div className="stat-label">Games</div>
-                            </div>
-                            <div className="stat-card">
-                                <div className="stat-value">{wonGames}</div>
-                                <div className="stat-label">Wins</div>
-                            </div>
-                            <div className="stat-card">
-                                <div className="stat-value">{winRate}%</div>
-                                <div className="stat-label">Win Rate</div>
-                            </div>
-                        </div>
-
-                        <button className="sign-out-button" onClick={signOut}>
-                            Sign Out
-                        </button>
-                    </div>
-                </div>
-            );
-        }
-
         // Bottom Navigation Component
-        function BottomNav({ activeTab, setActiveTab, hidden }) {
+        function BottomNav({ activeTab, setActiveTab }) {
             return (
-                <div className={`bottom-nav ${hidden ? 'hidden' : ''}`}>
+                <div className="bottom-nav">
                     <button className={`nav-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>
                         <CalendarIcon />
                         <span className="nav-label">Today</span>
