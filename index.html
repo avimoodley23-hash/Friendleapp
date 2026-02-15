@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Friendle - Daily Puzzles</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Libre Franklin', sans-serif;
+            background-color: #f8f8f8;
+            color: #121213;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .nyt-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            max-width: 500px;
+            margin: 0 auto;
+            background: #f8f8f8;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: white;
+            border-bottom: 1px solid #e5e5e5;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+        }
+
+        .nav-button {
+            background: none;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .nav-button:hover {
+            background: #f0f0f0;
+        }
+
+        .nav-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 80px;
+        }
+
+        /* Home Screen */
+        .home-container {
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .home-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .date-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            font-weight: 700;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .app-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .app-subtitle {
+            font-size: 14px;
+            color: #666;
+            padding: 0 32px;
+            line-height: 1.5;
+        }
+
+        /* Game Cards */
+        .game-card {
+            background: white;
+            border: 1px solid #e5e5e5;
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .game-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .game-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .game-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .wordle-icon {
+            background: #6aaa64;
+        }
+
+        .connections-icon {
+            background: #ba81c5;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            padding: 4px;
+        }
+
+        .connections-icon div {
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+        }
+
+        .game-details h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .game-details p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .game-arrow {
+            color: #999;
+            transition: color 0.2s;
+        }
+
+        .game-card:hover .game-arrow {
+            color: #121213;
+        }
+
+        /* Wordle Game */
+        .game-container {
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 32px 16px;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .game-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .game-subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 12px;
+        }
+
+        /* Wordle Grid */
+        .wordle-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .wordle-row {
+            display: flex;
+            gap: 4px;
+        }
+
+        .wordle-cell {
+            width: 56px;
+            height: 56px;
+            border: 2px solid #d3d6da;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        .wordle-cell.filled {
+            border-color: #878a8c;
+        }
+
+        .wordle-cell.correct {
+            background: #6aaa64;
+            border-color: #6aaa64;
+            color: white;
+        }
+
+        .wordle-cell.present {
+            background: #c9b458;
+            border-color: #c9b458;
+            color: white;
+        }
+
+        .wordle-cell.absent {
+            background: #787c7e;
+            border-color: #787c7e;
+            color: white;
+        }
+
+        /* Connections Game */
+        .connections-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .connections-word {
+            aspect-ratio: 1;
+            background: #efefe6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .connections-word:hover {
+            background: #e7e7de;
+        }
+
+        .connections-word.selected {
+            background: #5a594e;
+            color: white;
+            transform: scale(0.95);
+        }
+
+        .connections-solved {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .connections-solved h4 {
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .connections-solved p {
+            font-size: 14px;
+        }
+
+        .difficulty-1 { background: #f9df6d; }
+        .difficulty-2 { background: #a0c35a; }
+        .difficulty-3 { background: #b0c4ef; }
+        .difficulty-4 { background: #ba81c5; }
+
+        /* Mistakes */
+        .mistakes-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .mistake-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #d3d6da;
+        }
+
+        .mistake-dot.used {
+            background: #ef4444;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .button {
+            flex: 1;
+            padding: 14px 16px;
+            border-radius: 24px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .button-secondary {
+            background: white;
+            border: 1px solid #d3d6da;
+            color: #121213;
+        }
+
+        .button-secondary:hover {
+            background: #f8f8f8;
+        }
+
+        .button-primary {
+            background: #121213;
+            color: white;
+        }
+
+        .button-primary:hover {
+            background: #2a2a2a;
+        }
+
+        .button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Legend */
+        .legend {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-top: 16px;
+        }
+
+        .legend-items {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 2px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #e5e5e5;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 50;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.2s;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+
+        .nav-item.active {
+            color: #121213;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Message */
+        .message {
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            background: #e3f2fd;
+            color: #1565c0;
+            font-size: 14px;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        /* Leaderboard */
+        .leaderboard-entry {
+            background: white;
+            border: 1px solid #e5e5e5;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .leaderboard-entry.me {
+            background: #fffbeb;
+            border-color: #fbbf24;
+        }
+
+        .leaderboard-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .rank {
+            font-weight: 700;
+            color: #999;
+            min-width: 24px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e5e5e5;
+        }
+
+        .player-info h4 {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .player-info p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .streak-info {
+            text-align: right;
+        }
+
+        .streak-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .streak-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #999;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.2s cubic-bezier(.36,.07,.19,.97);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Icons as SVG components
+        const MenuIcon = () => (
+            <svg className="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        );
+
+        const ArrowLeftIcon = () => (
+            <svg className="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+        );
+
+        const ArrowRightIcon = () => (
+            <svg className="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+        );
+
+        const TrophyIcon = () => (
+            <svg className="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+        );
+
+        const CalendarIcon = () => (
+            <svg className="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+        );
+
+        const UserIcon = () => (
+            <svg className="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+        );
+
+        // Main App Component
+        function App() {
+            const [activeTab, setActiveTab] = useState('home');
+
+            return (
+                <div className="app-container">
+                    <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
+                    <main className="main-content">
+                        {activeTab === 'home' && <Home setActiveTab={setActiveTab} />}
+                        {activeTab === 'wordle' && <WordleGame />}
+                        {activeTab === 'connections' && <ConnectionsGame />}
+                        {activeTab === 'leaderboard' && <Leaderboard />}
+                        {activeTab === 'profile' && <Profile />}
+                    </main>
+                    <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
+                </div>
+            );
+        }
+
+        // Navbar Component
+        function Navbar({ activeTab, setActiveTab }) {
+            return (
+                <nav className="navbar">
+                    <button className="nav-button" onClick={() => activeTab !== 'home' && setActiveTab('home')}>
+                        {activeTab !== 'home' ? <ArrowLeftIcon /> : <MenuIcon />}
+                    </button>
+                    <span className="nav-title">Friendle</span>
+                    <button className="nav-button" onClick={() => setActiveTab('leaderboard')}>
+                        <TrophyIcon />
+                    </button>
+                </nav>
+            );
+        }
+
+        // Home Screen Component
+        function Home({ setActiveTab }) {
+            const today = new Date().toLocaleDateString('en-US', { 
+                weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' 
+            });
+
+            return (
+                <div className="home-container">
+                    <header className="home-header">
+                        <p className="date-label">{today}</p>
+                        <h1 className="app-title">Friendle</h1>
+                        <p className="app-subtitle">
+                            Unique AI-generated logic puzzles delivered fresh every single day for you and your friends.
+                        </p>
+                    </header>
+
+                    <div className="game-card" onClick={() => setActiveTab('wordle')}>
+                        <div className="game-info">
+                            <div className="game-icon wordle-icon">F</div>
+                            <div className="game-details">
+                                <h3>Friendle Word</h3>
+                                <p>Guess the 5-letter word</p>
+                            </div>
+                        </div>
+                        <div className="game-arrow">
+                            <ArrowRightIcon />
+                        </div>
+                    </div>
+
+                    <div className="game-card" onClick={() => setActiveTab('connections')}>
+                        <div className="game-info">
+                            <div className="game-icon connections-icon">
+                                <div></div><div></div><div></div><div></div>
+                            </div>
+                            <div className="game-details">
+                                <h3>Connections</h3>
+                                <p>Group words by theme</p>
+                            </div>
+                        </div>
+                        <div className="game-arrow">
+                            <ArrowRightIcon />
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Wordle Game Component
+        function WordleGame() {
+            const WORD = 'BRAIN'; // Static word for demo
+            const [guesses, setGuesses] = useState([]);
+            const [currentGuess, setCurrentGuess] = useState('');
+            const [gameOver, setGameOver] = useState(false);
+            const [message, setMessage] = useState('');
+            const [shake, setShake] = useState(false);
+            const maxGuesses = 6;
+
+            useEffect(() => {
+                if (gameOver) return;
+
+                const handleKeyPress = (e) => {
+                    if (e.key === 'Enter') {
+                        submitGuess();
+                    } else if (e.key === 'Backspace') {
+                        setCurrentGuess(prev => prev.slice(0, -1));
+                    } else if (/^[a-zA-Z]$/.test(e.key) && currentGuess.length < 5) {
+                        setCurrentGuess(prev => prev + e.key.toUpperCase());
+                    }
+                };
+
+                window.addEventListener('keydown', handleKeyPress);
+                return () => window.removeEventListener('keydown', handleKeyPress);
+            }, [currentGuess, gameOver]);
+
+            const evaluateGuess = (guess) => {
+                const result = [];
+                const wordArray = WORD.split('');
+                const guessArray = guess.split('');
+
+                // First pass: mark correct letters
+                guessArray.forEach((letter, i) => {
+                    if (letter === wordArray[i]) {
+                        result[i] = { letter, state: 'correct' };
+                        wordArray[i] = null;
+                    } else {
+                        result[i] = { letter, state: 'absent' };
+                    }
+                });
+
+                // Second pass: mark present letters
+                result.forEach((cell, i) => {
+                    if (cell.state === 'absent') {
+                        const idx = wordArray.indexOf(cell.letter);
+                        if (idx !== -1) {
+                            result[i] = { letter: cell.letter, state: 'present' };
+                            wordArray[idx] = null;
+                        }
+                    }
+                });
+
+                return result;
+            };
+
+            const submitGuess = () => {
+                if (currentGuess.length !== 5) {
+                    setShake(true);
+                    setTimeout(() => setShake(false), 200);
+                    return;
+                }
+
+                const evaluated = evaluateGuess(currentGuess);
+                const newGuesses = [...guesses, evaluated];
+                setGuesses(newGuesses);
+
+                if (currentGuess === WORD) {
+                    setGameOver(true);
+                    setMessage('Brilliant! 🎉');
+                } else if (newGuesses.length >= maxGuesses) {
+                    setGameOver(true);
+                    setMessage(`The word was ${WORD}`);
+                }
+
+                setCurrentGuess('');
+            };
+
+            const renderGrid = () => {
+                const rows = [];
+                for (let i = 0; i < maxGuesses; i++) {
+                    const cells = [];
+                    
+                    if (i < guesses.length) {
+                        guesses[i].forEach((cell, j) => {
+                            cells.push(
+                                <div key={j} className={`wordle-cell ${cell.state}`}>
+                                    {cell.letter}
+                                </div>
+                            );
+                        });
+                    } else if (i === guesses.length) {
+                        for (let j = 0; j < 5; j++) {
+                            cells.push(
+                                <div key={j} className={`wordle-cell ${currentGuess[j] ? 'filled' : ''} ${shake ? 'shake' : ''}`}>
+                                    {currentGuess[j] || ''}
+                                </div>
+                            );
+                        }
+                    } else {
+                        for (let j = 0; j < 5; j++) {
+                            cells.push(<div key={j} className="wordle-cell"></div>);
+                        }
+                    }
+                    
+                    rows.push(<div key={i} className="wordle-row">{cells}</div>);
+                }
+                return rows;
+            };
+
+            return (
+                <div className="game-container">
+                    <div className="game-header">
+                        <h2 className="game-title">Friendle Word</h2>
+                        <p className="game-subtitle">Guess the 5-letter word</p>
+                    </div>
+
+                    <div className="stats-bar">
+                        <div className="stat-item">
+                            <div className="stat-value">12</div>
+                            <div className="stat-label">Played</div>
+                        </div>
+                        <div className="stat-item">
+                            <div className="stat-value">7</div>
+                            <div className="stat-label">Streak</div>
+                        </div>
+                        <div className="stat-item">
+                            <div className="stat-value">83%</div>
+                            <div className="stat-label">Win Rate</div>
+                        </div>
+                    </div>
+
+                    <div className="wordle-grid">
+                        {renderGrid()}
+                    </div>
+
+                    {message && (
+                        <div className={`message ${gameOver && currentGuess === WORD ? 'success' : ''}`}>
+                            {message}
+                        </div>
+                    )}
+
+                    {!gameOver && guesses.length === 0 && (
+                        <>
+                            <p className="legend">Type your guess and press Enter</p>
+                            <div className="legend-items">
+                                <div className="legend-item">
+                                    <div className="legend-color" style={{background: '#6aaa64'}}></div>
+                                    <span>Correct</span>
+                                </div>
+                                <div className="legend-item">
+                                    <div className="legend-color" style={{background: '#c9b458'}}></div>
+                                    <span>Wrong spot</span>
+                                </div>
+                                <div className="legend-item">
+                                    <div className="legend-color" style={{background: '#787c7e'}}></div>
+                                    <span>Not in word</span>
+                                </div>
+                            </div>
+                        </>
+                    )}
+                </div>
+            );
+        }
+
+        // Connections Game Component
+        function ConnectionsGame() {
+            const puzzleData = {
+                groups: [
+                    { category: 'Primary Colors', words: ['RED', 'BLUE', 'YELLOW', 'GREEN'], difficulty: 1 },
+                    { category: 'Seasons', words: ['SPRING', 'SUMMER', 'FALL', 'WINTER'], difficulty: 2 },
+                    { category: 'Instruments', words: ['PIANO', 'GUITAR', 'DRUM', 'VIOLIN'], difficulty: 3 },
+                    { category: 'Languages', words: ['PYTHON', 'JAVA', 'RUBY', 'SWIFT'], difficulty: 4 },
+                ]
+            };
+
+            const allWords = puzzleData.groups.flatMap(g => g.words);
+            const [words, setWords] = useState(() => shuffleArray([...allWords]));
+            const [selected, setSelected] = useState([]);
+            const [solved, setSolved] = useState([]);
+            const [mistakes, setMistakes] = useState(0);
+            const [message, setMessage] = useState('');
+            const [shake, setShake] = useState(false);
+            const maxMistakes = 4;
+
+            function shuffleArray(array) {
+                const shuffled = [...array];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            }
+
+            const toggleWord = (word) => {
+                if (selected.includes(word)) {
+                    setSelected(selected.filter(w => w !== word));
+                } else if (selected.length < 4) {
+                    setSelected([...selected, word]);
+                }
+            };
+
+            const handleShuffle = () => {
+                const remainingWords = words.filter(w => !isWordSolved(w));
+                const solvedWords = words.filter(w => isWordSolved(w));
+                setWords([...solvedWords, ...shuffleArray(remainingWords)]);
+                setSelected([]);
+            };
+
+            const handleSubmit = () => {
+                if (selected.length !== 4) return;
+
+                const matchedGroup = puzzleData.groups.findIndex((group, idx) => {
+                    if (solved.includes(idx)) return false;
+                    return selected.every(word => group.words.includes(word));
+                });
+
+                if (matchedGroup !== -1) {
+                    setSolved([...solved, matchedGroup]);
+                    setSelected([]);
+                    setMessage(`Correct! ${puzzleData.groups[matchedGroup].category}`);
+                    setTimeout(() => setMessage(''), 2000);
+                } else {
+                    setShake(true);
+                    setTimeout(() => setShake(false), 200);
+                    setMistakes(mistakes + 1);
+                    setSelected([]);
+                }
+            };
+
+            const isWordSolved = (word) => {
+                return puzzleData.groups.some((group, idx) => 
+                    solved.includes(idx) && group.words.includes(word)
+                );
+            };
+
+            return (
+                <div className="game-container">
+                    <div className="game-header">
+                        <h2 className="game-title">Connections</h2>
+                        <p className="game-subtitle">Find groups of four items that share something in common</p>
+                    </div>
+
+                    <div className="stats-bar">
+                        <div className="stat-item">
+                            <div className="stat-value">8</div>
+                            <div className="stat-label">Played</div>
+                        </div>
+                        <div className="stat-item">
+                            <div className="stat-value">4</div>
+                            <div className="stat-label">Streak</div>
+                        </div>
+                        <div className="stat-item">
+                            <div className="stat-value">75%</div>
+                            <div className="stat-label">Win Rate</div>
+                        </div>
+                    </div>
+
+                    <div className="mistakes-display">
+                        <span style={{fontSize: '14px', color: '#666'}}>Mistakes remaining:</span>
+                        {Array.from({ length: maxMistakes }).map((_, i) => (
+                            <div key={i} className={`mistake-dot ${i < mistakes ? 'used' : ''}`}></div>
+                        ))}
+                    </div>
+
+                    {solved.map(groupIdx => {
+                        const group = puzzleData.groups[groupIdx];
+                        return (
+                            <div key={groupIdx} className={`connections-solved difficulty-${group.difficulty}`}>
+                                <h4>{group.category}</h4>
+                                <p>{group.words.join(', ')}</p>
+                            </div>
+                        );
+                    })}
+
+                    <div className={`connections-grid ${shake ? 'shake' : ''}`}>
+                        {words.map((word, idx) => {
+                            if (isWordSolved(word)) return null;
+                            return (
+                                <div
+                                    key={idx}
+                                    className={`connections-word ${selected.includes(word) ? 'selected' : ''}`}
+                                    onClick={() => toggleWord(word)}
+                                >
+                                    {word}
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {message && <div className="message">{message}</div>}
+
+                    <div className="button-group">
+                        <button className="button button-secondary" onClick={handleShuffle}>
+                            Shuffle
+                        </button>
+                        <button className="button button-secondary" onClick={() => setSelected([])} disabled={selected.length === 0}>
+                            Deselect All
+                        </button>
+                        <button className="button button-primary" onClick={handleSubmit} disabled={selected.length !== 4}>
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        // Leaderboard Component
+        function Leaderboard() {
+            const players = [
+                { name: 'You', winRate: 80, streak: 11, me: true },
+                { name: 'Sarah J.', winRate: 92, streak: 14 },
+                { name: 'Alex P.', winRate: 88, streak: 8 },
+                { name: 'Puzzle King', winRate: 85, streak: 21 },
+                { name: 'Daily D.', winRate: 79, streak: 5 },
+            ].sort((a, b) => b.streak - a.streak);
+
+            return (
+                <div className="game-container">
+                    <div className="game-header">
+                        <h2 className="game-title">Leaderboard</h2>
+                    </div>
+
+                    {players.map((player, i) => (
+                        <div key={i} className={`leaderboard-entry ${player.me ? 'me' : ''}`}>
+                            <div className="leaderboard-left">
+                                <div className="rank">#{i + 1}</div>
+                                <div className="avatar"></div>
+                                <div className="player-info">
+                                    <h4>{player.name}{player.me && ' (You)'}</h4>
+                                    <p>Win Rate: {player.winRate}%</p>
+                                </div>
+                            </div>
+                            <div className="streak-info">
+                                <div className="streak-value">{player.streak}</div>
+                                <div className="streak-label">Streak</div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+
+        // Profile Component  
+        function Profile() {
+            return (
+                <div className="game-container">
+                    <div className="game-header">
+                        <h2 className="game-title">Profile</h2>
+                    </div>
+
+                    <div style={{background: 'white', padding: '24px', borderRadius: '16px', textAlign: 'center', marginBottom: '24px'}}>
+                        <div className="avatar" style={{width: '80px', height: '80px', margin: '0 auto 16px'}}></div>
+                        <h3 style={{fontSize: '20px', fontWeight: '700', marginBottom: '8px'}}>Puzzle Master</h3>
+                        <p style={{color: '#666'}}>puzzle.master@email.com</p>
+                    </div>
+
+                    <div style={{background: 'white', padding: '24px', borderRadius: '16px', marginBottom: '16px'}}>
+                        <h3 style={{fontWeight: '700', marginBottom: '16px'}}>Wordle Stats</h3>
+                        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px'}}>
+                            <div className="stat-item">
+                                <div className="stat-value">12</div>
+                                <div className="stat-label">Played</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">10</div>
+                                <div className="stat-label">Won</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">7</div>
+                                <div className="stat-label">Current Streak</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">9</div>
+                                <div className="stat-label">Best Streak</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={{background: 'white', padding: '24px', borderRadius: '16px'}}>
+                        <h3 style={{fontWeight: '700', marginBottom: '16px'}}>Connections Stats</h3>
+                        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px'}}>
+                            <div className="stat-item">
+                                <div className="stat-value">8</div>
+                                <div className="stat-label">Played</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">6</div>
+                                <div className="stat-label">Won</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">4</div>
+                                <div className="stat-label">Current Streak</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">5</div>
+                                <div className="stat-label">Best Streak</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Bottom Navigation Component
+        function BottomNav({ activeTab, setActiveTab }) {
+            return (
+                <div className="bottom-nav">
+                    <button className={`nav-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>
+                        <CalendarIcon />
+                        <span className="nav-label">Today</span>
+                    </button>
+                    <button className={`nav-item ${activeTab === 'leaderboard' ? 'active' : ''}`} onClick={() => setActiveTab('leaderboard')}>
+                        <TrophyIcon />
+                        <span className="nav-label">Social</span>
+                    </button>
+                    <button className={`nav-item ${activeTab === 'profile' ? 'active' : ''}`} onClick={() => setActiveTab('profile')}>
+                        <UserIcon />
+                        <span className="nav-label">Profile</span>
+                    </button>
+                </div>
+            );
+        }
+
+        // Render the app
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
