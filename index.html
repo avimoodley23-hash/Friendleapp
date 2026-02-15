@@ -1375,12 +1375,12 @@
 
         // Firebase config
         const firebaseConfig = {
-            apiKey: "AIzaSyDfiGkC_FLvJpRa1Uj2SQdHCUVpMLs7GjM",
-            authDomain: "friendle-6d1ee.firebaseapp.com",
-            projectId: "friendle-6d1ee",
-            storageBucket: "friendle-6d1ee.firebasestorage.app",
-            messagingSenderId: "775074509773",
-            appId: "1:775074509773:web:3fceb0ec90fb7c9edc9dc6",
+            apiKey: "AIzaSyCndOWS881gWZO98ub8o_-tCdJMYiCgobg",
+            authDomain: "friendle-1eef2.firebaseapp.com",
+            projectId: "friendle-1eef2",
+            storageBucket: "friendle-1eef2.firebasestorage.app",
+            messagingSenderId: "413852218027",
+            appId: "1:413852218027:web:889bc573b21255db08bdee",
             measurementId: "G-WH2523K0GB"
         };
 
@@ -1584,10 +1584,62 @@
 
             const handleSignIn = async () => {
                 try {
+                    console.log('🔐 Starting sign-in process...');
                     const provider = new firebase.auth.GoogleAuthProvider();
-                    await auth.signInWithPopup(provider);
+                    
+                    // Force account selection
+                    provider.setCustomParameters({
+                        prompt: 'select_account'
+                    });
+                    
+                    console.log('🔐 Attempting popup sign-in...');
+                    
+                    // Try popup first
+                    try {
+                        const result = await auth.signInWithPopup(provider);
+                        console.log('✅ Sign-in successful!', result.user.displayName);
+                    } catch (popupError) {
+                        console.log('⚠️ Popup failed:', popupError.code, popupError.message);
+                        
+                        // If popup blocked or closed, try redirect
+                        if (popupError.code === 'auth/popup-blocked' || 
+                            popupError.code === 'auth/popup-closed-by-user' ||
+                            popupError.code === 'auth/cancelled-popup-request') {
+                            console.log('🔄 Trying redirect instead...');
+                            await auth.signInWithRedirect(provider);
+                        } else {
+                            throw popupError;
+                        }
+                    }
                 } catch (error) {
-                    console.error('Error signing in:', error);
+                    console.error('❌ Sign-in error:', error);
+                    console.error('Error code:', error.code);
+                    console.error('Error message:', error.message);
+                    
+                    // Show user-friendly error
+                    let errorMessage = 'Sign-in failed. ';
+                    
+                    switch (error.code) {
+                        case 'auth/popup-blocked':
+                            errorMessage += 'Please allow popups for this site.';
+                            break;
+                        case 'auth/popup-closed-by-user':
+                            errorMessage += 'Sign-in was cancelled.';
+                            break;
+                        case 'auth/unauthorized-domain':
+                            errorMessage += 'This domain is not authorized. Check Firebase Console → Authentication → Settings → Authorized domains.';
+                            break;
+                        case 'auth/network-request-failed':
+                            errorMessage += 'Network error. Check your internet connection.';
+                            break;
+                        case 'auth/operation-not-allowed':
+                            errorMessage += 'Google sign-in is not enabled. Check Firebase Console → Authentication → Sign-in method.';
+                            break;
+                        default:
+                            errorMessage += error.message;
+                    }
+                    
+                    alert(errorMessage);
                 }
             };
 
