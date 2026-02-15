@@ -306,7 +306,7 @@
             margin-bottom: 24px;
         }
 
-        .game-title {
+        .game-title-main {
             font-family: 'Playfair Display', serif;
             font-size: 28px;
             font-weight: 700;
@@ -424,6 +424,196 @@
         .keyboard-key.absent {
             background: #787c7e;
             color: white;
+        }
+
+        /* Crossword Styles */
+        .crossword-grid {
+            display: grid;
+            gap: 2px;
+            margin: 24px auto;
+            max-width: 350px;
+            background: #000;
+            padding: 2px;
+            border-radius: 4px;
+        }
+
+        .crossword-cell {
+            aspect-ratio: 1;
+            background: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .crossword-cell.black {
+            background: #000;
+            cursor: default;
+        }
+
+        .crossword-cell.selected {
+            background: #bee3f8;
+        }
+
+        .crossword-cell.highlight {
+            background: #e6f3ff;
+        }
+
+        .cell-number {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .crossword-clues {
+            margin-top: 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .clues-section h3 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .clue-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #f8f8f8;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .clue-item:active {
+            background: #e5e5e5;
+        }
+
+        .clue-item.selected {
+            background: #bee3f8;
+        }
+
+        .clue-item.completed {
+            background: #d4edda;
+        }
+
+        /* Strands Styles */
+        .strands-theme {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .strands-theme h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .strands-theme-text {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .strands-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 4px;
+            margin: 20px auto;
+            max-width: 400px;
+            user-select: none;
+        }
+
+        .strands-cell {
+            aspect-ratio: 1;
+            background: white;
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .strands-cell:active {
+            transform: scale(0.95);
+        }
+
+        .strands-cell.selected {
+            background: #bee3f8;
+            border-color: #3182ce;
+        }
+
+        .strands-cell.found-theme {
+            background: #90cdf4;
+            border-color: #3182ce;
+            color: white;
+        }
+
+        .strands-cell.found-spangram {
+            background: #ffd700;
+            border-color: #daa520;
+            color: #000;
+        }
+
+        .strands-current-word {
+            text-align: center;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .strands-found-words {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .found-word-chip {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .found-word-chip.theme {
+            background: #90cdf4;
+            color: white;
+        }
+
+        .found-word-chip.spangram {
+            background: #ffd700;
+            color: #000;
         }
 
         /* Connections Styles */
@@ -755,6 +945,19 @@
             opacity: 0.8;
         }
 
+        .modal-button.secondary {
+            background: white;
+            color: #000;
+            border: 2px solid #e5e5e5;
+        }
+
+        .share-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
         /* Leaderboard */
         .leaderboard-tabs {
             display: flex;
@@ -995,6 +1198,10 @@
             .wordle-tile {
                 font-size: 28px;
             }
+
+            .strands-cell {
+                font-size: 16px;
+            }
         }
 
         /* Fix iOS safari bottom bar */
@@ -1083,12 +1290,24 @@
             );
         }
 
+        function ShareIcon() {
+            return (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+            );
+        }
+
         // Helper functions
         function getTodayString() {
             return new Date().toISOString().split('T')[0];
         }
 
-        // Wordle word list (sample - you'd want a larger list)
+        // Game data generators
         const WORDLE_WORDS = [
             'REACT', 'BRAVE', 'CLOUD', 'DREAM', 'FLASH', 'GRACE', 'HEART', 'IMAGE',
             'JUICE', 'KNIFE', 'LIGHT', 'MAGIC', 'NIGHT', 'OCEAN', 'PEACE', 'QUEEN',
@@ -1101,61 +1320,73 @@
             return WORDLE_WORDS[seed % WORDLE_WORDS.length];
         }
 
-        // Sample trivia questions
-        const TRIVIA_QUESTIONS = [
+        // Mini Crossword data (5x5 grid)
+        const CROSSWORD_PUZZLES = [
             {
-                question: "What is the capital of France?",
-                options: ["London", "Berlin", "Paris", "Madrid"],
-                correct: 2
-            },
-            {
-                question: "Which planet is known as the Red Planet?",
-                options: ["Venus", "Mars", "Jupiter", "Saturn"],
-                correct: 1
-            },
-            {
-                question: "Who painted the Mona Lisa?",
-                options: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
-                correct: 2
-            },
-            {
-                question: "What is the largest ocean on Earth?",
-                options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
-                correct: 3
-            },
-            {
-                question: "In what year did World War II end?",
-                options: ["1943", "1944", "1945", "1946"],
-                correct: 2
-            },
-            {
-                question: "What is the smallest prime number?",
-                options: ["0", "1", "2", "3"],
-                correct: 2
-            },
-            {
-                question: "Which element has the chemical symbol 'O'?",
-                options: ["Gold", "Oxygen", "Silver", "Iron"],
-                correct: 1
-            },
-            {
-                question: "How many continents are there?",
-                options: ["5", "6", "7", "8"],
-                correct: 2
-            },
-            {
-                question: "What is the fastest land animal?",
-                options: ["Lion", "Cheetah", "Leopard", "Tiger"],
-                correct: 1
-            },
-            {
-                question: "Which country is home to the kangaroo?",
-                options: ["New Zealand", "South Africa", "Australia", "Brazil"],
-                correct: 2
+                grid: [
+                    ['S', 'P', 'O', 'R', 'T'],
+                    ['C', null, 'P', null, 'R'],
+                    ['A', 'L', 'E', 'R', 'T'],
+                    ['R', null, 'N', null, 'A'],
+                    ['Y', 'E', 'A', 'R', 'S']
+                ],
+                across: [
+                    { number: 1, clue: "Athletic activity", answer: "SPORT", row: 0, col: 0 },
+                    { number: 3, clue: "Watchful", answer: "ALERT", row: 2, col: 0 },
+                    { number: 5, clue: "Decades", answer: "YEARS", row: 4, col: 0 }
+                ],
+                down: [
+                    { number: 1, clue: "Frightening", answer: "SCARY", row: 0, col: 0 },
+                    { number: 2, clue: "Unlocked", answer: "OPEN", row: 0, col: 2 },
+                    { number: 4, clue: "Path", answer: "TRAIL", row: 0, col: 4 }
+                ]
             }
         ];
 
-        // Sample connections puzzle
+        function getCrosswordOfTheDay() {
+            const today = getTodayString();
+            const seed = today.split('-').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+            return CROSSWORD_PUZZLES[seed % CROSSWORD_PUZZLES.length];
+        }
+
+        // Strands data
+        const STRANDS_PUZZLES = [
+            {
+                theme: "Coffee Drinks",
+                grid: [
+                    ['L', 'A', 'T', 'T', 'E', 'S', 'P', 'R'],
+                    ['M', 'O', 'C', 'H', 'A', 'R', 'E', 'I'],
+                    ['A', 'M', 'E', 'R', 'I', 'C', 'A', 'N'],
+                    ['C', 'A', 'P', 'P', 'U', 'C', 'C', 'O'],
+                    ['C', 'O', 'R', 'T', 'A', 'D', 'O', 'T'],
+                    ['H', 'I', 'A', 'T', 'O', 'L', 'A', 'O']
+                ],
+                words: ['LATTE', 'MOCHA', 'CAPPUCCINO', 'AMERICANO', 'CORTADO', 'ESPRESSO'],
+                spangram: 'CAPPUCCINO'
+            }
+        ];
+
+        function getStrandsOfTheDay() {
+            const today = getTodayString();
+            const seed = today.split('-').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+            return STRANDS_PUZZLES[seed % STRANDS_PUZZLES.length];
+        }
+
+        // Trivia questions
+        const TRIVIA_QUESTIONS = [
+            { question: "What is the capital of France?", options: ["London", "Berlin", "Paris", "Madrid"], correct: 2 },
+            { question: "Which planet is known as the Red Planet?", options: ["Venus", "Mars", "Jupiter", "Saturn"], correct: 1 },
+            { question: "Who painted the Mona Lisa?", options: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"], correct: 2 },
+            { question: "What is the largest ocean on Earth?", options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"], correct: 3 },
+            { question: "In what year did World War II end?", options: ["1943", "1944", "1945", "1946"], correct: 2 },
+            { question: "What is the smallest prime number?", options: ["0", "1", "2", "3"], correct: 2 },
+            { question: "Which element has the chemical symbol 'O'?", options: ["Gold", "Oxygen", "Silver", "Iron"], correct: 1 },
+            { question: "How many continents are there?", options: ["5", "6", "7", "8"], correct: 2 },
+            { question: "What is the fastest land animal?", options: ["Lion", "Cheetah", "Leopard", "Tiger"], correct: 1 },
+            { question: "Which country is home to the kangaroo?", options: ["New Zealand", "South Africa", "Australia", "Brazil"], correct: 2 }
+        ];
+
+        // Connections puzzle
         const CONNECTIONS_PUZZLE = {
             groups: [
                 { category: "TYPES OF COFFEE", words: ["LATTE", "MOCHA", "ESPRESSO", "CAPPUCCINO"], color: "yellow" },
@@ -1257,7 +1488,7 @@
                     )}
 
                     <main className="main-content">
-                        {activeTab === 'home' && <Home user={user} userStats={userStats} onSignIn={handleSignIn} />}
+                        {activeTab === 'home' && <Home user={user} userStats={userStats} onSignIn={handleSignIn} onStatsUpdate={loadUserStats} />}
                         {activeTab === 'leaderboard' && <Leaderboard user={user} />}
                         {activeTab === 'profile' && <Profile user={user} userStats={userStats} onSignOut={handleSignOut} />}
                     </main>
@@ -1268,24 +1499,34 @@
         }
 
         // Home Component
-        function Home({ user, userStats, onSignIn }) {
+        function Home({ user, userStats, onSignIn, onStatsUpdate }) {
             const [selectedGame, setSelectedGame] = useState(null);
             const today = getTodayString();
             
             const wordleCompleted = userStats?.wordle?.lastPlayed === today;
+            const crosswordCompleted = userStats?.crossword?.lastPlayed === today;
+            const strandsCompleted = userStats?.strands?.lastPlayed === today;
             const connectionsCompleted = userStats?.connections?.lastPlayed === today;
             const triviaCompleted = userStats?.trivia?.lastPlayed === today;
 
             if (selectedGame === 'wordle') {
-                return <WordleGame user={user} onBack={() => setSelectedGame(null)} />;
+                return <WordleGame user={user} onBack={() => { setSelectedGame(null); if (user) onStatsUpdate(user.uid); }} />;
+            }
+
+            if (selectedGame === 'crossword') {
+                return <CrosswordGame user={user} onBack={() => { setSelectedGame(null); if (user) onStatsUpdate(user.uid); }} />;
+            }
+
+            if (selectedGame === 'strands') {
+                return <StrandsGame user={user} onBack={() => { setSelectedGame(null); if (user) onStatsUpdate(user.uid); }} />;
             }
 
             if (selectedGame === 'connections') {
-                return <ConnectionsGame user={user} onBack={() => setSelectedGame(null)} />;
+                return <ConnectionsGame user={user} onBack={() => { setSelectedGame(null); if (user) onStatsUpdate(user.uid); }} />;
             }
 
             if (selectedGame === 'trivia') {
-                return <TriviaGame user={user} onBack={() => setSelectedGame(null)} />;
+                return <TriviaGame user={user} onBack={() => { setSelectedGame(null); if (user) onStatsUpdate(user.uid); }} />;
             }
 
             if (!user) {
@@ -1306,7 +1547,7 @@
                     <div className="home-header">
                         <div className="date-label">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</div>
                         <h1 className="main-title">Today's Puzzles</h1>
-                        <p className="subtitle">Play all three games daily</p>
+                        <p className="subtitle">Play all five games daily</p>
                     </div>
 
                     <div className="game-grid">
@@ -1317,6 +1558,24 @@
                             </div>
                             <h3 className="game-title">Wordle</h3>
                             <p className="game-description">Guess the 5-letter word in 6 tries</p>
+                        </div>
+
+                        <div className={`game-card ${crosswordCompleted ? 'completed' : ''}`} onClick={() => !crosswordCompleted && setSelectedGame('crossword')}>
+                            <div className="game-card-header">
+                                <div className="game-icon" style={{background: '#000'}}>🔤</div>
+                                {crosswordCompleted && <div className="status-badge completed"><CheckIcon /></div>}
+                            </div>
+                            <h3 className="game-title">Mini Crossword</h3>
+                            <p className="game-description">Quick 5x5 crossword puzzle</p>
+                        </div>
+
+                        <div className={`game-card ${strandsCompleted ? 'completed' : ''}`} onClick={() => !strandsCompleted && setSelectedGame('strands')}>
+                            <div className="game-card-header">
+                                <div className="game-icon" style={{background: '#ffd700'}}>🔍</div>
+                                {strandsCompleted && <div className="status-badge completed"><CheckIcon /></div>}
+                            </div>
+                            <h3 className="game-title">Strands</h3>
+                            <p className="game-description">Find themed words in the grid</p>
                         </div>
 
                         <div className={`game-card ${connectionsCompleted ? 'completed' : ''}`} onClick={() => !connectionsCompleted && setSelectedGame('connections')}>
@@ -1341,7 +1600,7 @@
             );
         }
 
-        // Wordle Game Component
+        // Wordle Game Component (keeping previous implementation)
         function WordleGame({ user, onBack }) {
             const [guesses, setGuesses] = useState([]);
             const [currentGuess, setCurrentGuess] = useState('');
@@ -1365,7 +1624,6 @@
                     const newGuesses = [...guesses, currentGuess];
                     setGuesses(newGuesses);
 
-                    // Update keyboard status
                     const newStatus = {...keyboardStatus};
                     for (let i = 0; i < currentGuess.length; i++) {
                         const letter = currentGuess[i];
@@ -1447,6 +1705,34 @@
                 return 'absent';
             };
 
+            const generateShareText = () => {
+                let text = `Friendle Wordle ${won ? guesses.length : 'X'}/${maxGuesses}\n\n`;
+                guesses.forEach(guess => {
+                    for (let i = 0; i < 5; i++) {
+                        const status = getTileStatus(guess, i);
+                        if (status === 'correct') text += '🟩';
+                        else if (status === 'present') text += '🟨';
+                        else text += '⬜';
+                    }
+                    text += '\n';
+                });
+                return text;
+            };
+
+            const handleShare = async () => {
+                const text = generateShareText();
+                try {
+                    if (navigator.share) {
+                        await navigator.share({ text });
+                    } else {
+                        await navigator.clipboard.writeText(text);
+                        alert('Results copied to clipboard!');
+                    }
+                } catch (error) {
+                    console.error('Error sharing:', error);
+                }
+            };
+
             const keyboard = [
                 ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
                 ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
@@ -1460,7 +1746,7 @@
                     </button>
 
                     <div className="game-header">
-                        <h2 className="game-title">Wordle</h2>
+                        <h2 className="game-title-main">Wordle</h2>
                         <p className="game-subtitle">Guess the 5-letter word</p>
                     </div>
 
@@ -1515,6 +1801,11 @@
                                         <div className="stat-label">Guesses</div>
                                     </div>
                                 </div>
+                                <button className="modal-button secondary" onClick={handleShare}>
+                                    <div className="share-button">
+                                        <ShareIcon /> Share
+                                    </div>
+                                </button>
                                 <button className="modal-button" onClick={onBack}>Back to Home</button>
                             </div>
                         </div>
@@ -1523,7 +1814,397 @@
             );
         }
 
-        // Connections Game Component
+        // NEW: Mini Crossword Game
+        function CrosswordGame({ user, onBack }) {
+            const puzzle = getCrosswordOfTheDay();
+            const [grid, setGrid] = useState(() => 
+                puzzle.grid.map(row => row.map(cell => cell === null ? null : ''))
+            );
+            const [selectedCell, setSelectedCell] = useState(null);
+            const [selectedClue, setSelectedClue] = useState(null);
+            const [direction, setDirection] = useState('across');
+            const [gameOver, setGameOver] = useState(false);
+            const [won, setWon] = useState(false);
+
+            const checkComplete = () => {
+                for (let row = 0; row < 5; row++) {
+                    for (let col = 0; col < 5; col++) {
+                        if (puzzle.grid[row][col] !== null && grid[row][col] !== puzzle.grid[row][col]) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            };
+
+            const handleCellClick = (row, col) => {
+                if (puzzle.grid[row][col] === null) return;
+                
+                if (selectedCell && selectedCell.row === row && selectedCell.col === col) {
+                    setDirection(direction === 'across' ? 'down' : 'across');
+                } else {
+                    setSelectedCell({ row, col });
+                }
+            };
+
+            const handleInput = (value) => {
+                if (!selectedCell) return;
+                
+                const newGrid = [...grid];
+                newGrid[selectedCell.row][selectedCell.col] = value.toUpperCase();
+                setGrid(newGrid);
+
+                // Move to next cell
+                if (direction === 'across') {
+                    let nextCol = selectedCell.col + 1;
+                    while (nextCol < 5 && puzzle.grid[selectedCell.row][nextCol] === null) {
+                        nextCol++;
+                    }
+                    if (nextCol < 5) {
+                        setSelectedCell({ row: selectedCell.row, col: nextCol });
+                    }
+                } else {
+                    let nextRow = selectedCell.row + 1;
+                    while (nextRow < 5 && puzzle.grid[nextRow][selectedCell.col] === null) {
+                        nextRow++;
+                    }
+                    if (nextRow < 5) {
+                        setSelectedCell({ row: nextRow, col: selectedCell.col });
+                    }
+                }
+
+                // Check if complete
+                setTimeout(() => {
+                    if (checkComplete()) {
+                        setWon(true);
+                        setGameOver(true);
+                        updateStats(true);
+                    }
+                }, 100);
+            };
+
+            const handleBackspace = () => {
+                if (!selectedCell) return;
+                
+                const newGrid = [...grid];
+                if (newGrid[selectedCell.row][selectedCell.col] === '') {
+                    // Move back
+                    if (direction === 'across') {
+                        let prevCol = selectedCell.col - 1;
+                        while (prevCol >= 0 && puzzle.grid[selectedCell.row][prevCol] === null) {
+                            prevCol--;
+                        }
+                        if (prevCol >= 0) {
+                            setSelectedCell({ row: selectedCell.row, col: prevCol });
+                            newGrid[selectedCell.row][prevCol] = '';
+                        }
+                    } else {
+                        let prevRow = selectedCell.row - 1;
+                        while (prevRow >= 0 && puzzle.grid[prevRow][selectedCell.col] === null) {
+                            prevRow--;
+                        }
+                        if (prevRow >= 0) {
+                            setSelectedCell({ row: prevRow, col: selectedCell.col });
+                            newGrid[prevRow][selectedCell.col] = '';
+                        }
+                    }
+                } else {
+                    newGrid[selectedCell.row][selectedCell.col] = '';
+                }
+                setGrid(newGrid);
+            };
+
+            const updateStats = async (won) => {
+                if (!user) return;
+
+                try {
+                    const userRef = db.collection('users').doc(user.uid);
+                    const doc = await userRef.get();
+                    const data = doc.data() || {};
+                    const crosswordStats = data.crossword || { played: 0, won: 0, streak: 0, maxStreak: 0, lastPlayed: '' };
+
+                    const today = getTodayString();
+                    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+                    
+                    let newStreak = crosswordStats.streak;
+                    if (won) {
+                        if (crosswordStats.lastPlayed === yesterday) {
+                            newStreak += 1;
+                        } else if (crosswordStats.lastPlayed !== today) {
+                            newStreak = 1;
+                        }
+                    } else {
+                        newStreak = 0;
+                    }
+
+                    await userRef.set({
+                        ...data,
+                        displayName: user.displayName,
+                        email: user.email,
+                        photoURL: user.photoURL,
+                        crossword: {
+                            played: crosswordStats.played + 1,
+                            won: crosswordStats.won + (won ? 1 : 0),
+                            streak: newStreak,
+                            maxStreak: Math.max(newStreak, crosswordStats.maxStreak),
+                            lastPlayed: today
+                        }
+                    }, { merge: true });
+                } catch (error) {
+                    console.error('Error updating stats:', error);
+                }
+            };
+
+            const keyboard = [
+                ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+                ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+                ['Z', 'X', 'C', 'V', 'B', 'N', 'M', 'BACK']
+            ];
+
+            return (
+                <div className="game-container">
+                    <button onClick={onBack} style={{marginBottom: '20px', padding: '8px 16px', border: 'none', background: '#f0f0f0', borderRadius: '8px', cursor: 'pointer'}}>
+                        ← Back
+                    </button>
+
+                    <div className="game-header">
+                        <h2 className="game-title-main">Mini Crossword</h2>
+                        <p className="game-subtitle">Fill in the 5x5 grid</p>
+                    </div>
+
+                    <div className="crossword-grid" style={{gridTemplateColumns: 'repeat(5, 1fr)'}}>
+                        {puzzle.grid.map((row, rowIndex) =>
+                            row.map((cell, colIndex) => {
+                                if (cell === null) {
+                                    return <div key={`${rowIndex}-${colIndex}`} className="crossword-cell black"></div>;
+                                }
+
+                                const isSelected = selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex;
+                                const clueNum = [...puzzle.across, ...puzzle.down].find(c => c.row === rowIndex && c.col === colIndex)?.number;
+
+                                return (
+                                    <div
+                                        key={`${rowIndex}-${colIndex}`}
+                                        className={`crossword-cell ${isSelected ? 'selected' : ''}`}
+                                        onClick={() => handleCellClick(rowIndex, colIndex)}
+                                    >
+                                        {clueNum && <span className="cell-number">{clueNum}</span>}
+                                        {grid[rowIndex][colIndex]}
+                                    </div>
+                                );
+                            })
+                        )}
+                    </div>
+
+                    <div className="crossword-clues">
+                        <div className="clues-section">
+                            <h3>Across</h3>
+                            {puzzle.across.map(clue => (
+                                <div key={clue.number} className="clue-item">
+                                    <strong>{clue.number}.</strong> {clue.clue}
+                                </div>
+                            ))}
+                        </div>
+                        <div className="clues-section">
+                            <h3>Down</h3>
+                            {puzzle.down.map(clue => (
+                                <div key={clue.number} className="clue-item">
+                                    <strong>{clue.number}.</strong> {clue.clue}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="mobile-keyboard" style={{marginTop: '24px'}}>
+                        {keyboard.map((row, i) => (
+                            <div key={i} className="keyboard-row">
+                                {row.map((key) => (
+                                    <button
+                                        key={key}
+                                        className={`keyboard-key ${key === 'BACK' ? 'wide' : ''}`}
+                                        onClick={() => key === 'BACK' ? handleBackspace() : handleInput(key)}
+                                    >
+                                        {key === 'BACK' ? '⌫' : key}
+                                    </button>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+
+                    {gameOver && (
+                        <div className="modal-overlay">
+                            <div className="modal">
+                                <h2 className="modal-title">🎉 Completed!</h2>
+                                <button className="modal-button" onClick={onBack}>Back to Home</button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // NEW: Strands Game
+        function StrandsGame({ user, onBack }) {
+            const puzzle = getStrandsOfTheDay();
+            const [selectedCells, setSelectedCells] = useState([]);
+            const [currentWord, setCurrentWord] = useState('');
+            const [foundWords, setFoundWords] = useState([]);
+            const [foundSpangram, setFoundSpangram] = useState(false);
+            const [gameOver, setGameOver] = useState(false);
+
+            const handleCellClick = (row, col) => {
+                const cellKey = `${row}-${col}`;
+                const isAlreadySelected = selectedCells.some(c => c.key === cellKey);
+
+                if (isAlreadySelected) {
+                    // Deselect
+                    setSelectedCells([]);
+                    setCurrentWord('');
+                } else {
+                    // Select cell
+                    const newSelected = [...selectedCells, { row, col, key: cellKey, letter: puzzle.grid[row][col] }];
+                    setSelectedCells(newSelected);
+                    setCurrentWord(newSelected.map(c => c.letter).join(''));
+                }
+            };
+
+            const handleSubmit = () => {
+                const word = currentWord.toUpperCase();
+                
+                if (puzzle.words.includes(word) && !foundWords.includes(word)) {
+                    setFoundWords([...foundWords, word]);
+                    
+                    if (word === puzzle.spangram) {
+                        setFoundSpangram(true);
+                    }
+
+                    // Check if game complete
+                    if (foundWords.length + 1 === puzzle.words.length) {
+                        setGameOver(true);
+                        updateStats(true);
+                    }
+                }
+                
+                setSelectedCells([]);
+                setCurrentWord('');
+            };
+
+            const updateStats = async (won) => {
+                if (!user) return;
+
+                try {
+                    const userRef = db.collection('users').doc(user.uid);
+                    const doc = await userRef.get();
+                    const data = doc.data() || {};
+                    const strandsStats = data.strands || { played: 0, won: 0, streak: 0, maxStreak: 0, lastPlayed: '' };
+
+                    const today = getTodayString();
+                    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+                    
+                    let newStreak = strandsStats.streak;
+                    if (won) {
+                        if (strandsStats.lastPlayed === yesterday) {
+                            newStreak += 1;
+                        } else if (strandsStats.lastPlayed !== today) {
+                            newStreak = 1;
+                        }
+                    } else {
+                        newStreak = 0;
+                    }
+
+                    await userRef.set({
+                        ...data,
+                        displayName: user.displayName,
+                        email: user.email,
+                        photoURL: user.photoURL,
+                        strands: {
+                            played: strandsStats.played + 1,
+                            won: strandsStats.won + (won ? 1 : 0),
+                            streak: newStreak,
+                            maxStreak: Math.max(newStreak, strandsStats.maxStreak),
+                            lastPlayed: today
+                        }
+                    }, { merge: true });
+                } catch (error) {
+                    console.error('Error updating stats:', error);
+                }
+            };
+
+            return (
+                <div className="game-container">
+                    <button onClick={onBack} style={{marginBottom: '20px', padding: '8px 16px', border: 'none', background: '#f0f0f0', borderRadius: '8px', cursor: 'pointer'}}>
+                        ← Back
+                    </button>
+
+                    <div className="game-header">
+                        <h2 className="game-title-main">Strands</h2>
+                        <p className="game-subtitle">Find all theme words</p>
+                    </div>
+
+                    <div className="strands-theme">
+                        <h3>Today's Theme</h3>
+                        <div className="strands-theme-text">{puzzle.theme}</div>
+                    </div>
+
+                    <div className="strands-current-word">
+                        {currentWord || '...'}
+                    </div>
+
+                    <div className="strands-grid">
+                        {puzzle.grid.map((row, rowIndex) =>
+                            row.map((cell, colIndex) => {
+                                const cellKey = `${rowIndex}-${colIndex}`;
+                                const isSelected = selectedCells.some(c => c.key === cellKey);
+
+                                return (
+                                    <div
+                                        key={cellKey}
+                                        className={`strands-cell ${isSelected ? 'selected' : ''}`}
+                                        onClick={() => handleCellClick(rowIndex, colIndex)}
+                                    >
+                                        {cell}
+                                    </div>
+                                );
+                            })
+                        )}
+                    </div>
+
+                    <div className="connections-controls">
+                        <button className="control-button secondary" onClick={() => { setSelectedCells([]); setCurrentWord(''); }}>
+                            Clear
+                        </button>
+                        <button className="control-button primary" onClick={handleSubmit} disabled={currentWord.length < 4}>
+                            Submit
+                        </button>
+                    </div>
+
+                    <div className="strands-found-words">
+                        {foundWords.map(word => (
+                            <div key={word} className={`found-word-chip ${word === puzzle.spangram ? 'spangram' : 'theme'}`}>
+                                {word}
+                            </div>
+                        ))}
+                    </div>
+
+                    {gameOver && (
+                        <div className="modal-overlay">
+                            <div className="modal">
+                                <h2 className="modal-title">🎉 Puzzle Complete!</h2>
+                                <div className="modal-stats">
+                                    <div className="stat-item">
+                                        <div className="stat-value">{foundWords.length}</div>
+                                        <div className="stat-label">Words Found</div>
+                                    </div>
+                                </div>
+                                <button className="modal-button" onClick={onBack}>Back to Home</button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // Connections Game Component (keeping previous)
         function ConnectionsGame({ user, onBack }) {
             const [cards, setCards] = useState([]);
             const [selected, setSelected] = useState([]);
@@ -1534,7 +2215,6 @@
             const maxMistakes = 4;
 
             useEffect(() => {
-                // Shuffle all words
                 const allWords = CONNECTIONS_PUZZLE.groups.flatMap(g => g.words);
                 const shuffled = allWords.sort(() => Math.random() - 0.5);
                 setCards(shuffled);
@@ -1551,26 +2231,21 @@
             const handleSubmit = () => {
                 if (selected.length !== 4) return;
 
-                // Check if selection matches any group
                 const matchedGroup = CONNECTIONS_PUZZLE.groups.find(group => 
-                    selected.every(word => group.words.includes(word)) &&
-                    selected.length === 4
+                    selected.every(word => group.words.includes(word)) && selected.length === 4
                 );
 
                 if (matchedGroup) {
-                    // Correct group found
                     setFoundGroups([...foundGroups, matchedGroup]);
                     setCards(cards.filter(word => !selected.includes(word)));
                     setSelected([]);
 
-                    // Check if won
                     if (foundGroups.length + 1 === CONNECTIONS_PUZZLE.groups.length) {
                         setWon(true);
                         setGameOver(true);
                         updateStats(true);
                     }
                 } else {
-                    // Wrong group
                     const newMistakes = mistakes + 1;
                     setMistakes(newMistakes);
                     setSelected([]);
@@ -1639,7 +2314,7 @@
                     </button>
 
                     <div className="game-header">
-                        <h2 className="game-title">Connections</h2>
+                        <h2 className="game-title-main">Connections</h2>
                         <p className="game-subtitle">Find groups of four</p>
                     </div>
 
@@ -1705,7 +2380,7 @@
             );
         }
 
-        // Trivia Game Component
+        // Trivia Game Component (keeping previous)
         function TriviaGame({ user, onBack }) {
             const [currentQuestion, setCurrentQuestion] = useState(0);
             const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -1806,7 +2481,7 @@
                     </button>
 
                     <div className="game-header">
-                        <h2 className="game-title">Trivia</h2>
+                        <h2 className="game-title-main">Trivia</h2>
                         <p className="game-subtitle">Test your knowledge</p>
                     </div>
 
@@ -1883,7 +2558,7 @@
                         if (!gameStats) return;
 
                         let score = 0;
-                        if (activeGame === 'wordle' || activeGame === 'connections') {
+                        if (activeGame === 'wordle' || activeGame === 'connections' || activeGame === 'crossword' || activeGame === 'strands') {
                             score = gameStats.streak || 0;
                         } else if (activeGame === 'trivia') {
                             score = gameStats.bestScore || 0;
@@ -1904,7 +2579,7 @@
                         return b.played - a.played;
                     });
 
-                    setLeaderboard(entries.slice(0, 50)); // Top 50
+                    setLeaderboard(entries.slice(0, 50));
                     setLoading(false);
                 } catch (error) {
                     console.error('Error loading leaderboard:', error);
@@ -1926,7 +2601,7 @@
             return (
                 <div className="game-container">
                     <div className="game-header">
-                        <h2 className="game-title">Leaderboard</h2>
+                        <h2 className="game-title-main">Leaderboard</h2>
                         <p className="game-subtitle">Top players by game</p>
                     </div>
 
@@ -1936,6 +2611,18 @@
                             onClick={() => setActiveGame('wordle')}
                         >
                             Wordle
+                        </button>
+                        <button 
+                            className={`tab-button ${activeGame === 'crossword' ? 'active' : ''}`}
+                            onClick={() => setActiveGame('crossword')}
+                        >
+                            Crossword
+                        </button>
+                        <button 
+                            className={`tab-button ${activeGame === 'strands' ? 'active' : ''}`}
+                            onClick={() => setActiveGame('strands')}
+                        >
+                            Strands
                         </button>
                         <button 
                             className={`tab-button ${activeGame === 'connections' ? 'active' : ''}`}
@@ -1992,7 +2679,7 @@
                 return (
                     <div className="game-container">
                         <div className="game-header">
-                            <h2 className="game-title">Profile</h2>
+                            <h2 className="game-title-main">Profile</h2>
                         </div>
                         <div style={{textAlign: 'center', padding: '40px'}}>
                             <p style={{color: '#666'}}>Please sign in to view your profile</p>
@@ -2002,6 +2689,8 @@
             }
 
             const wordleStats = userStats?.wordle || { played: 0, won: 0, streak: 0, maxStreak: 0 };
+            const crosswordStats = userStats?.crossword || { played: 0, won: 0, streak: 0, maxStreak: 0 };
+            const strandsStats = userStats?.strands || { played: 0, won: 0, streak: 0, maxStreak: 0 };
             const connectionsStats = userStats?.connections || { played: 0, won: 0, streak: 0, maxStreak: 0 };
             const triviaStats = userStats?.trivia || { played: 0, totalScore: 0, perfectGames: 0, bestScore: 0 };
             const avgTriviaScore = triviaStats.played > 0 ? Math.round((triviaStats.totalScore / triviaStats.played / 10) * 100) : 0;
@@ -2009,7 +2698,7 @@
             return (
                 <div className="game-container">
                     <div className="game-header">
-                        <h2 className="game-title">Profile</h2>
+                        <h2 className="game-title-main">Profile</h2>
                     </div>
 
                     <div style={{background: 'white', padding: '24px', borderRadius: '16px', textAlign: 'center', marginBottom: '24px'}}>
@@ -2035,6 +2724,50 @@
                             </div>
                             <div className="stat-item">
                                 <div className="stat-value">{wordleStats.maxStreak}</div>
+                                <div className="stat-label">Best Streak</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={{background: 'white', padding: '24px', borderRadius: '16px', marginBottom: '16px'}}>
+                        <h3 style={{fontWeight: '700', marginBottom: '16px'}}>Mini Crossword Stats</h3>
+                        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px'}}>
+                            <div className="stat-item">
+                                <div className="stat-value">{crosswordStats.played}</div>
+                                <div className="stat-label">Played</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{crosswordStats.won}</div>
+                                <div className="stat-label">Won</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{crosswordStats.streak}</div>
+                                <div className="stat-label">Current Streak</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{crosswordStats.maxStreak}</div>
+                                <div className="stat-label">Best Streak</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={{background: 'white', padding: '24px', borderRadius: '16px', marginBottom: '16px'}}>
+                        <h3 style={{fontWeight: '700', marginBottom: '16px'}}>Strands Stats</h3>
+                        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px'}}>
+                            <div className="stat-item">
+                                <div className="stat-value">{strandsStats.played}</div>
+                                <div className="stat-label">Played</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{strandsStats.won}</div>
+                                <div className="stat-label">Won</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{strandsStats.streak}</div>
+                                <div className="stat-label">Current Streak</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">{strandsStats.maxStreak}</div>
                                 <div className="stat-label">Best Streak</div>
                             </div>
                         </div>
