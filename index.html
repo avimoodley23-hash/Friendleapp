@@ -83,6 +83,86 @@
             background: #f0f0f0;
         }
 
+        /* Side Menu */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            animation: fadeIn 0.2s;
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100vh;
+            background: white;
+            z-index: 1000;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+
+        .menu-header {
+            padding: 20px;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .close-button:hover {
+            background: #f0f0f0;
+        }
+
+        .menu-item {
+            padding: 16px 20px;
+            border: none;
+            background: white;
+            text-align: left;
+            font-size: 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .menu-item:hover {
+            background: #f8f8f8;
+        }
+
         .nav-title {
             font-family: 'Playfair Display', serif;
             font-size: 28px;
@@ -255,36 +335,26 @@
         }
 
         .game-icon {
-            width: 48px;
-            height: 48px;
+            width: 56px;
+            height: 56px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            font-weight: 700;
-            color: white;
+            font-size: 32px;
+            flex-shrink: 0;
         }
 
         .wordle-icon {
-            background: #6aaa64;
+            background: linear-gradient(135deg, #6aaa64 0%, #5a9a54 100%);
         }
 
         .connections-icon {
-            background: #ba81c5;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2px;
-            padding: 4px;
-        }
-
-        .connections-icon div {
-            background: rgba(255,255,255,0.3);
-            border-radius: 2px;
+            background: linear-gradient(135deg, #ba81c5 0%, #aa71b5 100%);
         }
 
         .trivia-icon {
-            background: #f59e0b;
+            background: linear-gradient(135deg, #f59e0b 0%, #e58e0a 100%);
         }
 
         .game-details h3 {
@@ -1235,20 +1305,54 @@ Generate exactly 10 questions across mixed categories.`
 
         // Navbar Component
         function Navbar({ activeTab, setActiveTab, user }) {
+            const [menuOpen, setMenuOpen] = useState(false);
+            
             return (
-                <nav className="navbar">
-                    <button className="nav-button" onClick={() => activeTab !== 'home' && setActiveTab('home')}>
-                        {activeTab !== 'home' ? <ArrowLeftIcon /> : <MenuIcon />}
-                    </button>
-                    <span className="nav-title">Friendle</span>
-                    <button className="nav-button" onClick={() => setActiveTab('profile')}>
-                        {user && user.photoURL ? (
-                            <img src={user.photoURL} alt="Profile" className="user-avatar" style={{width: '32px', height: '32px'}} />
-                        ) : (
-                            <UserIcon />
-                        )}
-                    </button>
-                </nav>
+                <>
+                    <nav className="navbar">
+                        <button className="nav-button" onClick={() => {
+                            if (activeTab !== 'home') {
+                                setActiveTab('home');
+                            } else {
+                                setMenuOpen(!menuOpen);
+                            }
+                        }}>
+                            {activeTab !== 'home' ? <ArrowLeftIcon /> : <MenuIcon />}
+                        </button>
+                        <span className="nav-title">Friendle</span>
+                        <button className="nav-button" onClick={() => setActiveTab('profile')}>
+                            {user && user.photoURL ? (
+                                <img src={user.photoURL} alt="Profile" className="user-avatar" style={{width: '32px', height: '32px'}} />
+                            ) : (
+                                <UserIcon />
+                            )}
+                        </button>
+                    </nav>
+                    
+                    {/* Side Menu */}
+                    {menuOpen && (
+                        <>
+                            <div className="menu-overlay" onClick={() => setMenuOpen(false)}></div>
+                            <div className="side-menu">
+                                <div className="menu-header">
+                                    <h3>Menu</h3>
+                                    <button className="close-button" onClick={() => setMenuOpen(false)}>✕</button>
+                                </div>
+                                <button className="menu-item" onClick={() => { setActiveTab('home'); setMenuOpen(false); }}>
+                                    🏠 Home
+                                </button>
+                                <button className="menu-item" onClick={() => { setActiveTab('leaderboard'); setMenuOpen(false); }}>
+                                    🏆 Leaderboard
+                                </button>
+                                {user && (
+                                    <button className="menu-item" onClick={() => { setActiveTab('profile'); setMenuOpen(false); }}>
+                                        👤 Profile
+                                    </button>
+                                )}
+                            </div>
+                        </>
+                    )}
+                </>
             );
         }
 
@@ -1284,7 +1388,7 @@ Generate exactly 10 questions across mixed categories.`
 
                     <div className="game-card" onClick={() => !hasPlayedWordle && setActiveTab('wordle')} style={{opacity: hasPlayedWordle ? 0.6 : 1}}>
                         <div className="game-info">
-                            <div className="game-icon wordle-icon">F</div>
+                            <div className="game-icon wordle-icon">📝</div>
                             <div className="game-details">
                                 <h3>Friendle Word</h3>
                                 <p>{hasPlayedWordle ? '✓ Completed today' : 'Guess the 5-letter word'}</p>
@@ -1297,9 +1401,7 @@ Generate exactly 10 questions across mixed categories.`
 
                     <div className="game-card" onClick={() => !hasPlayedConnections && setActiveTab('connections')} style={{opacity: hasPlayedConnections ? 0.6 : 1}}>
                         <div className="game-info">
-                            <div className="game-icon connections-icon">
-                                <div></div><div></div><div></div><div></div>
-                            </div>
+                            <div className="game-icon connections-icon">🔗</div>
                             <div className="game-details">
                                 <h3>Connections</h3>
                                 <p>{hasPlayedConnections ? '✓ Completed today' : 'Group words by theme'}</p>
@@ -1312,7 +1414,7 @@ Generate exactly 10 questions across mixed categories.`
 
                     <div className="game-card" onClick={() => !hasPlayedTrivia && setActiveTab('trivia')} style={{opacity: hasPlayedTrivia ? 0.6 : 1}}>
                         <div className="game-info">
-                            <div className="game-icon trivia-icon">?</div>
+                            <div className="game-icon trivia-icon">🧠</div>
                             <div className="game-details">
                                 <h3>Daily Trivia</h3>
                                 <p>{hasPlayedTrivia ? '✓ Completed today' : 'Answer 10 random questions'}</p>
