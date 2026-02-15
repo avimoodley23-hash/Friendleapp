@@ -40,6 +40,8 @@
             background-color: #f8f8f8;
             color: #121213;
             -webkit-tap-highlight-color: transparent;
+            overscroll-behavior: none;
+            touch-action: pan-y;
         }
 
         .nyt-serif {
@@ -63,11 +65,11 @@
             z-index: 50;
             background: white;
             border-bottom: 1px solid #e5e5e5;
-            height: 64px;
+            height: 56px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 16px;
+            padding: 0 12px;
         }
 
         .nav-button {
@@ -77,9 +79,14 @@
             cursor: pointer;
             border-radius: 50%;
             transition: background 0.2s;
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .nav-button:hover {
+        .nav-button:active {
             background: #f0f0f0;
         }
 
@@ -139,9 +146,11 @@
             cursor: pointer;
             padding: 4px 8px;
             border-radius: 4px;
+            min-width: 44px;
+            min-height: 44px;
         }
 
-        .close-button:hover {
+        .close-button:active {
             background: #f0f0f0;
         }
 
@@ -157,15 +166,16 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            min-height: 56px;
         }
 
-        .menu-item:hover {
+        .menu-item:active {
             background: #f8f8f8;
         }
 
         .nav-title {
             font-family: 'Playfair Display', serif;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
             letter-spacing: -0.5px;
         }
@@ -175,18 +185,19 @@
             flex: 1;
             overflow-y: auto;
             padding-bottom: 80px;
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Home Screen */
         .home-container {
             max-width: 450px;
             margin: 0 auto;
-            padding: 40px 24px;
+            padding: 24px 16px;
         }
 
         .home-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 32px;
         }
 
         .date-label {
@@ -198,214 +209,96 @@
             margin-bottom: 8px;
         }
 
-        .app-title {
+        .main-title {
             font-family: 'Playfair Display', serif;
-            font-size: 48px;
+            font-size: 36px;
             font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        .app-subtitle {
-            font-size: 14px;
-            color: #666;
-            padding: 0 32px;
-            line-height: 1.5;
-        }
-
-        /* Auth Card */
-        .auth-card {
-            background: #121213;
-            color: white;
-            padding: 32px;
-            border-radius: 24px;
-            text-align: center;
-            margin-top: 32px;
-        }
-
-        .auth-card h3 {
-            font-size: 20px;
             margin-bottom: 8px;
         }
 
-        .auth-card p {
-            color: #aaa;
+        .subtitle {
+            color: #666;
             font-size: 14px;
-            margin-bottom: 20px;
         }
 
-        .sign-in-button {
-            background: white;
-            color: #121213;
-            border: none;
-            padding: 14px 24px;
-            border-radius: 24px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: background 0.2s;
-        }
-
-        .sign-in-button:hover {
-            background: #f0f0f0;
-        }
-
-        .sign-out-button {
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 14px 24px;
-            border-radius: 24px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            width: 100%;
-            transition: background 0.2s;
-        }
-
-        .sign-out-button:hover {
-            background: #dc2626;
-        }
-
-        /* User Info */
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            background: white;
-            border-radius: 12px;
+        .game-grid {
+            display: grid;
+            gap: 16px;
             margin-bottom: 24px;
         }
 
-        .user-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-        }
-
-        .user-details h4 {
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        .user-details p {
-            font-size: 12px;
-            color: #666;
-        }
-
-        /* Game Cards */
         .game-card {
             background: white;
-            border: 1px solid #e5e5e5;
-            padding: 24px;
             border-radius: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            min-height: 120px;
+        }
+
+        .game-card:active {
+            transform: scale(0.98);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
+
+        .game-card.completed {
+            border-color: #6aaa64;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f8f0 100%);
+        }
+
+        .game-card-header {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-        }
-
-        .game-card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transform: translateY(-2px);
-        }
-
-        .game-card.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .game-card.disabled:hover {
-            transform: none;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .game-info {
-            display: flex;
             align-items: center;
-            gap: 16px;
+            margin-bottom: 12px;
         }
 
         .game-icon {
-            width: 56px;
-            height: 56px;
+            width: 44px;
+            height: 44px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
-            flex-shrink: 0;
+            font-size: 24px;
         }
 
-        .wordle-icon {
-            background: linear-gradient(135deg, #6aaa64 0%, #5a9a54 100%);
-        }
-
-        .connections-icon {
-            background: linear-gradient(135deg, #ba81c5 0%, #aa71b5 100%);
-        }
-
-        .trivia-icon {
-            background: linear-gradient(135deg, #f59e0b 0%, #e58e0a 100%);
-        }
-
-        .game-details h3 {
-            font-size: 18px;
+        .game-title {
+            font-size: 20px;
             font-weight: 700;
             margin-bottom: 4px;
         }
 
-        .game-details p {
-            font-size: 12px;
+        .game-description {
+            font-size: 14px;
             color: #666;
+            line-height: 1.4;
         }
 
-        .game-arrow {
-            color: #999;
-            transition: color 0.2s;
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
         }
 
-        .game-card:hover .game-arrow {
-            color: #121213;
+        .status-badge.completed {
+            background: #6aaa64;
+            color: white;
         }
 
-        /* Loading Spinner */
-        .loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 60vh;
-            gap: 16px;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f0f0f0;
-            border-top: 4px solid #121213;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .status-badge.available {
+            background: #e5e5e5;
+            color: #666;
         }
 
         /* Game Container */
         .game-container {
             max-width: 450px;
             margin: 0 auto;
-            padding: 32px 16px;
+            padding: 20px 16px;
         }
 
         .game-header {
@@ -415,55 +308,32 @@
 
         .game-title {
             font-family: 'Playfair Display', serif;
-            font-size: 32px;
+            font-size: 28px;
+            font-weight: 700;
             margin-bottom: 8px;
         }
 
         .game-subtitle {
-            font-size: 14px;
             color: #666;
-        }
-
-        /* Stats Bar */
-        .stats-bar {
-            display: flex;
-            justify-content: center;
-            gap: 32px;
-            margin-bottom: 24px;
             font-size: 14px;
         }
 
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 12px;
-        }
-
-        /* Wordle Grid */
-        .wordle-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            align-items: center;
-            margin-bottom: 24px;
+        /* Wordle Styles */
+        .wordle-board {
+            display: grid;
+            gap: 5px;
+            margin: 24px auto;
+            max-width: 350px;
         }
 
         .wordle-row {
-            display: flex;
-            gap: 4px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
         }
 
-        .wordle-cell {
-            width: 56px;
-            height: 56px;
+        .wordle-tile {
+            aspect-ratio: 1;
             border: 2px solid #d3d6da;
             display: flex;
             align-items: center;
@@ -471,173 +341,513 @@
             font-size: 32px;
             font-weight: 700;
             text-transform: uppercase;
-            transition: all 0.2s;
+            background: white;
+            border-radius: 4px;
+            transition: all 0.3s;
         }
 
-        .wordle-cell.filled {
+        .wordle-tile.filled {
             border-color: #878a8c;
         }
 
-        .wordle-cell.correct {
+        .wordle-tile.correct {
             background: #6aaa64;
             border-color: #6aaa64;
             color: white;
         }
 
-        .wordle-cell.present {
+        .wordle-tile.present {
             background: #c9b458;
             border-color: #c9b458;
             color: white;
         }
 
-        .wordle-cell.absent {
+        .wordle-tile.absent {
             background: #787c7e;
             border-color: #787c7e;
             color: white;
         }
 
-        /* Connections Game */
+        /* Mobile Keyboard */
+        .mobile-keyboard {
+            margin-top: 24px;
+            padding: 0 8px;
+        }
+
+        .keyboard-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+            justify-content: center;
+        }
+
+        .keyboard-key {
+            flex: 1;
+            max-width: 43px;
+            height: 58px;
+            border: none;
+            border-radius: 4px;
+            background: #d3d6da;
+            color: #000;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.1s;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .keyboard-key:active {
+            transform: scale(0.95);
+            background: #bbb;
+        }
+
+        .keyboard-key.wide {
+            flex: 1.5;
+            max-width: 65px;
+            font-size: 12px;
+        }
+
+        .keyboard-key.correct {
+            background: #6aaa64;
+            color: white;
+        }
+
+        .keyboard-key.present {
+            background: #c9b458;
+            color: white;
+        }
+
+        .keyboard-key.absent {
+            background: #787c7e;
+            color: white;
+        }
+
+        /* Connections Styles */
         .connections-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 8px;
-            margin-bottom: 24px;
+            margin: 24px auto;
+            max-width: 400px;
         }
 
-        .connections-word {
-            aspect-ratio: 1;
-            background: #efefe6;
+        .connection-card {
+            aspect-ratio: 1.2;
+            background: white;
+            border: 2px solid #e5e5e5;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 13px;
-            font-weight: 700;
             text-align: center;
             padding: 8px;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
-            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .connections-word:hover {
-            background: #e7e7de;
-        }
-
-        .connections-word.selected {
-            background: #5a594e;
-            color: white;
+        .connection-card:active {
             transform: scale(0.95);
         }
 
-        .connections-solved {
-            padding: 16px;
-            border-radius: 12px;
+        .connection-card.selected {
+            background: #5a594e;
+            color: white;
+            border-color: #5a594e;
+        }
+
+        .connection-card.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .found-group {
             margin-bottom: 12px;
+            border-radius: 8px;
+            padding: 16px;
             text-align: center;
         }
 
-        .connections-solved h4 {
+        .found-group.yellow {
+            background: #f9df6d;
+        }
+
+        .found-group.green {
+            background: #a0c35a;
+        }
+
+        .found-group.blue {
+            background: #b0c4ef;
+        }
+
+        .found-group.purple {
+            background: #ba81c5;
+        }
+
+        .found-group h3 {
+            font-size: 14px;
             font-weight: 700;
+            text-transform: uppercase;
             margin-bottom: 8px;
+            letter-spacing: 0.5px;
         }
 
-        .connections-solved p {
-            font-size: 14px;
+        .found-group p {
+            font-size: 16px;
+            font-weight: 600;
         }
 
-        .difficulty-1 { background: #f9df6d; }
-        .difficulty-2 { background: #a0c35a; }
-        .difficulty-3 { background: #b0c4ef; }
-        .difficulty-4 { background: #ba81c5; }
-
-        /* Mistakes */
-        .mistakes-display {
+        .connections-controls {
             display: flex;
+            gap: 12px;
             justify-content: center;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 24px;
+            margin-top: 20px;
         }
 
-        .mistake-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #d3d6da;
-        }
-
-        .mistake-dot.used {
-            background: #ef4444;
-        }
-
-        /* Buttons */
-        .button-group {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .button {
-            flex: 1;
-            padding: 14px 16px;
-            border-radius: 24px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
+        .control-button {
+            padding: 12px 24px;
             border: none;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.2s;
+            min-width: 120px;
         }
 
-        .button-secondary {
-            background: white;
-            border: 1px solid #d3d6da;
-            color: #121213;
+        .control-button:active {
+            transform: scale(0.95);
         }
 
-        .button-secondary:hover {
-            background: #f8f8f8;
-        }
-
-        .button-primary {
-            background: #121213;
+        .control-button.primary {
+            background: #000;
             color: white;
         }
 
-        .button-primary:hover {
-            background: #2a2a2a;
+        .control-button.secondary {
+            background: white;
+            color: #000;
+            border: 2px solid #000;
         }
 
-        .button:disabled {
+        .control-button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
 
-        /* Legend */
-        .legend {
+        .mistakes-remaining {
             text-align: center;
-            font-size: 12px;
-            color: #666;
             margin-top: 16px;
+            font-size: 14px;
+            color: #666;
         }
 
-        .legend-items {
+        .mistakes-dots {
             display: flex;
+            gap: 8px;
             justify-content: center;
-            gap: 16px;
             margin-top: 8px;
         }
 
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
+        .mistake-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #000;
         }
 
-        .legend-color {
-            width: 16px;
-            height: 16px;
-            border-radius: 2px;
+        .mistake-dot.used {
+            background: #e5e5e5;
+        }
+
+        /* Trivia Styles */
+        .trivia-container {
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .answer-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .answer-button {
+            padding: 16px;
+            border: 2px solid #e5e5e5;
+            border-radius: 12px;
+            background: white;
+            text-align: left;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 56px;
+            display: flex;
+            align-items: center;
+        }
+
+        .answer-button:active {
+            transform: scale(0.98);
+        }
+
+        .answer-button.selected {
+            border-color: #000;
+            background: #f8f8f8;
+        }
+
+        .answer-button.correct {
+            border-color: #6aaa64;
+            background: #f0f8f0;
+        }
+
+        .answer-button.incorrect {
+            border-color: #d32f2f;
+            background: #fff0f0;
+        }
+
+        .answer-button:disabled {
+            cursor: not-allowed;
+        }
+
+        .trivia-progress {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 24px;
+            justify-content: center;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #e5e5e5;
+        }
+
+        .progress-dot.current {
+            background: #000;
+        }
+
+        .progress-dot.correct {
+            background: #6aaa64;
+        }
+
+        .progress-dot.incorrect {
+            background: #d32f2f;
+        }
+
+        /* Results Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            animation: fadeIn 0.2s;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            padding: 32px 24px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .modal-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-button {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            background: #000;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            min-height: 56px;
+        }
+
+        .modal-button:active {
+            opacity: 0.8;
+        }
+
+        /* Leaderboard */
+        .leaderboard-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 0 4px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            border: 2px solid #e5e5e5;
+            border-radius: 24px;
+            background: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            min-height: 44px;
+        }
+
+        .tab-button:active {
+            transform: scale(0.95);
+        }
+
+        .tab-button.active {
+            background: #000;
+            color: white;
+            border-color: #000;
+        }
+
+        .leaderboard-entry {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .leaderboard-entry.me {
+            border: 2px solid #6aaa64;
+            background: #f0f8f0;
+        }
+
+        .leaderboard-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .rank {
+            font-size: 18px;
+            font-weight: 700;
+            min-width: 35px;
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #e5e5e5;
+        }
+
+        .player-info h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .player-info p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .streak-info {
+            text-align: right;
+        }
+
+        .streak-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .streak-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* Bottom Navigation */
@@ -648,560 +858,338 @@
             right: 0;
             max-width: 500px;
             margin: 0 auto;
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(10px);
+            background: white;
             border-top: 1px solid #e5e5e5;
-            padding: 12px 24px;
             display: flex;
             justify-content: space-around;
-            align-items: center;
-            z-index: 50;
+            padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+            z-index: 100;
         }
 
         .nav-item {
+            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 4px;
-            cursor: pointer;
-            color: #999;
-            transition: color 0.2s;
             background: none;
             border: none;
             padding: 8px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.2s;
+            min-height: 56px;
+            justify-content: center;
+        }
+
+        .nav-item:active {
+            opacity: 0.6;
         }
 
         .nav-item.active {
-            color: #121213;
-        }
-
-        .nav-icon {
-            width: 24px;
-            height: 24px;
+            color: #000;
         }
 
         .nav-label {
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            font-size: 11px;
+            font-weight: 600;
         }
 
-        /* Message */
-        .message {
+        /* Loading & Messages */
+        .loading {
             text-align: center;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-            background: #e3f2fd;
-            color: #1565c0;
-            font-size: 14px;
+            padding: 60px 20px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #000;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .message {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        .message.error {
+            background: #fff0f0;
+            color: #d32f2f;
+            border: 1px solid #ffcdd2;
         }
 
         .message.success {
-            background: #e8f5e9;
+            background: #f0f8f0;
             color: #2e7d32;
+            border: 1px solid #c8e6c9;
         }
 
-        /* Leaderboard */
-        .leaderboard-entry {
-            background: white;
-            border: 1px solid #e5e5e5;
-            padding: 16px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .leaderboard-entry.me {
-            background: #fffbeb;
-            border-color: #fbbf24;
-        }
-
-        .leaderboard-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .rank {
-            font-weight: 700;
-            color: #999;
-            min-width: 24px;
-        }
-
-        .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #e5e5e5;
-        }
-
-        .player-info h4 {
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .player-info p {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .streak-info {
-            text-align: right;
-        }
-
-        .streak-value {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .streak-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #999;
-        }
-
-        /* Trivia Styles */
-        .trivia-progress {
+        /* Sign In */
+        .sign-in-container {
             text-align: center;
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 24px;
+            padding: 40px 20px;
         }
 
-        .trivia-progress-bar {
-            background: #e5e5e5;
-            height: 8px;
-            border-radius: 4px;
-            margin-bottom: 8px;
-            overflow: hidden;
-        }
-
-        .trivia-progress-fill {
-            background: #f59e0b;
-            height: 100%;
-            transition: width 0.3s;
-        }
-
-        .trivia-question-card {
-            background: white;
-            padding: 32px 24px;
-            border-radius: 16px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .trivia-category {
-            display: inline-block;
-            background: #f59e0b;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 16px;
-        }
-
-        .trivia-question {
-            font-size: 20px;
-            font-weight: 600;
-            line-height: 1.5;
-            margin-bottom: 24px;
-            color: #121213;
-        }
-
-        .trivia-answers {
-            display: flex;
-            flex-direction: column;
+        .sign-in-button {
+            display: inline-flex;
+            align-items: center;
             gap: 12px;
-        }
-
-        .trivia-answer {
-            background: #f8f8f8;
-            border: 2px solid transparent;
-            padding: 16px;
-            border-radius: 12px;
-            text-align: left;
+            padding: 14px 28px;
+            background: white;
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            margin-top: 24px;
+            min-height: 56px;
+        }
+
+        .sign-in-button:active {
+            transform: scale(0.98);
+        }
+
+        .sign-out-button {
+            width: 100%;
+            padding: 16px;
+            background: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 8px;
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 16px;
+            min-height: 56px;
         }
 
-        .trivia-answer:hover {
-            background: #f0f0f0;
-            border-color: #f59e0b;
+        .sign-out-button:active {
+            opacity: 0.8;
         }
 
-        .trivia-answer.selected {
-            background: #fef3c7;
-            border-color: #f59e0b;
+        /* Responsive adjustments */
+        @media (max-width: 380px) {
+            .keyboard-key {
+                max-width: 32px;
+                height: 52px;
+                font-size: 11px;
+            }
+            
+            .keyboard-key.wide {
+                max-width: 50px;
+            }
+            
+            .wordle-tile {
+                font-size: 28px;
+            }
         }
 
-        .trivia-answer.correct {
-            background: #d1fae5;
-            border-color: #10b981;
-            color: #065f46;
-        }
-
-        .trivia-answer.incorrect {
-            background: #fee2e2;
-            border-color: #ef4444;
-            color: #991b1b;
-        }
-
-        .trivia-answer:disabled {
-            cursor: not-allowed;
-        }
-
-        .trivia-result {
-            text-align: center;
-            padding: 32px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .trivia-score-big {
-            font-size: 64px;
-            font-weight: 700;
-            color: #f59e0b;
-            margin-bottom: 8px;
-        }
-
-        .trivia-result h3 {
-            font-size: 24px;
-            margin-bottom: 16px;
-        }
-
-        .trivia-result p {
-            color: #666;
-            margin-bottom: 24px;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        .shake {
-            animation: shake 0.2s cubic-bezier(.36,.07,.19,.97);
+        /* Fix iOS safari bottom bar */
+        @supports (padding: max(0px)) {
+            .main-content {
+                padding-bottom: max(80px, env(safe-area-inset-bottom));
+            }
         }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
-    <script>
-        // Initialize Firebase
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // Firebase config
         const firebaseConfig = {
-            apiKey: "AIzaSyCndOWS881gWZO98ub8o_-tCdJMYiCgobg",
-            authDomain: "friendle-1eef2.firebaseapp.com",
-            projectId: "friendle-1eef2",
-            storageBucket: "friendle-1eef2.firebasestorage.app",
-            messagingSenderId: "413852218027",
-            appId: "1:413852218027:web:889bc573b21255db08bdee",
+            apiKey: "AIzaSyDfiGkC_FLvJpRa1Uj2SQdHCUVpMLs7GjM",
+            authDomain: "friendle-6d1ee.firebaseapp.com",
+            projectId: "friendle-6d1ee",
+            storageBucket: "friendle-6d1ee.firebasestorage.app",
+            messagingSenderId: "775074509773",
+            appId: "1:775074509773:web:3fceb0ec90fb7c9edc9dc6",
             measurementId: "G-WH2523K0GB"
         };
 
-        firebase.initializeApp(firebaseConfig);
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
         const auth = firebase.auth();
         const db = firebase.firestore();
-        const googleProvider = new firebase.auth.GoogleAuthProvider();
         const analytics = firebase.analytics();
-        
-        // Analytics helper function
-        const logEvent = (eventName, params = {}) => {
-            try {
-                analytics.logEvent(eventName, params);
-            } catch (error) {
-                console.error('Analytics error:', error);
+
+        // Icons
+        function MenuIcon() {
+            return (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            );
+        }
+
+        function CalendarIcon() {
+            return (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+            );
+        }
+
+        function TrophyIcon() {
+            return (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                    <path d="M4 22h16"></path>
+                    <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                    <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                    <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+                </svg>
+            );
+        }
+
+        function UserIcon() {
+            return (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            );
+        }
+
+        function CheckIcon() {
+            return (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            );
+        }
+
+        // Helper functions
+        function getTodayString() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        // Wordle word list (sample - you'd want a larger list)
+        const WORDLE_WORDS = [
+            'REACT', 'BRAVE', 'CLOUD', 'DREAM', 'FLASH', 'GRACE', 'HEART', 'IMAGE',
+            'JUICE', 'KNIFE', 'LIGHT', 'MAGIC', 'NIGHT', 'OCEAN', 'PEACE', 'QUEEN',
+            'RIVER', 'STORM', 'TIGER', 'UNITY', 'VOICE', 'WATER', 'YOUTH', 'ZEBRA'
+        ];
+
+        function getWordOfTheDay() {
+            const today = getTodayString();
+            const seed = today.split('-').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+            return WORDLE_WORDS[seed % WORDLE_WORDS.length];
+        }
+
+        // Sample trivia questions
+        const TRIVIA_QUESTIONS = [
+            {
+                question: "What is the capital of France?",
+                options: ["London", "Berlin", "Paris", "Madrid"],
+                correct: 2
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                options: ["Venus", "Mars", "Jupiter", "Saturn"],
+                correct: 1
+            },
+            {
+                question: "Who painted the Mona Lisa?",
+                options: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
+                correct: 2
+            },
+            {
+                question: "What is the largest ocean on Earth?",
+                options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+                correct: 3
+            },
+            {
+                question: "In what year did World War II end?",
+                options: ["1943", "1944", "1945", "1946"],
+                correct: 2
+            },
+            {
+                question: "What is the smallest prime number?",
+                options: ["0", "1", "2", "3"],
+                correct: 2
+            },
+            {
+                question: "Which element has the chemical symbol 'O'?",
+                options: ["Gold", "Oxygen", "Silver", "Iron"],
+                correct: 1
+            },
+            {
+                question: "How many continents are there?",
+                options: ["5", "6", "7", "8"],
+                correct: 2
+            },
+            {
+                question: "What is the fastest land animal?",
+                options: ["Lion", "Cheetah", "Leopard", "Tiger"],
+                correct: 1
+            },
+            {
+                question: "Which country is home to the kangaroo?",
+                options: ["New Zealand", "South Africa", "Australia", "Brazil"],
+                correct: 2
             }
+        ];
+
+        // Sample connections puzzle
+        const CONNECTIONS_PUZZLE = {
+            groups: [
+                { category: "TYPES OF COFFEE", words: ["LATTE", "MOCHA", "ESPRESSO", "CAPPUCCINO"], color: "yellow" },
+                { category: "PROGRAMMING LANGUAGES", words: ["PYTHON", "JAVA", "RUBY", "SWIFT"], color: "green" },
+                { category: "PLANETS", words: ["MARS", "VENUS", "JUPITER", "SATURN"], color: "blue" },
+                { category: "MUSIC GENRES", words: ["JAZZ", "ROCK", "BLUES", "FOLK"], color: "purple" }
+            ]
         };
-        
-        // ============================================
-        // GEMINI AI INTEGRATION
-        // ============================================
-        
-        const GEMINI_API_KEY = "AIzaSyA5IAXSfFSdzmlrqoerhk4p30TrLvmSV4Y";
-        const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
-        
-        const getTodayDate = () => new Date().toISOString().split('T')[0];
-        
-        // Generate Wordle word using Gemini
-        const generateWordleWord = async () => {
-            try {
-                logEvent('ai_generation_start', { type: 'wordle' });
-                const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{
-                                text: "Generate a single common 5-letter English word suitable for a Wordle game. The word should be: 1) A common English word that most people know 2) Not a proper noun 3) Not offensive. Respond with ONLY the word in uppercase, nothing else."
-                            }]
-                        }]
-                    })
-                });
-                const data = await response.json();
-                const word = data.candidates[0].content.parts[0].text.trim().toUpperCase();
-                if (word.length === 5 && /^[A-Z]+$/.test(word)) {
-                    logEvent('ai_generation_success', { type: 'wordle' });
-                    return word;
-                }
-                return 'BRAIN';
-            } catch (error) {
-                console.error('Error generating Wordle word:', error);
-                logEvent('ai_generation_error', { type: 'wordle' });
-                return 'BRAIN';
-            }
-        };
-        
-        // Generate Connections puzzle
-        const generateConnectionsPuzzle = async () => {
-            try {
-                logEvent('ai_generation_start', { type: 'connections' });
-                const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{
-                                text: `Generate a Connections puzzle with 4 groups of 4 related words. Return ONLY valid JSON:
-{
-  "groups": [
-    {"category": "Group 1", "words": ["WORD1", "WORD2", "WORD3", "WORD4"], "color": "yellow"},
-    {"category": "Group 2", "words": ["WORD5", "WORD6", "WORD7", "WORD8"], "color": "green"},
-    {"category": "Group 3", "words": ["WORD9", "WORD10", "WORD11", "WORD12"], "color": "blue"},
-    {"category": "Group 4", "words": ["WORD13", "WORD14", "WORD15", "WORD16"], "color": "purple"}
-  ]
-}`
-                            }]
-                        }]
-                    })
-                });
-                const data = await response.json();
-                const jsonText = data.candidates[0].content.parts[0].text.trim();
-                const cleanJson = jsonText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-                const puzzle = JSON.parse(cleanJson);
-                logEvent('ai_generation_success', { type: 'connections' });
-                return puzzle;
-            } catch (error) {
-                console.error('Error generating Connections:', error);
-                logEvent('ai_generation_error', { type: 'connections' });
-                return {
-                    groups: [
-                        { category: 'Primary Colors', words: ['RED', 'BLUE', 'YELLOW', 'GREEN'], color: 'yellow' },
-                        { category: 'Seasons', words: ['SPRING', 'SUMMER', 'FALL', 'WINTER'], color: 'green' },
-                        { category: 'Instruments', words: ['PIANO', 'GUITAR', 'DRUM', 'VIOLIN'], color: 'blue' },
-                        { category: 'Languages', words: ['PYTHON', 'JAVA', 'RUBY', 'SWIFT'], color: 'purple' }
-                    ]
-                };
-            }
-        };
-        
-        // Generate Trivia questions
-        const generateTriviaQuestions = async () => {
-            try {
-                logEvent('ai_generation_start', { type: 'trivia' });
-                const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{
-                                text: `Generate 10 trivia questions. Return ONLY valid JSON:
-{
-  "questions": [
-    {"question": "Question text?", "options": ["A", "B", "C", "D"], "correct": 0, "category": "Science"}
-  ]
-}
-Generate exactly 10 questions across mixed categories.`
-                            }]
-                        }]
-                    })
-                });
-                const data = await response.json();
-                const jsonText = data.candidates[0].content.parts[0].text.trim();
-                const cleanJson = jsonText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-                const result = JSON.parse(cleanJson);
-                logEvent('ai_generation_success', { type: 'trivia' });
-                return result.questions;
-            } catch (error) {
-                console.error('Error generating Trivia:', error);
-                logEvent('ai_generation_error', { type: 'trivia' });
-                return [
-                    { question: 'What is the chemical symbol for gold?', options: ['Au', 'Go', 'Gd', 'Ag'], correct: 0, category: 'Science' },
-                    { question: 'In what year did World War II end?', options: ['1943', '1944', '1945', '1946'], correct: 2, category: 'History' },
-                    { question: 'What is the capital of Australia?', options: ['Sydney', 'Melbourne', 'Canberra', 'Brisbane'], correct: 2, category: 'Geography' },
-                    { question: 'How many players are on a basketball team?', options: ['5', '6', '7', '11'], correct: 0, category: 'Sports' },
-                    { question: 'What planet is known as the Red Planet?', options: ['Venus', 'Mars', 'Jupiter', 'Saturn'], correct: 1, category: 'Science' },
-                    { question: 'Who painted the Mona Lisa?', options: ['Van Gogh', 'Picasso', 'Da Vinci', 'Monet'], correct: 2, category: 'Art' },
-                    { question: 'Who wrote Romeo and Juliet?', options: ['Dickens', 'Shakespeare', 'Austen', 'Tolkien'], correct: 1, category: 'Literature' },
-                    { question: 'What is the largest ocean?', options: ['Atlantic', 'Indian', 'Arctic', 'Pacific'], correct: 3, category: 'Geography' },
-                    { question: 'How many bones are in the human body?', options: ['196', '206', '216', '226'], correct: 1, category: 'Science' },
-                    { question: 'Who was the first US President?', options: ['Jefferson', 'Adams', 'Washington', 'Lincoln'], correct: 2, category: 'History' }
-                ];
-            }
-        };
-        
-        // Load or generate daily puzzles
-        const loadDailyPuzzles = async () => {
-            const today = getTodayDate();
-            try {
-                const puzzleDoc = await db.collection('dailyPuzzles').doc(today).get();
-                if (puzzleDoc.exists) {
-                    logEvent('puzzles_loaded', { source: 'firestore' });
-                    return puzzleDoc.data();
-                } else {
-                    console.log('Generating new puzzles for', today);
-                    logEvent('puzzles_generation_started', { date: today });
-                    const [wordleWord, connectionsPuzzle, triviaQuestions] = await Promise.all([
-                        generateWordleWord(),
-                        generateConnectionsPuzzle(),
-                        generateTriviaQuestions()
-                    ]);
-                    const puzzles = {
-                        date: today,
-                        wordle: wordleWord,
-                        connections: connectionsPuzzle,
-                        trivia: triviaQuestions,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    };
-                    await db.collection('dailyPuzzles').doc(today).set(puzzles);
-                    logEvent('puzzles_generation_complete', { date: today });
-                    return puzzles;
-                }
-            } catch (error) {
-                console.error('Error loading puzzles:', error);
-                logEvent('puzzles_error', { error: error.message });
-                return {
-                    date: today,
-                    wordle: 'BRAIN',
-                    connections: {
-                        groups: [
-                            { category: 'Primary Colors', words: ['RED', 'BLUE', 'YELLOW', 'GREEN'], color: 'yellow' },
-                            { category: 'Seasons', words: ['SPRING', 'SUMMER', 'FALL', 'WINTER'], color: 'green' },
-                            { category: 'Instruments', words: ['PIANO', 'GUITAR', 'DRUM', 'VIOLIN'], color: 'blue' },
-                            { category: 'Languages', words: ['PYTHON', 'JAVA', 'RUBY', 'SWIFT'], color: 'purple' }
-                        ]
-                    },
-                    trivia: [
-                        { question: 'What is the chemical symbol for gold?', options: ['Au', 'Go', 'Gd', 'Ag'], correct: 0, category: 'Science' }
-                    ]
-                };
-            }
-        };
-    </script>
-
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-
-        // Helper Functions
-        const getTodayString = () => new Date().toISOString().split('T')[0];
-        
-        // Icons as SVG components
-        const MenuIcon = () => (
-            <svg className="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-        );
-
-        const ArrowLeftIcon = () => (
-            <svg className="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-        );
-
-        const ArrowRightIcon = () => (
-            <svg className="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-        );
-
-        const TrophyIcon = () => (
-            <svg className="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-            </svg>
-        );
-
-        const CalendarIcon = () => (
-            <svg className="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-        );
-
-        const UserIcon = () => (
-            <svg className="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-        );
 
         // Main App Component
         function App() {
             const [user, setUser] = useState(null);
             const [loading, setLoading] = useState(true);
             const [activeTab, setActiveTab] = useState('home');
+            const [menuOpen, setMenuOpen] = useState(false);
             const [userStats, setUserStats] = useState(null);
-            const [dailyPuzzles, setDailyPuzzles] = useState(null);
-            const [puzzlesLoading, setPuzzlesLoading] = useState(true);
 
             useEffect(() => {
-                const unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
-                    setUser(firebaseUser);
-                    
-                    if (firebaseUser) {
-                        // Load user stats from Firestore
-                        await loadUserStats(firebaseUser.uid);
-                        logEvent('login', { method: 'google' });
+                const unsubscribe = auth.onAuthStateChanged(async (user) => {
+                    setUser(user);
+                    if (user) {
+                        await loadUserStats(user.uid);
                     }
-                    
                     setLoading(false);
                 });
-                
-                // Load daily puzzles
-                loadPuzzles();
 
                 return () => unsubscribe();
             }, []);
-            
-            const loadPuzzles = async () => {
-                setPuzzlesLoading(true);
-                const puzzles = await loadDailyPuzzles();
-                setDailyPuzzles(puzzles);
-                setPuzzlesLoading(false);
-            };
 
             const loadUserStats = async (uid) => {
                 try {
-                    const userDoc = await db.collection('users').doc(uid).get();
-                    
-                    if (userDoc.exists) {
-                        setUserStats(userDoc.data().stats);
-                    } else {
-                        // Create new user document
-                        const defaultStats = {
-                            wordle: { played: 0, won: 0, streak: 0, maxStreak: 0, lastPlayed: '' },
-                            connections: { played: 0, won: 0, streak: 0, maxStreak: 0, lastPlayed: '' },
-                            trivia: { played: 0, totalScore: 0, perfectGames: 0, bestScore: 0, lastPlayed: '' }
-                        };
-                        
-                        await db.collection('users').doc(uid).set({
-                            displayName: auth.currentUser.displayName,
-                            email: auth.currentUser.email,
-                            photoURL: auth.currentUser.photoURL,
-                            stats: defaultStats,
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                        
-                        setUserStats(defaultStats);
+                    const doc = await db.collection('users').doc(uid).get();
+                    if (doc.exists) {
+                        setUserStats(doc.data());
                     }
                 } catch (error) {
                     console.error('Error loading user stats:', error);
@@ -1210,69 +1198,19 @@ Generate exactly 10 questions across mixed categories.`
 
             const handleSignIn = async () => {
                 try {
-                    await auth.signInWithPopup(googleProvider);
+                    const provider = new firebase.auth.GoogleAuthProvider();
+                    await auth.signInWithPopup(provider);
                 } catch (error) {
                     console.error('Error signing in:', error);
-                    alert('Failed to sign in. Please try again.');
                 }
             };
 
             const handleSignOut = async () => {
                 try {
                     await auth.signOut();
-                    setUserStats(null);
+                    setActiveTab('home');
                 } catch (error) {
                     console.error('Error signing out:', error);
-                }
-            };
-
-            const updateUserStats = async (gameType, won, score = null) => {
-                if (!user) return;
-
-                const today = getTodayString();
-                const currentGameStats = userStats[gameType];
-
-                // Check if already played today
-                if (currentGameStats.lastPlayed === today) {
-                    return;
-                }
-
-                const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-                const isConsecutive = currentGameStats.lastPlayed === yesterday;
-
-                let newStats = {};
-
-                if (gameType === 'trivia') {
-                    newStats = {
-                        played: currentGameStats.played + 1,
-                        totalScore: currentGameStats.totalScore + score,
-                        perfectGames: score === 10 ? currentGameStats.perfectGames + 1 : currentGameStats.perfectGames,
-                        bestScore: Math.max(score, currentGameStats.bestScore),
-                        lastPlayed: today
-                    };
-                } else {
-                    const newStreak = won ? (isConsecutive ? currentGameStats.streak + 1 : 1) : 0;
-                    newStats = {
-                        played: currentGameStats.played + 1,
-                        won: won ? currentGameStats.won + 1 : currentGameStats.won,
-                        streak: newStreak,
-                        maxStreak: Math.max(newStreak, currentGameStats.maxStreak),
-                        lastPlayed: today
-                    };
-                }
-
-                try {
-                    await db.collection('users').doc(user.uid).update({
-                        [`stats.${gameType}`]: newStats,
-                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-
-                    setUserStats(prev => ({
-                        ...prev,
-                        [gameType]: newStats
-                    }));
-                } catch (error) {
-                    console.error('Error updating stats:', error);
                 }
             };
 
@@ -1281,7 +1219,7 @@ Generate exactly 10 questions across mixed categories.`
                     <div className="app-container">
                         <div className="loading">
                             <div className="spinner"></div>
-                            <p>Loading...</p>
+                            <p>Loading Friendle...</p>
                         </div>
                     </div>
                 );
@@ -1289,400 +1227,320 @@ Generate exactly 10 questions across mixed categories.`
 
             return (
                 <div className="app-container">
-                    <Navbar activeTab={activeTab} setActiveTab={setActiveTab} user={user} />
-                    <main className="main-content">
-                        {activeTab === 'home' && <Home setActiveTab={setActiveTab} user={user} userStats={userStats} onSignIn={handleSignIn} />}
-                        {activeTab === 'wordle' && <WordleGame user={user} userStats={userStats} onUpdateStats={updateUserStats} dailyPuzzles={dailyPuzzles} />}
-                        {activeTab === 'connections' && <ConnectionsGame user={user} userStats={userStats} onUpdateStats={updateUserStats} dailyPuzzles={dailyPuzzles} />}
-                        {activeTab === 'trivia' && <TriviaGame user={user} userStats={userStats} onUpdateStats={updateUserStats} dailyPuzzles={dailyPuzzles} />}
-                        {activeTab === 'leaderboard' && <Leaderboard user={user} />}
-                        {activeTab === 'profile' && <Profile user={user} userStats={userStats} onSignOut={handleSignOut} />}
-                    </main>
-                    <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
-                </div>
-            );
-        }
-
-        // Navbar Component
-        function Navbar({ activeTab, setActiveTab, user }) {
-            const [menuOpen, setMenuOpen] = useState(false);
-            
-            return (
-                <>
                     <nav className="navbar">
-                        <button className="nav-button" onClick={() => {
-                            if (activeTab !== 'home') {
-                                setActiveTab('home');
-                            } else {
-                                setMenuOpen(!menuOpen);
-                            }
-                        }}>
-                            {activeTab !== 'home' ? <ArrowLeftIcon /> : <MenuIcon />}
+                        <button className="nav-button" onClick={() => setMenuOpen(true)}>
+                            <MenuIcon />
                         </button>
-                        <span className="nav-title">Friendle</span>
-                        <button className="nav-button" onClick={() => setActiveTab('profile')}>
-                            {user && user.photoURL ? (
-                                <img src={user.photoURL} alt="Profile" className="user-avatar" style={{width: '32px', height: '32px'}} />
-                            ) : (
-                                <UserIcon />
-                            )}
-                        </button>
+                        <div className="nav-title">Friendle</div>
+                        <div style={{width: '40px'}}></div>
                     </nav>
-                    
-                    {/* Side Menu */}
+
                     {menuOpen && (
                         <>
                             <div className="menu-overlay" onClick={() => setMenuOpen(false)}></div>
                             <div className="side-menu">
                                 <div className="menu-header">
                                     <h3>Menu</h3>
-                                    <button className="close-button" onClick={() => setMenuOpen(false)}>✕</button>
+                                    <button className="close-button" onClick={() => setMenuOpen(false)}>×</button>
                                 </div>
                                 <button className="menu-item" onClick={() => { setActiveTab('home'); setMenuOpen(false); }}>
-                                    🏠 Home
+                                    <CalendarIcon /> Today's Puzzles
                                 </button>
                                 <button className="menu-item" onClick={() => { setActiveTab('leaderboard'); setMenuOpen(false); }}>
-                                    🏆 Leaderboard
+                                    <TrophyIcon /> Leaderboard
                                 </button>
-                                {user && (
-                                    <button className="menu-item" onClick={() => { setActiveTab('profile'); setMenuOpen(false); }}>
-                                        👤 Profile
-                                    </button>
-                                )}
+                                <button className="menu-item" onClick={() => { setActiveTab('profile'); setMenuOpen(false); }}>
+                                    <UserIcon /> Profile
+                                </button>
                             </div>
                         </>
                     )}
-                </>
-            );
-        }
 
-        // Home Screen Component
-        function Home({ setActiveTab, user, userStats, onSignIn }) {
-            const today = new Date().toLocaleDateString('en-US', { 
-                weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' 
-            });
+                    <main className="main-content">
+                        {activeTab === 'home' && <Home user={user} userStats={userStats} onSignIn={handleSignIn} />}
+                        {activeTab === 'leaderboard' && <Leaderboard user={user} />}
+                        {activeTab === 'profile' && <Profile user={user} userStats={userStats} onSignOut={handleSignOut} />}
+                    </main>
 
-            const hasPlayedWordle = user && userStats?.wordle?.lastPlayed === getTodayString();
-            const hasPlayedConnections = user && userStats?.connections?.lastPlayed === getTodayString();
-            const hasPlayedTrivia = user && userStats?.trivia?.lastPlayed === getTodayString();
-
-            return (
-                <div className="home-container">
-                    <header className="home-header">
-                        <p className="date-label">{today}</p>
-                        <h1 className="app-title">Friendle</h1>
-                        <p className="app-subtitle">
-                            Unique AI-generated logic puzzles delivered fresh every single day for you and your friends.
-                        </p>
-                    </header>
-
-                    {user && (
-                        <div className="user-info">
-                            <img src={user.photoURL} alt={user.displayName} className="user-avatar" />
-                            <div className="user-details">
-                                <h4>{user.displayName}</h4>
-                                <p>{user.email}</p>
-                            </div>
-                        </div>
-                    )}
-
-                    <div className="game-card" onClick={() => !hasPlayedWordle && setActiveTab('wordle')} style={{opacity: hasPlayedWordle ? 0.6 : 1}}>
-                        <div className="game-info">
-                            <div className="game-icon wordle-icon">📝</div>
-                            <div className="game-details">
-                                <h3>Friendle Word</h3>
-                                <p>{hasPlayedWordle ? '✓ Completed today' : 'Guess the 5-letter word'}</p>
-                            </div>
-                        </div>
-                        <div className="game-arrow">
-                            <ArrowRightIcon />
-                        </div>
-                    </div>
-
-                    <div className="game-card" onClick={() => !hasPlayedConnections && setActiveTab('connections')} style={{opacity: hasPlayedConnections ? 0.6 : 1}}>
-                        <div className="game-info">
-                            <div className="game-icon connections-icon">🔗</div>
-                            <div className="game-details">
-                                <h3>Connections</h3>
-                                <p>{hasPlayedConnections ? '✓ Completed today' : 'Group words by theme'}</p>
-                            </div>
-                        </div>
-                        <div className="game-arrow">
-                            <ArrowRightIcon />
-                        </div>
-                    </div>
-
-                    <div className="game-card" onClick={() => !hasPlayedTrivia && setActiveTab('trivia')} style={{opacity: hasPlayedTrivia ? 0.6 : 1}}>
-                        <div className="game-info">
-                            <div className="game-icon trivia-icon">🧠</div>
-                            <div className="game-details">
-                                <h3>Daily Trivia</h3>
-                                <p>{hasPlayedTrivia ? '✓ Completed today' : 'Answer 10 random questions'}</p>
-                            </div>
-                        </div>
-                        <div className="game-arrow">
-                            <ArrowRightIcon />
-                        </div>
-                    </div>
-
-                    {!user && (
-                        <div className="auth-card">
-                            <TrophyIcon style={{margin: '0 auto 16px', width: '40px', height: '40px', color: '#fbbf24'}} />
-                            <h3>Track Your Progress</h3>
-                            <p>Sign in with Google to save your streaks and compete with friends globally.</p>
-                            <button className="sign-in-button" onClick={onSignIn}>
-                                <svg width="18" height="18" viewBox="0 0 18 18">
-                                    <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
-                                    <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
-                                    <path fill="#FBBC05" d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71s.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9s.348 2.827.957 4.042l3.007-2.332z"/>
-                                    <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
-                                </svg>
-                                Sign in with Google
-                            </button>
-                        </div>
-                    )}
+                    <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
                 </div>
             );
         }
 
-        // Wordle Game Component
-        function WordleGame({ user, userStats, onUpdateStats, dailyPuzzles }) {
-            const WORD = dailyPuzzles?.wordle || 'BRAIN';
-            const [guesses, setGuesses] = useState([]);
-            const [currentGuess, setCurrentGuess] = useState('');
-            const [gameOver, setGameOver] = useState(false);
-            const [message, setMessage] = useState('');
-            const [shake, setShake] = useState(false);
-            const maxGuesses = 6;
-
-            const stats = userStats?.wordle || { played: 0, won: 0, streak: 0, maxStreak: 0 };
+        // Home Component
+        function Home({ user, userStats, onSignIn }) {
+            const [selectedGame, setSelectedGame] = useState(null);
+            const today = getTodayString();
             
-            useEffect(() => {
-                logEvent('game_start', { game: 'wordle' });
-            }, []);
+            const wordleCompleted = userStats?.wordle?.lastPlayed === today;
+            const connectionsCompleted = userStats?.connections?.lastPlayed === today;
+            const triviaCompleted = userStats?.trivia?.lastPlayed === today;
 
-            useEffect(() => {
-                if (user && stats.lastPlayed === getTodayString()) {
-                    setGameOver(true);
-                    setMessage('Come back tomorrow for a new puzzle! 🌟');
-                }
-            }, [user, stats]);
+            if (selectedGame === 'wordle') {
+                return <WordleGame user={user} onBack={() => setSelectedGame(null)} />;
+            }
 
-            useEffect(() => {
-                if (gameOver || !user) return;
+            if (selectedGame === 'connections') {
+                return <ConnectionsGame user={user} onBack={() => setSelectedGame(null)} />;
+            }
 
-                const handleKeyPress = (e) => {
-                    if (e.key === 'Enter') {
-                        submitGuess();
-                    } else if (e.key === 'Backspace') {
-                        setCurrentGuess(prev => prev.slice(0, -1));
-                    } else if (/^[a-zA-Z]$/.test(e.key) && currentGuess.length < 5) {
-                        setCurrentGuess(prev => prev + e.key.toUpperCase());
-                    }
-                };
-
-                window.addEventListener('keydown', handleKeyPress);
-                return () => window.removeEventListener('keydown', handleKeyPress);
-            }, [currentGuess, gameOver, user]);
-
-            const evaluateGuess = (guess) => {
-                const result = [];
-                const wordArray = WORD.split('');
-                const guessArray = guess.split('');
-
-                guessArray.forEach((letter, i) => {
-                    if (letter === wordArray[i]) {
-                        result[i] = { letter, state: 'correct' };
-                        wordArray[i] = null;
-                    } else {
-                        result[i] = { letter, state: 'absent' };
-                    }
-                });
-
-                result.forEach((cell, i) => {
-                    if (cell.state === 'absent') {
-                        const idx = wordArray.indexOf(cell.letter);
-                        if (idx !== -1) {
-                            result[i] = { letter: cell.letter, state: 'present' };
-                            wordArray[idx] = null;
-                        }
-                    }
-                });
-
-                return result;
-            };
-
-            const submitGuess = () => {
-                if (currentGuess.length !== 5) {
-                    setShake(true);
-                    setTimeout(() => setShake(false), 200);
-                    return;
-                }
-
-                const evaluated = evaluateGuess(currentGuess);
-                const newGuesses = [...guesses, evaluated];
-                setGuesses(newGuesses);
-
-                if (currentGuess === WORD) {
-                    setGameOver(true);
-                    setMessage('Brilliant! 🎉');
-                    onUpdateStats('wordle', true);
-                } else if (newGuesses.length >= maxGuesses) {
-                    setGameOver(true);
-                    setMessage(`The word was ${WORD}`);
-                    onUpdateStats('wordle', false);
-                }
-
-                setCurrentGuess('');
-            };
-
-            const renderGrid = () => {
-                const rows = [];
-                for (let i = 0; i < maxGuesses; i++) {
-                    const cells = [];
-                    
-                    if (i < guesses.length) {
-                        guesses[i].forEach((cell, j) => {
-                            cells.push(
-                                <div key={j} className={`wordle-cell ${cell.state}`}>
-                                    {cell.letter}
-                                </div>
-                            );
-                        });
-                    } else if (i === guesses.length) {
-                        for (let j = 0; j < 5; j++) {
-                            cells.push(
-                                <div key={j} className={`wordle-cell ${currentGuess[j] ? 'filled' : ''} ${shake ? 'shake' : ''}`}>
-                                    {currentGuess[j] || ''}
-                                </div>
-                            );
-                        }
-                    } else {
-                        for (let j = 0; j < 5; j++) {
-                            cells.push(<div key={j} className="wordle-cell"></div>);
-                        }
-                    }
-                    
-                    rows.push(<div key={i} className="wordle-row">{cells}</div>);
-                }
-                return rows;
-            };
-
-            const winRate = stats.played > 0 ? Math.round((stats.won / stats.played) * 100) : 0;
+            if (selectedGame === 'trivia') {
+                return <TriviaGame user={user} onBack={() => setSelectedGame(null)} />;
+            }
 
             if (!user) {
                 return (
-                    <div className="game-container">
-                        <div className="game-header">
-                            <h2 className="game-title">Friendle Word</h2>
-                            <p className="game-subtitle">Sign in to play and save your progress</p>
-                        </div>
-                        <div style={{textAlign: 'center', padding: '40px 20px'}}>
-                            <p style={{color: '#666', marginBottom: '20px'}}>Please sign in to start playing</p>
-                        </div>
+                    <div className="sign-in-container">
+                        <h2 className="nyt-serif" style={{fontSize: '32px', marginBottom: '16px'}}>Welcome to Friendle</h2>
+                        <p style={{color: '#666', marginBottom: '24px'}}>Sign in to track your progress and compete with friends</p>
+                        <button className="sign-in-button" onClick={onSignIn}>
+                            <img src="https://www.google.com/favicon.ico" width="20" height="20" alt="" />
+                            Sign in with Google
+                        </button>
                     </div>
                 );
             }
 
             return (
+                <div className="home-container">
+                    <div className="home-header">
+                        <div className="date-label">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</div>
+                        <h1 className="main-title">Today's Puzzles</h1>
+                        <p className="subtitle">Play all three games daily</p>
+                    </div>
+
+                    <div className="game-grid">
+                        <div className={`game-card ${wordleCompleted ? 'completed' : ''}`} onClick={() => !wordleCompleted && setSelectedGame('wordle')}>
+                            <div className="game-card-header">
+                                <div className="game-icon" style={{background: '#6aaa64'}}>📝</div>
+                                {wordleCompleted && <div className="status-badge completed"><CheckIcon /></div>}
+                            </div>
+                            <h3 className="game-title">Wordle</h3>
+                            <p className="game-description">Guess the 5-letter word in 6 tries</p>
+                        </div>
+
+                        <div className={`game-card ${connectionsCompleted ? 'completed' : ''}`} onClick={() => !connectionsCompleted && setSelectedGame('connections')}>
+                            <div className="game-card-header">
+                                <div className="game-icon" style={{background: '#ba81c5'}}>🧩</div>
+                                {connectionsCompleted && <div className="status-badge completed"><CheckIcon /></div>}
+                            </div>
+                            <h3 className="game-title">Connections</h3>
+                            <p className="game-description">Find groups of four related words</p>
+                        </div>
+
+                        <div className={`game-card ${triviaCompleted ? 'completed' : ''}`} onClick={() => !triviaCompleted && setSelectedGame('trivia')}>
+                            <div className="game-card-header">
+                                <div className="game-icon" style={{background: '#5a594e'}}>🧠</div>
+                                {triviaCompleted && <div className="status-badge completed"><CheckIcon /></div>}
+                            </div>
+                            <h3 className="game-title">Trivia</h3>
+                            <p className="game-description">Test your knowledge with 10 questions</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Wordle Game Component
+        function WordleGame({ user, onBack }) {
+            const [guesses, setGuesses] = useState([]);
+            const [currentGuess, setCurrentGuess] = useState('');
+            const [gameOver, setGameOver] = useState(false);
+            const [won, setWon] = useState(false);
+            const [message, setMessage] = useState('');
+            const [keyboardStatus, setKeyboardStatus] = useState({});
+            const targetWord = getWordOfTheDay();
+            const maxGuesses = 6;
+
+            const handleKeyPress = (key) => {
+                if (gameOver) return;
+
+                if (key === 'ENTER') {
+                    if (currentGuess.length !== 5) {
+                        setMessage('Word must be 5 letters');
+                        setTimeout(() => setMessage(''), 2000);
+                        return;
+                    }
+
+                    const newGuesses = [...guesses, currentGuess];
+                    setGuesses(newGuesses);
+
+                    // Update keyboard status
+                    const newStatus = {...keyboardStatus};
+                    for (let i = 0; i < currentGuess.length; i++) {
+                        const letter = currentGuess[i];
+                        if (targetWord[i] === letter) {
+                            newStatus[letter] = 'correct';
+                        } else if (targetWord.includes(letter) && newStatus[letter] !== 'correct') {
+                            newStatus[letter] = 'present';
+                        } else if (!targetWord.includes(letter)) {
+                            newStatus[letter] = 'absent';
+                        }
+                    }
+                    setKeyboardStatus(newStatus);
+
+                    if (currentGuess === targetWord) {
+                        setWon(true);
+                        setGameOver(true);
+                        updateStats(true, newGuesses.length);
+                    } else if (newGuesses.length >= maxGuesses) {
+                        setWon(false);
+                        setGameOver(true);
+                        updateStats(false, maxGuesses);
+                    }
+
+                    setCurrentGuess('');
+                } else if (key === 'BACK') {
+                    setCurrentGuess(currentGuess.slice(0, -1));
+                } else if (currentGuess.length < 5) {
+                    setCurrentGuess(currentGuess + key);
+                }
+            };
+
+            const updateStats = async (won, guessCount) => {
+                if (!user) return;
+
+                try {
+                    const userRef = db.collection('users').doc(user.uid);
+                    const doc = await userRef.get();
+                    const data = doc.data() || {};
+                    const wordleStats = data.wordle || { played: 0, won: 0, streak: 0, maxStreak: 0, lastPlayed: '' };
+
+                    const today = getTodayString();
+                    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+                    
+                    let newStreak = wordleStats.streak;
+                    if (won) {
+                        if (wordleStats.lastPlayed === yesterday) {
+                            newStreak += 1;
+                        } else if (wordleStats.lastPlayed !== today) {
+                            newStreak = 1;
+                        }
+                    } else {
+                        newStreak = 0;
+                    }
+
+                    await userRef.set({
+                        ...data,
+                        displayName: user.displayName,
+                        email: user.email,
+                        photoURL: user.photoURL,
+                        wordle: {
+                            played: wordleStats.played + 1,
+                            won: wordleStats.won + (won ? 1 : 0),
+                            streak: newStreak,
+                            maxStreak: Math.max(newStreak, wordleStats.maxStreak),
+                            lastPlayed: today,
+                            lastGuesses: guessCount
+                        }
+                    }, { merge: true });
+                } catch (error) {
+                    console.error('Error updating stats:', error);
+                }
+            };
+
+            const getTileStatus = (guess, index) => {
+                if (!guess || index >= guess.length) return '';
+                const letter = guess[index];
+                if (targetWord[index] === letter) return 'correct';
+                if (targetWord.includes(letter)) return 'present';
+                return 'absent';
+            };
+
+            const keyboard = [
+                ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+                ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+                ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'BACK']
+            ];
+
+            return (
                 <div className="game-container">
+                    <button onClick={onBack} style={{marginBottom: '20px', padding: '8px 16px', border: 'none', background: '#f0f0f0', borderRadius: '8px', cursor: 'pointer'}}>
+                        ← Back
+                    </button>
+
                     <div className="game-header">
-                        <h2 className="game-title">Friendle Word</h2>
+                        <h2 className="game-title">Wordle</h2>
                         <p className="game-subtitle">Guess the 5-letter word</p>
                     </div>
 
-                    <div className="stats-bar">
-                        <div className="stat-item">
-                            <div className="stat-value">{stats.played}</div>
-                            <div className="stat-label">Played</div>
-                        </div>
-                        <div className="stat-item">
-                            <div className="stat-value">{stats.streak}</div>
-                            <div className="stat-label">Streak</div>
-                        </div>
-                        <div className="stat-item">
-                            <div className="stat-value">{winRate}%</div>
-                            <div className="stat-label">Win Rate</div>
-                        </div>
+                    {message && <div className="message">{message}</div>}
+
+                    <div className="wordle-board">
+                        {Array.from({ length: maxGuesses }).map((_, rowIndex) => {
+                            const guess = guesses[rowIndex] || (rowIndex === guesses.length ? currentGuess : '');
+                            const isSubmitted = rowIndex < guesses.length;
+
+                            return (
+                                <div key={rowIndex} className="wordle-row">
+                                    {Array.from({ length: 5 }).map((_, colIndex) => {
+                                        const letter = guess[colIndex] || '';
+                                        const status = isSubmitted ? getTileStatus(guess, colIndex) : '';
+                                        
+                                        return (
+                                            <div key={colIndex} className={`wordle-tile ${letter ? 'filled' : ''} ${status}`}>
+                                                {letter}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            );
+                        })}
                     </div>
 
-                    <div className="wordle-grid">
-                        {renderGrid()}
-                    </div>
-
-                    {message && (
-                        <div className={`message ${message.includes('Brilliant') ? 'success' : ''}`}>
-                            {message}
-                        </div>
-                    )}
-
-                    {!gameOver && guesses.length === 0 && (
-                        <>
-                            <p className="legend">Type your guess and press Enter</p>
-                            <div className="legend-items">
-                                <div className="legend-item">
-                                    <div className="legend-color" style={{background: '#6aaa64'}}></div>
-                                    <span>Correct</span>
-                                </div>
-                                <div className="legend-item">
-                                    <div className="legend-color" style={{background: '#c9b458'}}></div>
-                                    <span>Wrong spot</span>
-                                </div>
-                                <div className="legend-item">
-                                    <div className="legend-color" style={{background: '#787c7e'}}></div>
-                                    <span>Not in word</span>
-                                </div>
+                    <div className="mobile-keyboard">
+                        {keyboard.map((row, i) => (
+                            <div key={i} className="keyboard-row">
+                                {row.map((key) => (
+                                    <button
+                                        key={key}
+                                        className={`keyboard-key ${key.length > 1 ? 'wide' : ''} ${keyboardStatus[key] || ''}`}
+                                        onClick={() => handleKeyPress(key)}
+                                    >
+                                        {key === 'BACK' ? '⌫' : key}
+                                    </button>
+                                ))}
                             </div>
-                        </>
+                        ))}
+                    </div>
+
+                    {gameOver && (
+                        <div className="modal-overlay">
+                            <div className="modal">
+                                <h2 className="modal-title">{won ? '🎉 You Won!' : '😔 Game Over'}</h2>
+                                {!won && <p style={{marginBottom: '16px'}}>The word was: <strong>{targetWord}</strong></p>}
+                                <div className="modal-stats">
+                                    <div className="stat-item">
+                                        <div className="stat-value">{guesses.length}</div>
+                                        <div className="stat-label">Guesses</div>
+                                    </div>
+                                </div>
+                                <button className="modal-button" onClick={onBack}>Back to Home</button>
+                            </div>
+                        </div>
                     )}
                 </div>
             );
         }
 
-        // Connections Game Component (simplified for space - similar structure with Firebase integration)
-        function ConnectionsGame({ user, userStats, onUpdateStats, dailyPuzzles }) {
-            const puzzleData = dailyPuzzles?.connections || {
-                groups: [
-                    { category: 'Primary Colors', words: ['RED', 'BLUE', 'YELLOW', 'GREEN'], color: 'yellow' },
-                    { category: 'Seasons', words: ['SPRING', 'SUMMER', 'FALL', 'WINTER'], color: 'green' },
-                    { category: 'Instruments', words: ['PIANO', 'GUITAR', 'DRUM', 'VIOLIN'], color: 'blue' },
-                    { category: 'Languages', words: ['PYTHON', 'JAVA', 'RUBY', 'SWIFT'], color: 'purple' },
-                ]
-            };
-
-            const allWords = puzzleData.groups.flatMap(g => g.words);
-            const [words, setWords] = useState(() => {
-                const shuffled = [...allWords];
-                for (let i = shuffled.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-                }
-                return shuffled;
-            });
+        // Connections Game Component
+        function ConnectionsGame({ user, onBack }) {
+            const [cards, setCards] = useState([]);
             const [selected, setSelected] = useState([]);
-            const [solved, setSolved] = useState([]);
+            const [foundGroups, setFoundGroups] = useState([]);
             const [mistakes, setMistakes] = useState(0);
-            const [message, setMessage] = useState('');
-            const [shake, setShake] = useState(false);
             const [gameOver, setGameOver] = useState(false);
+            const [won, setWon] = useState(false);
             const maxMistakes = 4;
 
-            const stats = userStats?.connections || { played: 0, won: 0, streak: 0, maxStreak: 0 };
-            
             useEffect(() => {
-                logEvent('game_start', { game: 'connections' });
+                // Shuffle all words
+                const allWords = CONNECTIONS_PUZZLE.groups.flatMap(g => g.words);
+                const shuffled = allWords.sort(() => Math.random() - 0.5);
+                setCards(shuffled);
             }, []);
 
-            useEffect(() => {
-                if (user && stats.lastPlayed === getTodayString()) {
-                    setGameOver(true);
-                    setMessage('Come back tomorrow for a new puzzle! 🌟');
-                }
-            }, [user, stats]);
-
-            const toggleWord = (word) => {
-                if (gameOver) return;
-                
+            const handleCardClick = (word) => {
                 if (selected.includes(word)) {
                     setSelected(selected.filter(w => w !== word));
                 } else if (selected.length < 4) {
@@ -1691,362 +1549,362 @@ Generate exactly 10 questions across mixed categories.`
             };
 
             const handleSubmit = () => {
-                if (selected.length !== 4 || gameOver) return;
+                if (selected.length !== 4) return;
 
-                const matchedGroup = puzzleData.groups.findIndex((group, idx) => {
-                    if (solved.includes(idx)) return false;
-                    return selected.every(word => group.words.includes(word));
-                });
+                // Check if selection matches any group
+                const matchedGroup = CONNECTIONS_PUZZLE.groups.find(group => 
+                    selected.every(word => group.words.includes(word)) &&
+                    selected.length === 4
+                );
 
-                if (matchedGroup !== -1) {
-                    setSolved([...solved, matchedGroup]);
+                if (matchedGroup) {
+                    // Correct group found
+                    setFoundGroups([...foundGroups, matchedGroup]);
+                    setCards(cards.filter(word => !selected.includes(word)));
                     setSelected([]);
-                    setMessage(`Correct! ${puzzleData.groups[matchedGroup].category}`);
-                    setTimeout(() => setMessage(''), 2000);
 
-                    if (solved.length + 1 === puzzleData.groups.length) {
+                    // Check if won
+                    if (foundGroups.length + 1 === CONNECTIONS_PUZZLE.groups.length) {
+                        setWon(true);
                         setGameOver(true);
-                        setMessage('Brilliant! You found all connections! 🎉');
-                        onUpdateStats('connections', true);
+                        updateStats(true);
                     }
                 } else {
-                    setShake(true);
-                    setTimeout(() => setShake(false), 200);
+                    // Wrong group
                     const newMistakes = mistakes + 1;
                     setMistakes(newMistakes);
                     setSelected([]);
 
                     if (newMistakes >= maxMistakes) {
                         setGameOver(true);
-                        setMessage('Game Over! Better luck tomorrow!');
-                        onUpdateStats('connections', false);
+                        setWon(false);
+                        updateStats(false);
                     }
                 }
             };
 
-            const isWordSolved = (word) => {
-                return puzzleData.groups.some((group, idx) => 
-                    solved.includes(idx) && group.words.includes(word)
-                );
+            const handleShuffle = () => {
+                setCards([...cards].sort(() => Math.random() - 0.5));
             };
 
-            const winRate = stats.played > 0 ? Math.round((stats.won / stats.played) * 100) : 0;
+            const handleDeselectAll = () => {
+                setSelected([]);
+            };
 
-            if (!user) {
-                return (
-                    <div className="game-container">
-                        <div className="game-header">
-                            <h2 className="game-title">Connections</h2>
-                            <p className="game-subtitle">Sign in to play and save your progress</p>
-                        </div>
-                    </div>
-                );
-            }
+            const updateStats = async (won) => {
+                if (!user) return;
+
+                try {
+                    const userRef = db.collection('users').doc(user.uid);
+                    const doc = await userRef.get();
+                    const data = doc.data() || {};
+                    const connectionsStats = data.connections || { played: 0, won: 0, streak: 0, maxStreak: 0, lastPlayed: '' };
+
+                    const today = getTodayString();
+                    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+                    
+                    let newStreak = connectionsStats.streak;
+                    if (won) {
+                        if (connectionsStats.lastPlayed === yesterday) {
+                            newStreak += 1;
+                        } else if (connectionsStats.lastPlayed !== today) {
+                            newStreak = 1;
+                        }
+                    } else {
+                        newStreak = 0;
+                    }
+
+                    await userRef.set({
+                        ...data,
+                        displayName: user.displayName,
+                        email: user.email,
+                        photoURL: user.photoURL,
+                        connections: {
+                            played: connectionsStats.played + 1,
+                            won: connectionsStats.won + (won ? 1 : 0),
+                            streak: newStreak,
+                            maxStreak: Math.max(newStreak, connectionsStats.maxStreak),
+                            lastPlayed: today
+                        }
+                    }, { merge: true });
+                } catch (error) {
+                    console.error('Error updating stats:', error);
+                }
+            };
 
             return (
                 <div className="game-container">
+                    <button onClick={onBack} style={{marginBottom: '20px', padding: '8px 16px', border: 'none', background: '#f0f0f0', borderRadius: '8px', cursor: 'pointer'}}>
+                        ← Back
+                    </button>
+
                     <div className="game-header">
                         <h2 className="game-title">Connections</h2>
-                        <p className="game-subtitle">Find groups of four items that share something in common</p>
+                        <p className="game-subtitle">Find groups of four</p>
                     </div>
 
-                    <div className="stats-bar">
-                        <div className="stat-item">
-                            <div className="stat-value">{stats.played}</div>
-                            <div className="stat-label">Played</div>
+                    {foundGroups.map((group, i) => (
+                        <div key={i} className={`found-group ${group.color}`}>
+                            <h3>{group.category}</h3>
+                            <p>{group.words.join(', ')}</p>
                         </div>
-                        <div className="stat-item">
-                            <div className="stat-value">{stats.streak}</div>
-                            <div className="stat-label">Streak</div>
-                        </div>
-                        <div className="stat-item">
-                            <div className="stat-value">{winRate}%</div>
-                            <div className="stat-label">Win Rate</div>
-                        </div>
-                    </div>
+                    ))}
 
-                    <div className="mistakes-display">
-                        <span style={{fontSize: '14px', color: '#666'}}>Mistakes remaining:</span>
-                        {Array.from({ length: maxMistakes }).map((_, i) => (
-                            <div key={i} className={`mistake-dot ${i < mistakes ? 'used' : ''}`}></div>
+                    <div className="connections-grid">
+                        {cards.map((word, i) => (
+                            <div
+                                key={i}
+                                className={`connection-card ${selected.includes(word) ? 'selected' : ''}`}
+                                onClick={() => handleCardClick(word)}
+                            >
+                                {word}
+                            </div>
                         ))}
                     </div>
 
-                    {solved.map(groupIdx => {
-                        const group = puzzleData.groups[groupIdx];
-                        return (
-                            <div key={groupIdx} className={`connections-solved difficulty-${group.difficulty}`}>
-                                <h4>{group.category}</h4>
-                                <p>{group.words.join(', ')}</p>
-                            </div>
-                        );
-                    })}
-
-                    <div className={`connections-grid ${shake ? 'shake' : ''}`}>
-                        {words.map((word, idx) => {
-                            if (isWordSolved(word)) return null;
-                            return (
-                                <div
-                                    key={idx}
-                                    className={`connections-word ${selected.includes(word) ? 'selected' : ''}`}
-                                    onClick={() => toggleWord(word)}
-                                >
-                                    {word}
-                                </div>
-                            );
-                        })}
+                    <div className="mistakes-remaining">
+                        <p>Mistakes remaining</p>
+                        <div className="mistakes-dots">
+                            {Array.from({ length: maxMistakes }).map((_, i) => (
+                                <div key={i} className={`mistake-dot ${i < mistakes ? 'used' : ''}`}></div>
+                            ))}
+                        </div>
                     </div>
 
-                    {message && <div className="message">{message}</div>}
+                    <div className="connections-controls">
+                        <button className="control-button secondary" onClick={handleShuffle} disabled={gameOver}>
+                            Shuffle
+                        </button>
+                        <button className="control-button secondary" onClick={handleDeselectAll} disabled={selected.length === 0 || gameOver}>
+                            Deselect All
+                        </button>
+                        <button className="control-button primary" onClick={handleSubmit} disabled={selected.length !== 4 || gameOver}>
+                            Submit
+                        </button>
+                    </div>
 
-                    {!gameOver && (
-                        <div className="button-group">
-                            <button className="button button-secondary" onClick={() => {
-                                const remainingWords = words.filter(w => !isWordSolved(w));
-                                const solvedWords = words.filter(w => isWordSolved(w));
-                                const shuffled = [...remainingWords];
-                                for (let i = shuffled.length - 1; i > 0; i--) {
-                                    const j = Math.floor(Math.random() * (i + 1));
-                                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-                                }
-                                setWords([...solvedWords, ...shuffled]);
-                                setSelected([]);
-                            }}>
-                                Shuffle
-                            </button>
-                            <button className="button button-secondary" onClick={() => setSelected([])} disabled={selected.length === 0}>
-                                Deselect
-                            </button>
-                            <button className="button button-primary" onClick={handleSubmit} disabled={selected.length !== 4}>
-                                Submit
-                            </button>
+                    {gameOver && (
+                        <div className="modal-overlay">
+                            <div className="modal">
+                                <h2 className="modal-title">{won ? '🎉 You Won!' : '😔 Game Over'}</h2>
+                                <div className="modal-stats">
+                                    <div className="stat-item">
+                                        <div className="stat-value">{foundGroups.length}</div>
+                                        <div className="stat-label">Found</div>
+                                    </div>
+                                    <div className="stat-item">
+                                        <div className="stat-value">{mistakes}</div>
+                                        <div className="stat-label">Mistakes</div>
+                                    </div>
+                                </div>
+                                <button className="modal-button" onClick={onBack}>Back to Home</button>
+                            </div>
                         </div>
                     )}
                 </div>
             );
         }
 
-        // Trivia Game Component (shortened for space)
-        function TriviaGame({ user, userStats, onUpdateStats, dailyPuzzles }) {
-            const triviaQuestions = dailyPuzzles?.trivia || [
-                { category: 'Science', question: 'What is the chemical symbol for gold?', options: ['Au', 'Go', 'Gd', 'Ag'], correct: 0 },
-                { category: 'Geography', question: 'What is the capital of Australia?', options: ['Sydney', 'Melbourne', 'Canberra', 'Brisbane'], correct: 2 },
-                { category: 'History', question: 'In which year did World War II end?', options: ['1943', '1944', '1945', '1946'], correct: 2 },
-                { category: 'Literature', question: 'Who wrote "To Kill a Mockingbird"?', options: ['Harper Lee', 'Mark Twain', 'John Steinbeck', 'Ernest Hemingway'], correct: 0 },
-                { category: 'Science', question: 'What is the largest planet in our solar system?', options: ['Saturn', 'Neptune', 'Jupiter', 'Uranus'], correct: 2 },
-                { category: 'Entertainment', question: 'Which movie won Best Picture in 1994?', options: ['Pulp Fiction', 'Forrest Gump', 'Shawshank', 'Lion King'], correct: 1 },
-                { category: 'Sports', question: 'How many players on a basketball team on court?', options: ['4', '5', '6', '7'], correct: 1 },
-                { category: 'Geography', question: 'What is the longest river in the world?', options: ['Amazon', 'Nile', 'Yangtze', 'Mississippi'], correct: 1 },
-                { category: 'Science', question: 'What is the speed of light?', options: ['299,792 km/s', '199,792 km/s', '399,792 km/s', '99,792 km/s'], correct: 0 },
-                { category: 'History', question: 'First President of the United States?', options: ['Jefferson', 'Adams', 'Washington', 'Franklin'], correct: 2 }
-            ];
-
+        // Trivia Game Component
+        function TriviaGame({ user, onBack }) {
             const [currentQuestion, setCurrentQuestion] = useState(0);
             const [selectedAnswer, setSelectedAnswer] = useState(null);
-            const [score, setScore] = useState(0);
-            const [answered, setAnswered] = useState(false);
+            const [answers, setAnswers] = useState([]);
+            const [showResult, setShowResult] = useState(false);
             const [gameOver, setGameOver] = useState(false);
+            const [score, setScore] = useState(0);
 
-            const stats = userStats?.trivia || { played: 0, totalScore: 0, perfectGames: 0, bestScore: 0 };
-            
-            useEffect(() => {
-                logEvent('game_start', { game: 'trivia' });
-            }, []);
+            const question = TRIVIA_QUESTIONS[currentQuestion];
 
-            useEffect(() => {
-                if (user && stats.lastPlayed === getTodayString()) {
-                    setGameOver(true);
-                }
-            }, [user, stats]);
-
-            const handleAnswerClick = (index) => {
-                if (answered) return;
-                
+            const handleAnswerSelect = (index) => {
+                if (showResult) return;
                 setSelectedAnswer(index);
-                setAnswered(true);
-
-                if (index === triviaQuestions[currentQuestion].correct) {
-                    setScore(score + 1);
-                }
             };
 
             const handleNext = () => {
-                if (currentQuestion < triviaQuestions.length - 1) {
-                    setCurrentQuestion(currentQuestion + 1);
-                    setSelectedAnswer(null);
-                    setAnswered(false);
-                } else {
+                if (selectedAnswer === null) return;
+
+                const isCorrect = selectedAnswer === question.correct;
+                const newAnswers = [...answers, { questionIndex: currentQuestion, selected: selectedAnswer, correct: isCorrect }];
+                setAnswers(newAnswers);
+
+                if (isCorrect) {
+                    setScore(score + 1);
+                }
+
+                if (currentQuestion + 1 >= TRIVIA_QUESTIONS.length) {
                     setGameOver(true);
-                    onUpdateStats('trivia', true, score + (selectedAnswer === triviaQuestions[currentQuestion].correct ? 1 : 0));
+                    updateStats(isCorrect ? score + 1 : score);
+                } else {
+                    setShowResult(true);
+                    setTimeout(() => {
+                        setCurrentQuestion(currentQuestion + 1);
+                        setSelectedAnswer(null);
+                        setShowResult(false);
+                    }, 1500);
                 }
             };
 
-            const avgScore = stats.played > 0 ? Math.round((stats.totalScore / stats.played / 10) * 100) : 0;
+            const updateStats = async (finalScore) => {
+                if (!user) return;
 
-            if (!user) {
-                return (
-                    <div className="game-container">
-                        <div className="game-header">
-                            <h2 className="game-title">Daily Trivia</h2>
-                            <p className="game-subtitle">Sign in to play and save your progress</p>
-                        </div>
-                    </div>
-                );
-            }
+                try {
+                    const userRef = db.collection('users').doc(user.uid);
+                    const doc = await userRef.get();
+                    const data = doc.data() || {};
+                    const triviaStats = data.trivia || { played: 0, totalScore: 0, perfectGames: 0, bestScore: 0, lastPlayed: '' };
 
-            if (gameOver && stats.lastPlayed === getTodayString()) {
-                return (
-                    <div className="game-container">
-                        <div className="game-header">
-                            <h2 className="game-title">Daily Trivia</h2>
-                            <p className="game-subtitle">Come back tomorrow!</p>
-                        </div>
-                        <div className="trivia-result">
-                            <div className="trivia-score-big">{stats.bestScore}/10</div>
-                            <h3>Your Best Score</h3>
-                            <p>Come back tomorrow for new questions!</p>
-                        </div>
-                    </div>
-                );
-            }
+                    const today = getTodayString();
+                    const isPerfect = finalScore === TRIVIA_QUESTIONS.length;
+
+                    await userRef.set({
+                        ...data,
+                        displayName: user.displayName,
+                        email: user.email,
+                        photoURL: user.photoURL,
+                        trivia: {
+                            played: triviaStats.played + 1,
+                            totalScore: triviaStats.totalScore + finalScore,
+                            perfectGames: triviaStats.perfectGames + (isPerfect ? 1 : 0),
+                            bestScore: Math.max(finalScore, triviaStats.bestScore),
+                            lastPlayed: today,
+                            lastScore: finalScore
+                        }
+                    }, { merge: true });
+                } catch (error) {
+                    console.error('Error updating stats:', error);
+                }
+            };
 
             if (gameOver) {
-                const finalScore = score;
-                const percentage = Math.round((finalScore / 10) * 100);
-                let message = '';
-                if (percentage >= 90) message = 'Outstanding! 🏆';
-                else if (percentage >= 70) message = 'Great job! 🎉';
-                else if (percentage >= 50) message = 'Not bad! 👍';
-                else message = 'Keep practicing! 💪';
-
+                const percentage = Math.round((score / TRIVIA_QUESTIONS.length) * 100);
+                
                 return (
                     <div className="game-container">
-                        <div className="game-header">
-                            <h2 className="game-title">Daily Trivia</h2>
-                            <p className="game-subtitle">Challenge complete!</p>
-                        </div>
-                        <div className="trivia-result">
-                            <div className="trivia-score-big">{finalScore}/10</div>
-                            <h3>{message}</h3>
-                            <p>You scored {percentage}%</p>
+                        <div className="modal">
+                            <h2 className="modal-title">🎉 Quiz Complete!</h2>
+                            <div className="modal-stats">
+                                <div className="stat-item">
+                                    <div className="stat-value">{score}/{TRIVIA_QUESTIONS.length}</div>
+                                    <div className="stat-label">Correct</div>
+                                </div>
+                                <div className="stat-item">
+                                    <div className="stat-value">{percentage}%</div>
+                                    <div className="stat-label">Score</div>
+                                </div>
+                            </div>
+                            <button className="modal-button" onClick={onBack}>Back to Home</button>
                         </div>
                     </div>
                 );
             }
-
-            const question = triviaQuestions[currentQuestion];
-            const progress = ((currentQuestion + 1) / triviaQuestions.length) * 100;
 
             return (
                 <div className="game-container">
-                    <div className="game-header">
-                        <h2 className="game-title">Daily Trivia</h2>
-                        <p className="game-subtitle">Best out of 10 questions</p>
-                    </div>
+                    <button onClick={onBack} style={{marginBottom: '20px', padding: '8px 16px', border: 'none', background: '#f0f0f0', borderRadius: '8px', cursor: 'pointer'}}>
+                        ← Back
+                    </button>
 
-                    <div className="stats-bar">
-                        <div className="stat-item">
-                            <div className="stat-value">{score}</div>
-                            <div className="stat-label">Correct</div>
-                        </div>
-                        <div className="stat-item">
-                            <div className="stat-value">{currentQuestion + 1}/10</div>
-                            <div className="stat-label">Question</div>
-                        </div>
-                        <div className="stat-item">
-                            <div className="stat-value">{avgScore}%</div>
-                            <div className="stat-label">Avg</div>
-                        </div>
+                    <div className="game-header">
+                        <h2 className="game-title">Trivia</h2>
+                        <p className="game-subtitle">Test your knowledge</p>
                     </div>
 
                     <div className="trivia-progress">
-                        <div className="trivia-progress-bar">
-                            <div className="trivia-progress-fill" style={{width: `${progress}%`}}></div>
-                        </div>
-                        <span>Question {currentQuestion + 1} of 10</span>
+                        {TRIVIA_QUESTIONS.map((_, i) => {
+                            const answer = answers.find(a => a.questionIndex === i);
+                            let className = 'progress-dot';
+                            if (i === currentQuestion) className += ' current';
+                            else if (answer) className += answer.correct ? ' correct' : ' incorrect';
+                            return <div key={i} className={className}></div>;
+                        })}
                     </div>
 
-                    <div className="trivia-question-card">
-                        <span className="trivia-category">{question.category}</span>
-                        <div className="trivia-question">{question.question}</div>
-                        <div className="trivia-answers">
-                            {(question.options || question.answers).map((answer, index) => {
-                                let className = 'trivia-answer';
-                                
-                                if (answered) {
-                                    if (index === question.correct) {
-                                        className += ' correct';
-                                    } else if (index === selectedAnswer) {
-                                        className += ' incorrect';
-                                    }
+                    <div className="question-card">
+                        <div className="question-header">
+                            <span className="question-number">Question {currentQuestion + 1} of {TRIVIA_QUESTIONS.length}</span>
+                            <span className="question-number">Score: {score}</span>
+                        </div>
+                        <p className="question-text">{question.question}</p>
+                        <div className="answer-options">
+                            {question.options.map((option, index) => {
+                                let className = 'answer-button';
+                                if (selectedAnswer === index) className += ' selected';
+                                if (showResult) {
+                                    if (index === question.correct) className += ' correct';
+                                    else if (selectedAnswer === index) className += ' incorrect';
                                 }
 
                                 return (
                                     <button
                                         key={index}
                                         className={className}
-                                        onClick={() => handleAnswerClick(index)}
-                                        disabled={answered}
+                                        onClick={() => handleAnswerSelect(index)}
+                                        disabled={showResult}
                                     >
-                                        {answer}
+                                        {option}
                                     </button>
                                 );
                             })}
                         </div>
                     </div>
 
-                    {answered && (
-                        <button className="button button-primary" onClick={handleNext}>
-                            {currentQuestion < 9 ? 'Next Question' : 'See Results'}
-                        </button>
-                    )}
+                    <button 
+                        className="modal-button"
+                        onClick={handleNext}
+                        disabled={selectedAnswer === null || showResult}
+                    >
+                        {currentQuestion + 1 === TRIVIA_QUESTIONS.length ? 'Finish' : 'Next Question'}
+                    </button>
                 </div>
             );
         }
 
         // Leaderboard Component
         function Leaderboard({ user }) {
+            const [activeGame, setActiveGame] = useState('wordle');
             const [leaderboard, setLeaderboard] = useState([]);
             const [loading, setLoading] = useState(true);
 
             useEffect(() => {
                 loadLeaderboard();
-            }, []);
+            }, [activeGame]);
 
             const loadLeaderboard = async () => {
+                setLoading(true);
                 try {
-                    const snapshot = await db.collection('users')
-                        .orderBy('lastUpdated', 'desc')
-                        .limit(50)
-                        .get();
-
+                    const snapshot = await db.collection('users').get();
                     const entries = [];
+
                     snapshot.forEach(doc => {
                         const data = doc.data();
-                        const wordleStats = data.stats?.wordle || { played: 0, won: 0, streak: 0 };
-                        const connectionsStats = data.stats?.connections || { played: 0, won: 0, streak: 0 };
-                        const triviaStats = data.stats?.trivia || { played: 0, totalScore: 0 };
+                        const gameStats = data[activeGame];
+                        
+                        if (!gameStats) return;
 
-                        const totalGames = wordleStats.played + connectionsStats.played + triviaStats.played;
-                        const totalWins = wordleStats.won + connectionsStats.won;
-                        const totalStreak = wordleStats.streak + connectionsStats.streak;
-                        const winRate = totalGames > 0 ? Math.round((totalWins / totalGames) * 100) : 0;
+                        let score = 0;
+                        if (activeGame === 'wordle' || activeGame === 'connections') {
+                            score = gameStats.streak || 0;
+                        } else if (activeGame === 'trivia') {
+                            score = gameStats.bestScore || 0;
+                        }
 
                         entries.push({
                             uid: doc.id,
                             displayName: data.displayName || 'Anonymous',
                             photoURL: data.photoURL || '',
-                            totalStreak,
-                            winRate
+                            score,
+                            played: gameStats.played || 0,
+                            won: gameStats.won || 0
                         });
                     });
 
                     entries.sort((a, b) => {
-                        if (b.totalStreak !== a.totalStreak) return b.totalStreak - a.totalStreak;
-                        return b.winRate - a.winRate;
+                        if (b.score !== a.score) return b.score - a.score;
+                        return b.played - a.played;
                     });
 
-                    setLeaderboard(entries);
+                    setLeaderboard(entries.slice(0, 50)); // Top 50
                     setLoading(false);
                 } catch (error) {
                     console.error('Error loading leaderboard:', error);
@@ -2068,7 +1926,29 @@ Generate exactly 10 questions across mixed categories.`
             return (
                 <div className="game-container">
                     <div className="game-header">
-                        <h2 className="game-title">Global Leaderboard</h2>
+                        <h2 className="game-title">Leaderboard</h2>
+                        <p className="game-subtitle">Top players by game</p>
+                    </div>
+
+                    <div className="leaderboard-tabs">
+                        <button 
+                            className={`tab-button ${activeGame === 'wordle' ? 'active' : ''}`}
+                            onClick={() => setActiveGame('wordle')}
+                        >
+                            Wordle
+                        </button>
+                        <button 
+                            className={`tab-button ${activeGame === 'connections' ? 'active' : ''}`}
+                            onClick={() => setActiveGame('connections')}
+                        >
+                            Connections
+                        </button>
+                        <button 
+                            className={`tab-button ${activeGame === 'trivia' ? 'active' : ''}`}
+                            onClick={() => setActiveGame('trivia')}
+                        >
+                            Trivia
+                        </button>
                     </div>
 
                     {leaderboard.map((player, i) => {
@@ -2084,12 +1964,14 @@ Generate exactly 10 questions across mixed categories.`
                                     )}
                                     <div className="player-info">
                                         <h4>{player.displayName}{isCurrentUser && ' (You)'}</h4>
-                                        <p>Win Rate: {player.winRate}%</p>
+                                        <p>Played: {player.played} | Won: {player.won}</p>
                                     </div>
                                 </div>
                                 <div className="streak-info">
-                                    <div className="streak-value">{player.totalStreak}</div>
-                                    <div className="streak-label">Streak</div>
+                                    <div className="streak-value">{player.score}</div>
+                                    <div className="streak-label">
+                                        {activeGame === 'trivia' ? 'Best' : 'Streak'}
+                                    </div>
                                 </div>
                             </div>
                         );
