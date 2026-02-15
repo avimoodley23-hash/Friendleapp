@@ -1204,6 +1204,161 @@
             }
         }
 
+        /* Trash Talk / Chat Styles */
+        .chat-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 16px;
+            max-height: calc(100vh - 320px);
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 12px;
+            animation: slideInChat 0.3s ease-out;
+        }
+
+        @keyframes slideInChat {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-message.own .chat-message-content {
+            background: #e3f2fd;
+        }
+
+        .chat-message-avatar img,
+        .chat-message-avatar .avatar-placeholder {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e5e5e5;
+        }
+
+        .chat-message-content {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .chat-message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .chat-username {
+            font-weight: 700;
+            font-size: 14px;
+            color: #000;
+        }
+
+        .chat-timestamp {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .chat-message-text {
+            font-size: 15px;
+            line-height: 1.4;
+            color: #121213;
+            word-wrap: break-word;
+        }
+
+        .chat-reactions {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .reaction-button {
+            background: #f8f8f8;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 4px 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            min-height: 28px;
+        }
+
+        .reaction-button:active {
+            transform: scale(0.95);
+        }
+
+        .reaction-button.active {
+            background: #ffd700;
+            border-color: #daa520;
+        }
+
+        .chat-input-container {
+            position: fixed;
+            bottom: 72px;
+            left: 0;
+            right: 0;
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-top: 1px solid #e5e5e5;
+            padding: 12px 16px;
+            display: flex;
+            gap: 8px;
+            z-index: 90;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e5e5e5;
+            border-radius: 24px;
+            font-size: 15px;
+            font-family: 'Libre Franklin', sans-serif;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .chat-input:focus {
+            border-color: #3182ce;
+        }
+
+        .chat-send-button {
+            padding: 12px 24px;
+            background: #000;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .chat-send-button:active {
+            transform: scale(0.95);
+        }
+
+        .chat-send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         /* Fix iOS safari bottom bar */
         @supports (padding: max(0px)) {
             .main-content {
@@ -1477,6 +1632,12 @@
                                 <button className="menu-item" onClick={() => { setActiveTab('home'); setMenuOpen(false); }}>
                                     <CalendarIcon /> Today's Puzzles
                                 </button>
+                                <button className="menu-item" onClick={() => { setActiveTab('trashtalk'); setMenuOpen(false); }}>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                    Trash Talk
+                                </button>
                                 <button className="menu-item" onClick={() => { setActiveTab('leaderboard'); setMenuOpen(false); }}>
                                     <TrophyIcon /> Leaderboard
                                 </button>
@@ -1489,6 +1650,7 @@
 
                     <main className="main-content">
                         {activeTab === 'home' && <Home user={user} userStats={userStats} onSignIn={handleSignIn} onStatsUpdate={loadUserStats} />}
+                        {activeTab === 'trashtalk' && <TrashTalk user={user} />}
                         {activeTab === 'leaderboard' && <Leaderboard user={user} />}
                         {activeTab === 'profile' && <Profile user={user} userStats={userStats} onSignOut={handleSignOut} />}
                     </main>
@@ -2824,6 +2986,225 @@
             );
         }
 
+        // NEW: Trash Talk Component
+        function TrashTalk({ user }) {
+            const [messages, setMessages] = useState([]);
+            const [newMessage, setNewMessage] = useState('');
+            const [loading, setLoading] = useState(true);
+            const messagesEndRef = useRef(null);
+            const today = getTodayString();
+
+            useEffect(() => {
+                loadMessages();
+                // Set up real-time listener
+                const unsubscribe = db.collection('chat')
+                    .where('date', '==', today)
+                    .orderBy('timestamp', 'desc')
+                    .limit(100)
+                    .onSnapshot((snapshot) => {
+                        const msgs = [];
+                        snapshot.forEach(doc => {
+                            msgs.push({ id: doc.id, ...doc.data() });
+                        });
+                        setMessages(msgs.reverse());
+                        setLoading(false);
+                    });
+
+                return () => unsubscribe();
+            }, [today]);
+
+            useEffect(() => {
+                scrollToBottom();
+            }, [messages]);
+
+            const scrollToBottom = () => {
+                messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+            };
+
+            const loadMessages = async () => {
+                try {
+                    const snapshot = await db.collection('chat')
+                        .where('date', '==', today)
+                        .orderBy('timestamp', 'desc')
+                        .limit(100)
+                        .get();
+
+                    const msgs = [];
+                    snapshot.forEach(doc => {
+                        msgs.push({ id: doc.id, ...doc.data() });
+                    });
+                    setMessages(msgs.reverse());
+                    setLoading(false);
+                } catch (error) {
+                    console.error('Error loading messages:', error);
+                    setLoading(false);
+                }
+            };
+
+            const handleSendMessage = async () => {
+                if (!user || !newMessage.trim()) return;
+
+                try {
+                    await db.collection('chat').add({
+                        userId: user.uid,
+                        displayName: user.displayName,
+                        photoURL: user.photoURL,
+                        message: newMessage.trim(),
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        date: today,
+                        reactions: {}
+                    });
+
+                    setNewMessage('');
+                } catch (error) {
+                    console.error('Error sending message:', error);
+                }
+            };
+
+            const handleReaction = async (messageId, emoji) => {
+                if (!user) return;
+
+                try {
+                    const messageRef = db.collection('chat').doc(messageId);
+                    const doc = await messageRef.get();
+                    const reactions = doc.data().reactions || {};
+                    
+                    if (!reactions[emoji]) {
+                        reactions[emoji] = [];
+                    }
+
+                    if (reactions[emoji].includes(user.uid)) {
+                        reactions[emoji] = reactions[emoji].filter(uid => uid !== user.uid);
+                    } else {
+                        reactions[emoji].push(user.uid);
+                    }
+
+                    await messageRef.update({ reactions });
+                } catch (error) {
+                    console.error('Error adding reaction:', error);
+                }
+            };
+
+            const parseMessage = (text) => {
+                // Simple @mention detection
+                const parts = text.split(/(@\w+)/g);
+                return parts.map((part, i) => {
+                    if (part.startsWith('@')) {
+                        return <span key={i} style={{color: '#3182ce', fontWeight: '600'}}>{part}</span>;
+                    }
+                    return part;
+                });
+            };
+
+            if (!user) {
+                return (
+                    <div className="game-container">
+                        <div className="game-header">
+                            <h2 className="game-title-main">Trash Talk</h2>
+                            <p className="game-subtitle">Daily chat resets at midnight</p>
+                        </div>
+                        <div style={{textAlign: 'center', padding: '40px'}}>
+                            <p style={{color: '#666'}}>Sign in to join the conversation</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (loading) {
+                return (
+                    <div className="game-container">
+                        <div className="loading">
+                            <div className="spinner"></div>
+                            <p>Loading chat...</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="game-container" style={{paddingBottom: '120px'}}>
+                    <div className="game-header">
+                        <h2 className="game-title-main">Trash Talk 🔥</h2>
+                        <p className="game-subtitle">Daily chat • Resets at midnight</p>
+                    </div>
+
+                    <div style={{background: '#fff3cd', padding: '12px', borderRadius: '8px', marginBottom: '16px', fontSize: '13px', textAlign: 'center'}}>
+                        💬 Tag friends with @username • Be respectful • Have fun!
+                    </div>
+
+                    <div className="chat-messages">
+                        {messages.length === 0 && (
+                            <div style={{textAlign: 'center', padding: '40px 20px', color: '#666'}}>
+                                <p>No messages yet. Start the conversation! 🎮</p>
+                            </div>
+                        )}
+
+                        {messages.map((msg) => {
+                            const isOwnMessage = user.uid === msg.userId;
+                            return (
+                                <div key={msg.id} className={`chat-message ${isOwnMessage ? 'own' : ''}`}>
+                                    <div className="chat-message-avatar">
+                                        {msg.photoURL ? (
+                                            <img src={msg.photoURL} alt={msg.displayName} />
+                                        ) : (
+                                            <div className="avatar-placeholder"></div>
+                                        )}
+                                    </div>
+                                    <div className="chat-message-content">
+                                        <div className="chat-message-header">
+                                            <span className="chat-username">{msg.displayName}</span>
+                                            <span className="chat-timestamp">
+                                                {msg.timestamp?.toDate().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                                            </span>
+                                        </div>
+                                        <div className="chat-message-text">
+                                            {parseMessage(msg.message)}
+                                        </div>
+                                        <div className="chat-reactions">
+                                            {['🔥', '😂', '👏', '💯', '😤'].map(emoji => {
+                                                const count = msg.reactions?.[emoji]?.length || 0;
+                                                const hasReacted = msg.reactions?.[emoji]?.includes(user.uid);
+                                                
+                                                return (
+                                                    <button
+                                                        key={emoji}
+                                                        className={`reaction-button ${hasReacted ? 'active' : ''}`}
+                                                        onClick={() => handleReaction(msg.id, emoji)}
+                                                    >
+                                                        {emoji} {count > 0 && count}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                        <div ref={messagesEndRef} />
+                    </div>
+
+                    <div className="chat-input-container">
+                        <input
+                            type="text"
+                            className="chat-input"
+                            placeholder="Send a message... Use @username to tag"
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                            maxLength={280}
+                        />
+                        <button 
+                            className="chat-send-button"
+                            onClick={handleSendMessage}
+                            disabled={!newMessage.trim()}
+                        >
+                            Send
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
         // Bottom Navigation Component
         function BottomNav({ activeTab, setActiveTab }) {
             return (
@@ -2832,9 +3213,15 @@
                         <CalendarIcon />
                         <span className="nav-label">Today</span>
                     </button>
+                    <button className={`nav-item ${activeTab === 'trashtalk' ? 'active' : ''}`} onClick={() => setActiveTab('trashtalk')}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span className="nav-label">Chat</span>
+                    </button>
                     <button className={`nav-item ${activeTab === 'leaderboard' ? 'active' : ''}`} onClick={() => setActiveTab('leaderboard')}>
                         <TrophyIcon />
-                        <span className="nav-label">Social</span>
+                        <span className="nav-label">Ranks</span>
                     </button>
                     <button className={`nav-item ${activeTab === 'profile' ? 'active' : ''}`} onClick={() => setActiveTab('profile')}>
                         <UserIcon />
