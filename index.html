@@ -170,6 +170,10 @@
             border-radius: 2px;
         }
 
+        .trivia-icon {
+            background: #f59e0b;
+        }
+
         .game-details h3 {
             font-size: 18px;
             font-weight: 700;
@@ -563,6 +567,125 @@
         .shake {
             animation: shake 0.2s cubic-bezier(.36,.07,.19,.97);
         }
+
+        /* Trivia Styles */
+        .trivia-progress {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .trivia-progress-bar {
+            background: #e5e5e5;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .trivia-progress-fill {
+            background: #f59e0b;
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .trivia-question-card {
+            background: white;
+            padding: 32px 24px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .trivia-category {
+            display: inline-block;
+            background: #f59e0b;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .trivia-question {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 24px;
+            color: #121213;
+        }
+
+        .trivia-answers {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .trivia-answer {
+            background: #f8f8f8;
+            border: 2px solid transparent;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .trivia-answer:hover {
+            background: #f0f0f0;
+            border-color: #f59e0b;
+        }
+
+        .trivia-answer.selected {
+            background: #fef3c7;
+            border-color: #f59e0b;
+        }
+
+        .trivia-answer.correct {
+            background: #d1fae5;
+            border-color: #10b981;
+            color: #065f46;
+        }
+
+        .trivia-answer.incorrect {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+
+        .trivia-answer:disabled {
+            cursor: not-allowed;
+        }
+
+        .trivia-result {
+            text-align: center;
+            padding: 32px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .trivia-score-big {
+            font-size: 64px;
+            font-weight: 700;
+            color: #f59e0b;
+            margin-bottom: 8px;
+        }
+
+        .trivia-result h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .trivia-result p {
+            color: #666;
+            margin-bottom: 24px;
+        }
     </style>
 </head>
 <body>
@@ -619,6 +742,7 @@
                         {activeTab === 'home' && <Home setActiveTab={setActiveTab} />}
                         {activeTab === 'wordle' && <WordleGame />}
                         {activeTab === 'connections' && <ConnectionsGame />}
+                        {activeTab === 'trivia' && <TriviaGame />}
                         {activeTab === 'leaderboard' && <Leaderboard />}
                         {activeTab === 'profile' && <Profile />}
                     </main>
@@ -679,6 +803,19 @@
                             <div className="game-details">
                                 <h3>Connections</h3>
                                 <p>Group words by theme</p>
+                            </div>
+                        </div>
+                        <div className="game-arrow">
+                            <ArrowRightIcon />
+                        </div>
+                    </div>
+
+                    <div className="game-card" onClick={() => setActiveTab('trivia')}>
+                        <div className="game-info">
+                            <div className="game-icon trivia-icon">?</div>
+                            <div className="game-details">
+                                <h3>Daily Trivia</h3>
+                                <p>Answer 10 random questions</p>
                             </div>
                         </div>
                         <div className="game-arrow">
@@ -996,6 +1133,205 @@
             );
         }
 
+        // Trivia Game Component
+        function TriviaGame() {
+            const triviaQuestions = [
+                {
+                    category: 'Science',
+                    question: 'What is the chemical symbol for gold?',
+                    answers: ['Au', 'Go', 'Gd', 'Ag'],
+                    correct: 0
+                },
+                {
+                    category: 'Geography',
+                    question: 'What is the capital of Australia?',
+                    answers: ['Sydney', 'Melbourne', 'Canberra', 'Brisbane'],
+                    correct: 2
+                },
+                {
+                    category: 'History',
+                    question: 'In which year did World War II end?',
+                    answers: ['1943', '1944', '1945', '1946'],
+                    correct: 2
+                },
+                {
+                    category: 'Literature',
+                    question: 'Who wrote "To Kill a Mockingbird"?',
+                    answers: ['Harper Lee', 'Mark Twain', 'John Steinbeck', 'Ernest Hemingway'],
+                    correct: 0
+                },
+                {
+                    category: 'Science',
+                    question: 'What is the largest planet in our solar system?',
+                    answers: ['Saturn', 'Neptune', 'Jupiter', 'Uranus'],
+                    correct: 2
+                },
+                {
+                    category: 'Entertainment',
+                    question: 'Which movie won the Academy Award for Best Picture in 1994?',
+                    answers: ['Pulp Fiction', 'Forrest Gump', 'The Shawshank Redemption', 'The Lion King'],
+                    correct: 1
+                },
+                {
+                    category: 'Sports',
+                    question: 'How many players are on a basketball team on the court?',
+                    answers: ['4', '5', '6', '7'],
+                    correct: 1
+                },
+                {
+                    category: 'Geography',
+                    question: 'What is the longest river in the world?',
+                    answers: ['Amazon', 'Nile', 'Yangtze', 'Mississippi'],
+                    correct: 1
+                },
+                {
+                    category: 'Science',
+                    question: 'What is the speed of light?',
+                    answers: ['299,792 km/s', '199,792 km/s', '399,792 km/s', '99,792 km/s'],
+                    correct: 0
+                },
+                {
+                    category: 'History',
+                    question: 'Who was the first President of the United States?',
+                    answers: ['Thomas Jefferson', 'John Adams', 'George Washington', 'Benjamin Franklin'],
+                    correct: 2
+                }
+            ];
+
+            const [currentQuestion, setCurrentQuestion] = useState(0);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [score, setScore] = useState(0);
+            const [answered, setAnswered] = useState(false);
+            const [gameOver, setGameOver] = useState(false);
+
+            const handleAnswerClick = (index) => {
+                if (answered) return;
+                
+                setSelectedAnswer(index);
+                setAnswered(true);
+
+                if (index === triviaQuestions[currentQuestion].correct) {
+                    setScore(score + 1);
+                }
+            };
+
+            const handleNext = () => {
+                if (currentQuestion < triviaQuestions.length - 1) {
+                    setCurrentQuestion(currentQuestion + 1);
+                    setSelectedAnswer(null);
+                    setAnswered(false);
+                } else {
+                    setGameOver(true);
+                }
+            };
+
+            const resetGame = () => {
+                setCurrentQuestion(0);
+                setSelectedAnswer(null);
+                setScore(0);
+                setAnswered(false);
+                setGameOver(false);
+            };
+
+            if (gameOver) {
+                const percentage = Math.round((score / triviaQuestions.length) * 100);
+                let message = '';
+                if (percentage >= 90) message = 'Outstanding! 🏆';
+                else if (percentage >= 70) message = 'Great job! 🎉';
+                else if (percentage >= 50) message = 'Not bad! 👍';
+                else message = 'Keep practicing! 💪';
+
+                return (
+                    <div className="game-container">
+                        <div className="game-header">
+                            <h2 className="game-title">Daily Trivia</h2>
+                            <p className="game-subtitle">Challenge complete!</p>
+                        </div>
+
+                        <div className="trivia-result">
+                            <div className="trivia-score-big">{score}/{triviaQuestions.length}</div>
+                            <h3>{message}</h3>
+                            <p>You scored {percentage}% on today's trivia challenge</p>
+                            <button className="button button-primary" onClick={resetGame}>
+                                Play Again
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            const question = triviaQuestions[currentQuestion];
+            const progress = ((currentQuestion + 1) / triviaQuestions.length) * 100;
+
+            return (
+                <div className="game-container">
+                    <div className="game-header">
+                        <h2 className="game-title">Daily Trivia</h2>
+                        <p className="game-subtitle">Best out of 10 questions</p>
+                    </div>
+
+                    <div className="stats-bar">
+                        <div className="stat-item">
+                            <div className="stat-value">{score}</div>
+                            <div className="stat-label">Correct</div>
+                        </div>
+                        <div className="stat-item">
+                            <div className="stat-value">{currentQuestion + 1}/10</div>
+                            <div className="stat-label">Question</div>
+                        </div>
+                        <div className="stat-item">
+                            <div className="stat-value">{Math.round((score / (currentQuestion + (answered ? 1 : 0))) * 100) || 0}%</div>
+                            <div className="stat-label">Accuracy</div>
+                        </div>
+                    </div>
+
+                    <div className="trivia-progress">
+                        <div className="trivia-progress-bar">
+                            <div className="trivia-progress-fill" style={{width: `${progress}%`}}></div>
+                        </div>
+                        <span>Question {currentQuestion + 1} of {triviaQuestions.length}</span>
+                    </div>
+
+                    <div className="trivia-question-card">
+                        <span className="trivia-category">{question.category}</span>
+                        <div className="trivia-question">{question.question}</div>
+                        <div className="trivia-answers">
+                            {question.answers.map((answer, index) => {
+                                let className = 'trivia-answer';
+                                
+                                if (answered) {
+                                    if (index === question.correct) {
+                                        className += ' correct';
+                                    } else if (index === selectedAnswer) {
+                                        className += ' incorrect';
+                                    }
+                                } else if (index === selectedAnswer) {
+                                    className += ' selected';
+                                }
+
+                                return (
+                                    <button
+                                        key={index}
+                                        className={className}
+                                        onClick={() => handleAnswerClick(index)}
+                                        disabled={answered}
+                                    >
+                                        {answer}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    {answered && (
+                        <button className="button button-primary" onClick={handleNext}>
+                            {currentQuestion < triviaQuestions.length - 1 ? 'Next Question' : 'See Results'}
+                        </button>
+                    )}
+                </div>
+            );
+        }
+
         // Leaderboard Component
         function Leaderboard() {
             const players = [
@@ -1086,6 +1422,28 @@
                             <div className="stat-item">
                                 <div className="stat-value">5</div>
                                 <div className="stat-label">Best Streak</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={{background: 'white', padding: '24px', borderRadius: '16px', marginTop: '16px'}}>
+                        <h3 style={{fontWeight: '700', marginBottom: '16px'}}>Trivia Stats</h3>
+                        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px'}}>
+                            <div className="stat-item">
+                                <div className="stat-value">15</div>
+                                <div className="stat-label">Played</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">85%</div>
+                                <div className="stat-label">Avg Score</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">10/10</div>
+                                <div className="stat-label">Best Score</div>
+                            </div>
+                            <div className="stat-item">
+                                <div className="stat-value">6</div>
+                                <div className="stat-label">Perfect Games</div>
                             </div>
                         </div>
                     </div>
