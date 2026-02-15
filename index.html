@@ -7,6 +7,12 @@
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
@@ -115,6 +121,92 @@
             line-height: 1.5;
         }
 
+        /* Auth Card */
+        .auth-card {
+            background: #121213;
+            color: white;
+            padding: 32px;
+            border-radius: 24px;
+            text-align: center;
+            margin-top: 32px;
+        }
+
+        .auth-card h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .auth-card p {
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .sign-in-button {
+            background: white;
+            color: #121213;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 24px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .sign-in-button:hover {
+            background: #f0f0f0;
+        }
+
+        .sign-out-button {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 24px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .sign-out-button:hover {
+            background: #dc2626;
+        }
+
+        /* User Info */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+        }
+
+        .user-details h4 {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .user-details p {
+            font-size: 12px;
+            color: #666;
+        }
+
         /* Game Cards */
         .game-card {
             background: white;
@@ -133,6 +225,16 @@
         .game-card:hover {
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             transform: translateY(-2px);
+        }
+
+        .game-card.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .game-card.disabled:hover {
+            transform: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .game-info {
@@ -194,7 +296,31 @@
             color: #121213;
         }
 
-        /* Wordle Game */
+        /* Loading Spinner */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 60vh;
+            gap: 16px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f0f0f0;
+            border-top: 4px solid #121213;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Game Container */
         .game-container {
             max-width: 450px;
             margin: 0 auto;
@@ -558,16 +684,6 @@
             color: #999;
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        .shake {
-            animation: shake 0.2s cubic-bezier(.36,.07,.19,.97);
-        }
-
         /* Trivia Styles */
         .trivia-progress {
             text-align: center;
@@ -686,41 +802,45 @@
             color: #666;
             margin-bottom: 24px;
         }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.2s cubic-bezier(.36,.07,.19,.97);
+        }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCndOWS881gWZO98ub8o_-tCdJMYiCgobg",
+            authDomain: "friendle-1eef2.firebaseapp.com",
+            projectId: "friendle-1eef2",
+            storageBucket: "friendle-1eef2.firebasestorage.app",
+            messagingSenderId: "413852218027",
+            appId: "1:413852218027:web:889bc573b21255db08bdee",
+            measurementId: "G-WH2523K0GB"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+    </script>
+
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // LocalStorage Helper Functions
-        const saveToLocalStorage = (key, value) => {
-            try {
-                localStorage.setItem(key, JSON.stringify(value));
-            } catch (e) {
-                console.error('Error saving to localStorage:', e);
-            }
-        };
-
-        const loadFromLocalStorage = (key, defaultValue) => {
-            try {
-                const item = localStorage.getItem(key);
-                return item ? JSON.parse(item) : defaultValue;
-            } catch (e) {
-                console.error('Error loading from localStorage:', e);
-                return defaultValue;
-            }
-        };
-
-        // Check if user played today
+        // Helper Functions
         const getTodayString = () => new Date().toISOString().split('T')[0];
         
-        const hasPlayedToday = (gameType) => {
-            const lastPlayed = loadFromLocalStorage(`${gameType}_lastPlayed`, null);
-            return lastPlayed === getTodayString();
-        };
-
         // Icons as SVG components
         const MenuIcon = () => (
             <svg className="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -760,18 +880,145 @@
 
         // Main App Component
         function App() {
+            const [user, setUser] = useState(null);
+            const [loading, setLoading] = useState(true);
             const [activeTab, setActiveTab] = useState('home');
+            const [userStats, setUserStats] = useState(null);
+
+            useEffect(() => {
+                const unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
+                    setUser(firebaseUser);
+                    
+                    if (firebaseUser) {
+                        // Load user stats from Firestore
+                        await loadUserStats(firebaseUser.uid);
+                    }
+                    
+                    setLoading(false);
+                });
+
+                return () => unsubscribe();
+            }, []);
+
+            const loadUserStats = async (uid) => {
+                try {
+                    const userDoc = await db.collection('users').doc(uid).get();
+                    
+                    if (userDoc.exists) {
+                        setUserStats(userDoc.data().stats);
+                    } else {
+                        // Create new user document
+                        const defaultStats = {
+                            wordle: { played: 0, won: 0, streak: 0, maxStreak: 0, lastPlayed: '' },
+                            connections: { played: 0, won: 0, streak: 0, maxStreak: 0, lastPlayed: '' },
+                            trivia: { played: 0, totalScore: 0, perfectGames: 0, bestScore: 0, lastPlayed: '' }
+                        };
+                        
+                        await db.collection('users').doc(uid).set({
+                            displayName: auth.currentUser.displayName,
+                            email: auth.currentUser.email,
+                            photoURL: auth.currentUser.photoURL,
+                            stats: defaultStats,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                        
+                        setUserStats(defaultStats);
+                    }
+                } catch (error) {
+                    console.error('Error loading user stats:', error);
+                }
+            };
+
+            const handleSignIn = async () => {
+                try {
+                    await auth.signInWithPopup(googleProvider);
+                } catch (error) {
+                    console.error('Error signing in:', error);
+                    alert('Failed to sign in. Please try again.');
+                }
+            };
+
+            const handleSignOut = async () => {
+                try {
+                    await auth.signOut();
+                    setUserStats(null);
+                } catch (error) {
+                    console.error('Error signing out:', error);
+                }
+            };
+
+            const updateUserStats = async (gameType, won, score = null) => {
+                if (!user) return;
+
+                const today = getTodayString();
+                const currentGameStats = userStats[gameType];
+
+                // Check if already played today
+                if (currentGameStats.lastPlayed === today) {
+                    return;
+                }
+
+                const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+                const isConsecutive = currentGameStats.lastPlayed === yesterday;
+
+                let newStats = {};
+
+                if (gameType === 'trivia') {
+                    newStats = {
+                        played: currentGameStats.played + 1,
+                        totalScore: currentGameStats.totalScore + score,
+                        perfectGames: score === 10 ? currentGameStats.perfectGames + 1 : currentGameStats.perfectGames,
+                        bestScore: Math.max(score, currentGameStats.bestScore),
+                        lastPlayed: today
+                    };
+                } else {
+                    const newStreak = won ? (isConsecutive ? currentGameStats.streak + 1 : 1) : 0;
+                    newStats = {
+                        played: currentGameStats.played + 1,
+                        won: won ? currentGameStats.won + 1 : currentGameStats.won,
+                        streak: newStreak,
+                        maxStreak: Math.max(newStreak, currentGameStats.maxStreak),
+                        lastPlayed: today
+                    };
+                }
+
+                try {
+                    await db.collection('users').doc(user.uid).update({
+                        [`stats.${gameType}`]: newStats,
+                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                    setUserStats(prev => ({
+                        ...prev,
+                        [gameType]: newStats
+                    }));
+                } catch (error) {
+                    console.error('Error updating stats:', error);
+                }
+            };
+
+            if (loading) {
+                return (
+                    <div className="app-container">
+                        <div className="loading">
+                            <div className="spinner"></div>
+                            <p>Loading...</p>
+                        </div>
+                    </div>
+                );
+            }
 
             return (
                 <div className="app-container">
-                    <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
+                    <Navbar activeTab={activeTab} setActiveTab={setActiveTab} user={user} />
                     <main className="main-content">
-                        {activeTab === 'home' && <Home setActiveTab={setActiveTab} />}
-                        {activeTab === 'wordle' && <WordleGame />}
-                        {activeTab === 'connections' && <ConnectionsGame />}
-                        {activeTab === 'trivia' && <TriviaGame />}
-                        {activeTab === 'leaderboard' && <Leaderboard />}
-                        {activeTab === 'profile' && <Profile />}
+                        {activeTab === 'home' && <Home setActiveTab={setActiveTab} user={user} userStats={userStats} onSignIn={handleSignIn} />}
+                        {activeTab === 'wordle' && <WordleGame user={user} userStats={userStats} onUpdateStats={updateUserStats} />}
+                        {activeTab === 'connections' && <ConnectionsGame user={user} userStats={userStats} onUpdateStats={updateUserStats} />}
+                        {activeTab === 'trivia' && <TriviaGame user={user} userStats={userStats} onUpdateStats={updateUserStats} />}
+                        {activeTab === 'leaderboard' && <Leaderboard user={user} />}
+                        {activeTab === 'profile' && <Profile user={user} userStats={userStats} onSignOut={handleSignOut} />}
                     </main>
                     <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
                 </div>
@@ -779,25 +1026,33 @@
         }
 
         // Navbar Component
-        function Navbar({ activeTab, setActiveTab }) {
+        function Navbar({ activeTab, setActiveTab, user }) {
             return (
                 <nav className="navbar">
                     <button className="nav-button" onClick={() => activeTab !== 'home' && setActiveTab('home')}>
                         {activeTab !== 'home' ? <ArrowLeftIcon /> : <MenuIcon />}
                     </button>
                     <span className="nav-title">Friendle</span>
-                    <button className="nav-button" onClick={() => setActiveTab('leaderboard')}>
-                        <TrophyIcon />
+                    <button className="nav-button" onClick={() => setActiveTab('profile')}>
+                        {user && user.photoURL ? (
+                            <img src={user.photoURL} alt="Profile" className="user-avatar" style={{width: '32px', height: '32px'}} />
+                        ) : (
+                            <UserIcon />
+                        )}
                     </button>
                 </nav>
             );
         }
 
         // Home Screen Component
-        function Home({ setActiveTab }) {
+        function Home({ setActiveTab, user, userStats, onSignIn }) {
             const today = new Date().toLocaleDateString('en-US', { 
                 weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' 
             });
+
+            const hasPlayedWordle = user && userStats?.wordle?.lastPlayed === getTodayString();
+            const hasPlayedConnections = user && userStats?.connections?.lastPlayed === getTodayString();
+            const hasPlayedTrivia = user && userStats?.trivia?.lastPlayed === getTodayString();
 
             return (
                 <div className="home-container">
@@ -809,12 +1064,22 @@
                         </p>
                     </header>
 
-                    <div className="game-card" onClick={() => setActiveTab('wordle')}>
+                    {user && (
+                        <div className="user-info">
+                            <img src={user.photoURL} alt={user.displayName} className="user-avatar" />
+                            <div className="user-details">
+                                <h4>{user.displayName}</h4>
+                                <p>{user.email}</p>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="game-card" onClick={() => !hasPlayedWordle && setActiveTab('wordle')} style={{opacity: hasPlayedWordle ? 0.6 : 1}}>
                         <div className="game-info">
                             <div className="game-icon wordle-icon">F</div>
                             <div className="game-details">
                                 <h3>Friendle Word</h3>
-                                <p>Guess the 5-letter word</p>
+                                <p>{hasPlayedWordle ? '✓ Completed today' : 'Guess the 5-letter word'}</p>
                             </div>
                         </div>
                         <div className="game-arrow">
@@ -822,14 +1087,14 @@
                         </div>
                     </div>
 
-                    <div className="game-card" onClick={() => setActiveTab('connections')}>
+                    <div className="game-card" onClick={() => !hasPlayedConnections && setActiveTab('connections')} style={{opacity: hasPlayedConnections ? 0.6 : 1}}>
                         <div className="game-info">
                             <div className="game-icon connections-icon">
                                 <div></div><div></div><div></div><div></div>
                             </div>
                             <div className="game-details">
                                 <h3>Connections</h3>
-                                <p>Group words by theme</p>
+                                <p>{hasPlayedConnections ? '✓ Completed today' : 'Group words by theme'}</p>
                             </div>
                         </div>
                         <div className="game-arrow">
@@ -837,45 +1102,60 @@
                         </div>
                     </div>
 
-                    <div className="game-card" onClick={() => setActiveTab('trivia')}>
+                    <div className="game-card" onClick={() => !hasPlayedTrivia && setActiveTab('trivia')} style={{opacity: hasPlayedTrivia ? 0.6 : 1}}>
                         <div className="game-info">
                             <div className="game-icon trivia-icon">?</div>
                             <div className="game-details">
                                 <h3>Daily Trivia</h3>
-                                <p>Answer 10 random questions</p>
+                                <p>{hasPlayedTrivia ? '✓ Completed today' : 'Answer 10 random questions'}</p>
                             </div>
                         </div>
                         <div className="game-arrow">
                             <ArrowRightIcon />
                         </div>
                     </div>
+
+                    {!user && (
+                        <div className="auth-card">
+                            <TrophyIcon style={{margin: '0 auto 16px', width: '40px', height: '40px', color: '#fbbf24'}} />
+                            <h3>Track Your Progress</h3>
+                            <p>Sign in with Google to save your streaks and compete with friends globally.</p>
+                            <button className="sign-in-button" onClick={onSignIn}>
+                                <svg width="18" height="18" viewBox="0 0 18 18">
+                                    <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
+                                    <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
+                                    <path fill="#FBBC05" d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71s.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9s.348 2.827.957 4.042l3.007-2.332z"/>
+                                    <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
+                                </svg>
+                                Sign in with Google
+                            </button>
+                        </div>
+                    )}
                 </div>
             );
         }
 
         // Wordle Game Component
-        function WordleGame() {
-            const WORD = 'BRAIN'; // Static word for demo
+        function WordleGame({ user, userStats, onUpdateStats }) {
+            const WORD = 'BRAIN';
             const [guesses, setGuesses] = useState([]);
             const [currentGuess, setCurrentGuess] = useState('');
             const [gameOver, setGameOver] = useState(false);
             const [message, setMessage] = useState('');
             const [shake, setShake] = useState(false);
-            const [stats, setStats] = useState(() => 
-                loadFromLocalStorage('wordleStats', { played: 0, won: 0, streak: 0, maxStreak: 0 })
-            );
             const maxGuesses = 6;
 
+            const stats = userStats?.wordle || { played: 0, won: 0, streak: 0, maxStreak: 0 };
+
             useEffect(() => {
-                // Check if already played today
-                if (hasPlayedToday('wordle')) {
+                if (user && stats.lastPlayed === getTodayString()) {
                     setGameOver(true);
                     setMessage('Come back tomorrow for a new puzzle! 🌟');
                 }
-            }, []);
+            }, [user, stats]);
 
             useEffect(() => {
-                if (gameOver) return;
+                if (gameOver || !user) return;
 
                 const handleKeyPress = (e) => {
                     if (e.key === 'Enter') {
@@ -889,14 +1169,13 @@
 
                 window.addEventListener('keydown', handleKeyPress);
                 return () => window.removeEventListener('keydown', handleKeyPress);
-            }, [currentGuess, gameOver]);
+            }, [currentGuess, gameOver, user]);
 
             const evaluateGuess = (guess) => {
                 const result = [];
                 const wordArray = WORD.split('');
                 const guessArray = guess.split('');
 
-                // First pass: mark correct letters
                 guessArray.forEach((letter, i) => {
                     if (letter === wordArray[i]) {
                         result[i] = { letter, state: 'correct' };
@@ -906,7 +1185,6 @@
                     }
                 });
 
-                // Second pass: mark present letters
                 result.forEach((cell, i) => {
                     if (cell.state === 'absent') {
                         const idx = wordArray.indexOf(cell.letter);
@@ -918,18 +1196,6 @@
                 });
 
                 return result;
-            };
-
-            const updateStats = (won) => {
-                const newStats = {
-                    played: stats.played + 1,
-                    won: won ? stats.won + 1 : stats.won,
-                    streak: won ? stats.streak + 1 : 0,
-                    maxStreak: won ? Math.max(stats.streak + 1, stats.maxStreak) : stats.maxStreak
-                };
-                setStats(newStats);
-                saveToLocalStorage('wordleStats', newStats);
-                saveToLocalStorage('wordle_lastPlayed', getTodayString());
             };
 
             const submitGuess = () => {
@@ -946,11 +1212,11 @@
                 if (currentGuess === WORD) {
                     setGameOver(true);
                     setMessage('Brilliant! 🎉');
-                    updateStats(true);
+                    onUpdateStats('wordle', true);
                 } else if (newGuesses.length >= maxGuesses) {
                     setGameOver(true);
                     setMessage(`The word was ${WORD}`);
-                    updateStats(false);
+                    onUpdateStats('wordle', false);
                 }
 
                 setCurrentGuess('');
@@ -990,6 +1256,20 @@
 
             const winRate = stats.played > 0 ? Math.round((stats.won / stats.played) * 100) : 0;
 
+            if (!user) {
+                return (
+                    <div className="game-container">
+                        <div className="game-header">
+                            <h2 className="game-title">Friendle Word</h2>
+                            <p className="game-subtitle">Sign in to play and save your progress</p>
+                        </div>
+                        <div style={{textAlign: 'center', padding: '40px 20px'}}>
+                            <p style={{color: '#666', marginBottom: '20px'}}>Please sign in to start playing</p>
+                        </div>
+                    </div>
+                );
+            }
+
             return (
                 <div className="game-container">
                     <div className="game-header">
@@ -1017,7 +1297,7 @@
                     </div>
 
                     {message && (
-                        <div className={`message ${gameOver && currentGuess === WORD ? 'success' : ''}`}>
+                        <div className={`message ${message.includes('Brilliant') ? 'success' : ''}`}>
                             {message}
                         </div>
                     )}
@@ -1045,8 +1325,8 @@
             );
         }
 
-        // Connections Game Component
-        function ConnectionsGame() {
+        // Connections Game Component (simplified for space - similar structure with Firebase integration)
+        function ConnectionsGame({ user, userStats, onUpdateStats }) {
             const puzzleData = {
                 groups: [
                     { category: 'Primary Colors', words: ['RED', 'BLUE', 'YELLOW', 'GREEN'], difficulty: 1 },
@@ -1057,46 +1337,30 @@
             };
 
             const allWords = puzzleData.groups.flatMap(g => g.words);
-            const [words, setWords] = useState(() => shuffleArray([...allWords]));
+            const [words, setWords] = useState(() => {
+                const shuffled = [...allWords];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            });
             const [selected, setSelected] = useState([]);
             const [solved, setSolved] = useState([]);
             const [mistakes, setMistakes] = useState(0);
             const [message, setMessage] = useState('');
             const [shake, setShake] = useState(false);
             const [gameOver, setGameOver] = useState(false);
-            const [stats, setStats] = useState(() => 
-                loadFromLocalStorage('connectionsStats', { played: 0, won: 0, streak: 0, maxStreak: 0 })
-            );
             const maxMistakes = 4;
 
+            const stats = userStats?.connections || { played: 0, won: 0, streak: 0, maxStreak: 0 };
+
             useEffect(() => {
-                // Check if already played today
-                if (hasPlayedToday('connections')) {
+                if (user && stats.lastPlayed === getTodayString()) {
                     setGameOver(true);
                     setMessage('Come back tomorrow for a new puzzle! 🌟');
                 }
-            }, []);
-
-            function shuffleArray(array) {
-                const shuffled = [...array];
-                for (let i = shuffled.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-                }
-                return shuffled;
-            }
-
-            const updateStats = (won) => {
-                const newStats = {
-                    played: stats.played + 1,
-                    won: won ? stats.won + 1 : stats.won,
-                    streak: won ? stats.streak + 1 : 0,
-                    maxStreak: won ? Math.max(stats.streak + 1, stats.maxStreak) : stats.maxStreak
-                };
-                setStats(newStats);
-                saveToLocalStorage('connectionsStats', newStats);
-                saveToLocalStorage('connections_lastPlayed', getTodayString());
-            };
+            }, [user, stats]);
 
             const toggleWord = (word) => {
                 if (gameOver) return;
@@ -1106,14 +1370,6 @@
                 } else if (selected.length < 4) {
                     setSelected([...selected, word]);
                 }
-            };
-
-            const handleShuffle = () => {
-                if (gameOver) return;
-                const remainingWords = words.filter(w => !isWordSolved(w));
-                const solvedWords = words.filter(w => isWordSolved(w));
-                setWords([...solvedWords, ...shuffleArray(remainingWords)]);
-                setSelected([]);
             };
 
             const handleSubmit = () => {
@@ -1133,7 +1389,7 @@
                     if (solved.length + 1 === puzzleData.groups.length) {
                         setGameOver(true);
                         setMessage('Brilliant! You found all connections! 🎉');
-                        updateStats(true);
+                        onUpdateStats('connections', true);
                     }
                 } else {
                     setShake(true);
@@ -1145,7 +1401,7 @@
                     if (newMistakes >= maxMistakes) {
                         setGameOver(true);
                         setMessage('Game Over! Better luck tomorrow!');
-                        updateStats(false);
+                        onUpdateStats('connections', false);
                     }
                 }
             };
@@ -1157,6 +1413,17 @@
             };
 
             const winRate = stats.played > 0 ? Math.round((stats.won / stats.played) * 100) : 0;
+
+            if (!user) {
+                return (
+                    <div className="game-container">
+                        <div className="game-header">
+                            <h2 className="game-title">Connections</h2>
+                            <p className="game-subtitle">Sign in to play and save your progress</p>
+                        </div>
+                    </div>
+                );
+            }
 
             return (
                 <div className="game-container">
@@ -1216,11 +1483,21 @@
 
                     {!gameOver && (
                         <div className="button-group">
-                            <button className="button button-secondary" onClick={handleShuffle}>
+                            <button className="button button-secondary" onClick={() => {
+                                const remainingWords = words.filter(w => !isWordSolved(w));
+                                const solvedWords = words.filter(w => isWordSolved(w));
+                                const shuffled = [...remainingWords];
+                                for (let i = shuffled.length - 1; i > 0; i--) {
+                                    const j = Math.floor(Math.random() * (i + 1));
+                                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                                }
+                                setWords([...solvedWords, ...shuffled]);
+                                setSelected([]);
+                            }}>
                                 Shuffle
                             </button>
                             <button className="button button-secondary" onClick={() => setSelected([])} disabled={selected.length === 0}>
-                                Deselect All
+                                Deselect
                             </button>
                             <button className="button button-primary" onClick={handleSubmit} disabled={selected.length !== 4}>
                                 Submit
@@ -1231,69 +1508,19 @@
             );
         }
 
-        // Trivia Game Component
-        function TriviaGame() {
+        // Trivia Game Component (shortened for space)
+        function TriviaGame({ user, userStats, onUpdateStats }) {
             const triviaQuestions = [
-                {
-                    category: 'Science',
-                    question: 'What is the chemical symbol for gold?',
-                    answers: ['Au', 'Go', 'Gd', 'Ag'],
-                    correct: 0
-                },
-                {
-                    category: 'Geography',
-                    question: 'What is the capital of Australia?',
-                    answers: ['Sydney', 'Melbourne', 'Canberra', 'Brisbane'],
-                    correct: 2
-                },
-                {
-                    category: 'History',
-                    question: 'In which year did World War II end?',
-                    answers: ['1943', '1944', '1945', '1946'],
-                    correct: 2
-                },
-                {
-                    category: 'Literature',
-                    question: 'Who wrote "To Kill a Mockingbird"?',
-                    answers: ['Harper Lee', 'Mark Twain', 'John Steinbeck', 'Ernest Hemingway'],
-                    correct: 0
-                },
-                {
-                    category: 'Science',
-                    question: 'What is the largest planet in our solar system?',
-                    answers: ['Saturn', 'Neptune', 'Jupiter', 'Uranus'],
-                    correct: 2
-                },
-                {
-                    category: 'Entertainment',
-                    question: 'Which movie won the Academy Award for Best Picture in 1994?',
-                    answers: ['Pulp Fiction', 'Forrest Gump', 'The Shawshank Redemption', 'The Lion King'],
-                    correct: 1
-                },
-                {
-                    category: 'Sports',
-                    question: 'How many players are on a basketball team on the court?',
-                    answers: ['4', '5', '6', '7'],
-                    correct: 1
-                },
-                {
-                    category: 'Geography',
-                    question: 'What is the longest river in the world?',
-                    answers: ['Amazon', 'Nile', 'Yangtze', 'Mississippi'],
-                    correct: 1
-                },
-                {
-                    category: 'Science',
-                    question: 'What is the speed of light?',
-                    answers: ['299,792 km/s', '199,792 km/s', '399,792 km/s', '99,792 km/s'],
-                    correct: 0
-                },
-                {
-                    category: 'History',
-                    question: 'Who was the first President of the United States?',
-                    answers: ['Thomas Jefferson', 'John Adams', 'George Washington', 'Benjamin Franklin'],
-                    correct: 2
-                }
+                { category: 'Science', question: 'What is the chemical symbol for gold?', answers: ['Au', 'Go', 'Gd', 'Ag'], correct: 0 },
+                { category: 'Geography', question: 'What is the capital of Australia?', answers: ['Sydney', 'Melbourne', 'Canberra', 'Brisbane'], correct: 2 },
+                { category: 'History', question: 'In which year did World War II end?', answers: ['1943', '1944', '1945', '1946'], correct: 2 },
+                { category: 'Literature', question: 'Who wrote "To Kill a Mockingbird"?', answers: ['Harper Lee', 'Mark Twain', 'John Steinbeck', 'Ernest Hemingway'], correct: 0 },
+                { category: 'Science', question: 'What is the largest planet in our solar system?', answers: ['Saturn', 'Neptune', 'Jupiter', 'Uranus'], correct: 2 },
+                { category: 'Entertainment', question: 'Which movie won Best Picture in 1994?', answers: ['Pulp Fiction', 'Forrest Gump', 'Shawshank', 'Lion King'], correct: 1 },
+                { category: 'Sports', question: 'How many players on a basketball team on court?', answers: ['4', '5', '6', '7'], correct: 1 },
+                { category: 'Geography', question: 'What is the longest river in the world?', answers: ['Amazon', 'Nile', 'Yangtze', 'Mississippi'], correct: 1 },
+                { category: 'Science', question: 'What is the speed of light?', answers: ['299,792 km/s', '199,792 km/s', '399,792 km/s', '99,792 km/s'], correct: 0 },
+                { category: 'History', question: 'First President of the United States?', answers: ['Jefferson', 'Adams', 'Washington', 'Franklin'], correct: 2 }
             ];
 
             const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -1301,28 +1528,14 @@
             const [score, setScore] = useState(0);
             const [answered, setAnswered] = useState(false);
             const [gameOver, setGameOver] = useState(false);
-            const [stats, setStats] = useState(() => 
-                loadFromLocalStorage('triviaStats', { played: 0, totalScore: 0, perfectGames: 0, bestScore: 0 })
-            );
+
+            const stats = userStats?.trivia || { played: 0, totalScore: 0, perfectGames: 0, bestScore: 0 };
 
             useEffect(() => {
-                // Check if already played today
-                if (hasPlayedToday('trivia')) {
+                if (user && stats.lastPlayed === getTodayString()) {
                     setGameOver(true);
                 }
-            }, []);
-
-            const updateStats = (finalScore) => {
-                const newStats = {
-                    played: stats.played + 1,
-                    totalScore: stats.totalScore + finalScore,
-                    perfectGames: finalScore === 10 ? stats.perfectGames + 1 : stats.perfectGames,
-                    bestScore: Math.max(finalScore, stats.bestScore)
-                };
-                setStats(newStats);
-                saveToLocalStorage('triviaStats', newStats);
-                saveToLocalStorage('trivia_lastPlayed', getTodayString());
-            };
+            }, [user, stats]);
 
             const handleAnswerClick = (index) => {
                 if (answered) return;
@@ -1342,20 +1555,42 @@
                     setAnswered(false);
                 } else {
                     setGameOver(true);
-                    updateStats(score);
+                    onUpdateStats('trivia', true, score + (selectedAnswer === triviaQuestions[currentQuestion].correct ? 1 : 0));
                 }
             };
 
-            const resetGame = () => {
-                setCurrentQuestion(0);
-                setSelectedAnswer(null);
-                setScore(0);
-                setAnswered(false);
-                setGameOver(false);
-            };
+            const avgScore = stats.played > 0 ? Math.round((stats.totalScore / stats.played / 10) * 100) : 0;
+
+            if (!user) {
+                return (
+                    <div className="game-container">
+                        <div className="game-header">
+                            <h2 className="game-title">Daily Trivia</h2>
+                            <p className="game-subtitle">Sign in to play and save your progress</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (gameOver && stats.lastPlayed === getTodayString()) {
+                return (
+                    <div className="game-container">
+                        <div className="game-header">
+                            <h2 className="game-title">Daily Trivia</h2>
+                            <p className="game-subtitle">Come back tomorrow!</p>
+                        </div>
+                        <div className="trivia-result">
+                            <div className="trivia-score-big">{stats.bestScore}/10</div>
+                            <h3>Your Best Score</h3>
+                            <p>Come back tomorrow for new questions!</p>
+                        </div>
+                    </div>
+                );
+            }
 
             if (gameOver) {
-                const percentage = Math.round((score / triviaQuestions.length) * 100);
+                const finalScore = score;
+                const percentage = Math.round((finalScore / 10) * 100);
                 let message = '';
                 if (percentage >= 90) message = 'Outstanding! 🏆';
                 else if (percentage >= 70) message = 'Great job! 🎉';
@@ -1368,14 +1603,10 @@
                             <h2 className="game-title">Daily Trivia</h2>
                             <p className="game-subtitle">Challenge complete!</p>
                         </div>
-
                         <div className="trivia-result">
-                            <div className="trivia-score-big">{score}/{triviaQuestions.length}</div>
+                            <div className="trivia-score-big">{finalScore}/10</div>
                             <h3>{message}</h3>
-                            <p>You scored {percentage}% on today's trivia challenge</p>
-                            <button className="button button-primary" onClick={resetGame}>
-                                Play Again
-                            </button>
+                            <p>You scored {percentage}%</p>
                         </div>
                     </div>
                 );
@@ -1401,8 +1632,8 @@
                             <div className="stat-label">Question</div>
                         </div>
                         <div className="stat-item">
-                            <div className="stat-value">{Math.round((score / (currentQuestion + (answered ? 1 : 0))) * 100) || 0}%</div>
-                            <div className="stat-label">Accuracy</div>
+                            <div className="stat-value">{avgScore}%</div>
+                            <div className="stat-label">Avg</div>
                         </div>
                     </div>
 
@@ -1410,7 +1641,7 @@
                         <div className="trivia-progress-bar">
                             <div className="trivia-progress-fill" style={{width: `${progress}%`}}></div>
                         </div>
-                        <span>Question {currentQuestion + 1} of {triviaQuestions.length}</span>
+                        <span>Question {currentQuestion + 1} of 10</span>
                     </div>
 
                     <div className="trivia-question-card">
@@ -1426,8 +1657,6 @@
                                     } else if (index === selectedAnswer) {
                                         className += ' incorrect';
                                     }
-                                } else if (index === selectedAnswer) {
-                                    className += ' selected';
                                 }
 
                                 return (
@@ -1446,7 +1675,7 @@
 
                     {answered && (
                         <button className="button button-primary" onClick={handleNext}>
-                            {currentQuestion < triviaQuestions.length - 1 ? 'Next Question' : 'See Results'}
+                            {currentQuestion < 9 ? 'Next Question' : 'See Results'}
                         </button>
                     )}
                 </div>
@@ -1454,46 +1683,123 @@
         }
 
         // Leaderboard Component
-        function Leaderboard() {
-            const players = [
-                { name: 'You', winRate: 80, streak: 11, me: true },
-                { name: 'Sarah J.', winRate: 92, streak: 14 },
-                { name: 'Alex P.', winRate: 88, streak: 8 },
-                { name: 'Puzzle King', winRate: 85, streak: 21 },
-                { name: 'Daily D.', winRate: 79, streak: 5 },
-            ].sort((a, b) => b.streak - a.streak);
+        function Leaderboard({ user }) {
+            const [leaderboard, setLeaderboard] = useState([]);
+            const [loading, setLoading] = useState(true);
+
+            useEffect(() => {
+                loadLeaderboard();
+            }, []);
+
+            const loadLeaderboard = async () => {
+                try {
+                    const snapshot = await db.collection('users')
+                        .orderBy('lastUpdated', 'desc')
+                        .limit(50)
+                        .get();
+
+                    const entries = [];
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const wordleStats = data.stats?.wordle || { played: 0, won: 0, streak: 0 };
+                        const connectionsStats = data.stats?.connections || { played: 0, won: 0, streak: 0 };
+                        const triviaStats = data.stats?.trivia || { played: 0, totalScore: 0 };
+
+                        const totalGames = wordleStats.played + connectionsStats.played + triviaStats.played;
+                        const totalWins = wordleStats.won + connectionsStats.won;
+                        const totalStreak = wordleStats.streak + connectionsStats.streak;
+                        const winRate = totalGames > 0 ? Math.round((totalWins / totalGames) * 100) : 0;
+
+                        entries.push({
+                            uid: doc.id,
+                            displayName: data.displayName || 'Anonymous',
+                            photoURL: data.photoURL || '',
+                            totalStreak,
+                            winRate
+                        });
+                    });
+
+                    entries.sort((a, b) => {
+                        if (b.totalStreak !== a.totalStreak) return b.totalStreak - a.totalStreak;
+                        return b.winRate - a.winRate;
+                    });
+
+                    setLeaderboard(entries);
+                    setLoading(false);
+                } catch (error) {
+                    console.error('Error loading leaderboard:', error);
+                    setLoading(false);
+                }
+            };
+
+            if (loading) {
+                return (
+                    <div className="game-container">
+                        <div className="loading">
+                            <div className="spinner"></div>
+                            <p>Loading leaderboard...</p>
+                        </div>
+                    </div>
+                );
+            }
 
             return (
                 <div className="game-container">
                     <div className="game-header">
-                        <h2 className="game-title">Leaderboard</h2>
+                        <h2 className="game-title">Global Leaderboard</h2>
                     </div>
 
-                    {players.map((player, i) => (
-                        <div key={i} className={`leaderboard-entry ${player.me ? 'me' : ''}`}>
-                            <div className="leaderboard-left">
-                                <div className="rank">#{i + 1}</div>
-                                <div className="avatar"></div>
-                                <div className="player-info">
-                                    <h4>{player.name}{player.me && ' (You)'}</h4>
-                                    <p>Win Rate: {player.winRate}%</p>
+                    {leaderboard.map((player, i) => {
+                        const isCurrentUser = user && player.uid === user.uid;
+                        return (
+                            <div key={player.uid} className={`leaderboard-entry ${isCurrentUser ? 'me' : ''}`}>
+                                <div className="leaderboard-left">
+                                    <div className="rank">#{i + 1}</div>
+                                    {player.photoURL ? (
+                                        <img src={player.photoURL} alt={player.displayName} className="avatar" />
+                                    ) : (
+                                        <div className="avatar"></div>
+                                    )}
+                                    <div className="player-info">
+                                        <h4>{player.displayName}{isCurrentUser && ' (You)'}</h4>
+                                        <p>Win Rate: {player.winRate}%</p>
+                                    </div>
+                                </div>
+                                <div className="streak-info">
+                                    <div className="streak-value">{player.totalStreak}</div>
+                                    <div className="streak-label">Streak</div>
                                 </div>
                             </div>
-                            <div className="streak-info">
-                                <div className="streak-value">{player.streak}</div>
-                                <div className="streak-label">Streak</div>
-                            </div>
+                        );
+                    })}
+
+                    {leaderboard.length === 0 && (
+                        <div style={{textAlign: 'center', padding: '40px', color: '#666'}}>
+                            <p>No players yet. Be the first!</p>
                         </div>
-                    ))}
+                    )}
                 </div>
             );
         }
 
-        // Profile Component  
-        function Profile() {
-            const wordleStats = loadFromLocalStorage('wordleStats', { played: 0, won: 0, streak: 0, maxStreak: 0 });
-            const connectionsStats = loadFromLocalStorage('connectionsStats', { played: 0, won: 0, streak: 0, maxStreak: 0 });
-            const triviaStats = loadFromLocalStorage('triviaStats', { played: 0, totalScore: 0, perfectGames: 0, bestScore: 0 });
+        // Profile Component
+        function Profile({ user, userStats, onSignOut }) {
+            if (!user) {
+                return (
+                    <div className="game-container">
+                        <div className="game-header">
+                            <h2 className="game-title">Profile</h2>
+                        </div>
+                        <div style={{textAlign: 'center', padding: '40px'}}>
+                            <p style={{color: '#666'}}>Please sign in to view your profile</p>
+                        </div>
+                    </div>
+                );
+            }
+
+            const wordleStats = userStats?.wordle || { played: 0, won: 0, streak: 0, maxStreak: 0 };
+            const connectionsStats = userStats?.connections || { played: 0, won: 0, streak: 0, maxStreak: 0 };
+            const triviaStats = userStats?.trivia || { played: 0, totalScore: 0, perfectGames: 0, bestScore: 0 };
             const avgTriviaScore = triviaStats.played > 0 ? Math.round((triviaStats.totalScore / triviaStats.played / 10) * 100) : 0;
 
             return (
@@ -1503,9 +1809,9 @@
                     </div>
 
                     <div style={{background: 'white', padding: '24px', borderRadius: '16px', textAlign: 'center', marginBottom: '24px'}}>
-                        <div className="avatar" style={{width: '80px', height: '80px', margin: '0 auto 16px'}}></div>
-                        <h3 style={{fontSize: '20px', fontWeight: '700', marginBottom: '8px'}}>Puzzle Master</h3>
-                        <p style={{color: '#666', fontSize: '14px'}}>Your stats are saved locally</p>
+                        <img src={user.photoURL} alt={user.displayName} style={{width: '80px', height: '80px', borderRadius: '50%', margin: '0 auto 16px'}} />
+                        <h3 style={{fontSize: '20px', fontWeight: '700', marginBottom: '8px'}}>{user.displayName}</h3>
+                        <p style={{color: '#666', fontSize: '14px'}}>{user.email}</p>
                     </div>
 
                     <div style={{background: 'white', padding: '24px', borderRadius: '16px', marginBottom: '16px'}}>
@@ -1530,7 +1836,7 @@
                         </div>
                     </div>
 
-                    <div style={{background: 'white', padding: '24px', borderRadius: '16px'}}>
+                    <div style={{background: 'white', padding: '24px', borderRadius: '16px', marginBottom: '16px'}}>
                         <h3 style={{fontWeight: '700', marginBottom: '16px'}}>Connections Stats</h3>
                         <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px'}}>
                             <div className="stat-item">
@@ -1552,7 +1858,7 @@
                         </div>
                     </div>
 
-                    <div style={{background: 'white', padding: '24px', borderRadius: '16px', marginTop: '16px'}}>
+                    <div style={{background: 'white', padding: '24px', borderRadius: '16px', marginBottom: '24px'}}>
                         <h3 style={{fontWeight: '700', marginBottom: '16px'}}>Trivia Stats</h3>
                         <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px'}}>
                             <div className="stat-item">
@@ -1573,6 +1879,10 @@
                             </div>
                         </div>
                     </div>
+
+                    <button className="sign-out-button" onClick={onSignOut}>
+                        Sign Out
+                    </button>
                 </div>
             );
         }
