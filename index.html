@@ -664,6 +664,115 @@
             color: #000;
         }
 
+        /* Spelling Bee Styles */
+        .spelling-bee-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .bee-hive {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin: 30px 0;
+        }
+
+        .bee-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .bee-hex {
+            width: 70px;
+            height: 80px;
+            background: #e5e5e5;
+            clip-path: polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .bee-hex:active {
+            transform: scale(0.95);
+        }
+
+        .bee-hex.center {
+            background: #f7da21;
+        }
+
+        .bee-hex:hover:not(.center) {
+            background: #d0d0d0;
+        }
+
+        .bee-hex.center:hover {
+            background: #e5c71e;
+        }
+
+        .bee-current-word {
+            font-size: 28px;
+            font-weight: 600;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 4px;
+            margin: 20px 0;
+        }
+
+        .bee-word-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .bee-found-word {
+            padding: 8px 12px;
+            background: #f0f0f0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .bee-found-word.pangram {
+            background: #f7da21;
+            font-weight: 700;
+        }
+
+        .bee-score {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 16px 0;
+        }
+
+        .bee-rank {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .bee-progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e5e5;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+
+        .bee-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f7da21 0%, #ffa500 100%);
+            transition: width 0.3s ease;
+        }
+
         /* Connections Styles */
         .connections-grid {
             display: grid;
@@ -1400,6 +1509,27 @@
             border-color: #daa520;
         }
 
+        .delete-message-btn {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            transition: all 0.2s;
+        }
+
+        .delete-message-btn:hover {
+            background: #ffe5e5;
+            color: #d32f2f;
+        }
+
+        .delete-message-btn:active {
+            transform: scale(0.95);
+        }
+
         .chat-input-container {
             position: fixed;
             bottom: 72px;
@@ -1598,26 +1728,28 @@
         }
 
         // Strands data
-        const STRANDS_PUZZLES = [
+        // Spelling Bee puzzles
+        const SPELLING_BEE_PUZZLES = [
             {
-                theme: "Coffee Drinks",
-                grid: [
-                    ['L', 'A', 'T', 'T', 'E', 'S', 'P', 'R'],
-                    ['M', 'O', 'C', 'H', 'A', 'R', 'E', 'I'],
-                    ['A', 'M', 'E', 'R', 'I', 'C', 'A', 'N'],
-                    ['C', 'A', 'P', 'P', 'U', 'C', 'C', 'O'],
-                    ['C', 'O', 'R', 'T', 'A', 'D', 'O', 'T'],
-                    ['H', 'I', 'A', 'T', 'O', 'L', 'A', 'O']
-                ],
-                words: ['LATTE', 'MOCHA', 'CAPPUCCINO', 'AMERICANO', 'CORTADO', 'ESPRESSO'],
-                spangram: 'CAPPUCCINO'
+                centerLetter: 'A',
+                outerLetters: ['B', 'C', 'E', 'H', 'L', 'R'],
+                words: ['ABLE', 'BACH', 'BALE', 'BALL', 'BARE', 'BEACH', 'BEAR', 'BELL', 'CABLE', 'CALL', 'CARE', 'CELL', 'CHAR', 'CLEAR', 'EACH', 'EARL', 'HARE', 'HEAL', 'HEAR', 'LACE', 'REAL', 'REACH', 'BLEACH', 'CHEER', 'CLEAR', 'BREACH', 'BLEACHER'],
+                pangrams: ['BLEACHER'],
+                maxScore: 150
+            },
+            {
+                centerLetter: 'O',
+                outerLetters: ['C', 'D', 'L', 'R', 'T', 'U'],
+                words: ['COLD', 'COLOR', 'CORD', 'COULD', 'COURT', 'CULT', 'CURL', 'DOCTOR', 'DOOR', 'DOLT', 'DOUR', 'LOUD', 'LORD', 'ROOT', 'ROUT', 'TOOL', 'TOLD', 'TOUR', 'TROD', 'CLOUDROOT'],
+                pangrams: ['CLOUDROOT'],
+                maxScore: 140
             }
         ];
 
-        function getStrandsOfTheDay() {
+        function getSpellingBeeOfTheDay() {
             const today = getTodayString();
             const seed = today.split('-').reduce((a, b) => parseInt(a) + parseInt(b), 0);
-            return STRANDS_PUZZLES[seed % STRANDS_PUZZLES.length];
+            return SPELLING_BEE_PUZZLES[seed % SPELLING_BEE_PUZZLES.length];
         }
 
         // Trivia questions
@@ -1821,7 +1953,7 @@
             
             const wordleCompleted = userStats?.wordle?.lastPlayed === today;
             const crosswordCompleted = userStats?.crossword?.lastPlayed === today;
-            const strandsCompleted = userStats?.strands?.lastPlayed === today;
+            const spellingBeeCompleted = userStats?.spellingBee?.lastPlayed === today;
             const connectionsCompleted = userStats?.connections?.lastPlayed === today;
             const triviaCompleted = userStats?.trivia?.lastPlayed === today;
 
@@ -1841,8 +1973,8 @@
                 return <CrosswordGame user={user} onBack={() => { setSelectedGame(null); if (user) onStatsUpdate(user.uid); }} />;
             }
 
-            if (selectedGame === 'strands') {
-                return <StrandsGame user={user} onBack={() => { setSelectedGame(null); if (user) onStatsUpdate(user.uid); }} />;
+            if (selectedGame === 'spellingbee') {
+                return <SpellingBeeGame user={user} onBack={() => { setSelectedGame(null); if (user) onStatsUpdate(user.uid); }} />;
             }
 
             if (selectedGame === 'connections') {
@@ -1893,13 +2025,13 @@
                             <p className="game-description">Quick 5x5 crossword puzzle</p>
                         </div>
 
-                        <div className={`game-card ${strandsCompleted ? 'completed' : ''}`} onClick={() => !strandsCompleted && setSelectedGame('strands')}>
+                        <div className={`game-card ${spellingBeeCompleted ? 'completed' : ''}`} onClick={() => !spellingBeeCompleted && setSelectedGame('spellingbee')}>
                             <div className="game-card-header">
-                                <div className="game-icon" style={{background: '#ffd700'}}>🔍</div>
-                                {strandsCompleted && <div className="status-badge completed"><CheckIcon /></div>}
+                                <div className="game-icon" style={{background: '#f7da21'}}>🐝</div>
+                                {spellingBeeCompleted && <div className="status-badge completed"><CheckIcon /></div>}
                             </div>
-                            <h3 className="game-title">Strands</h3>
-                            <p className="game-description">Find themed words in the grid</p>
+                            <h3 className="game-title">Spelling Bee</h3>
+                            <p className="game-description">Make words with 7 letters</p>
                         </div>
 
                         <div className={`game-card ${connectionsCompleted ? 'completed' : ''}`} onClick={() => !connectionsCompleted && setSelectedGame('connections')}>
@@ -2368,103 +2500,144 @@
         }
 
         // NEW: Strands Game
-        function StrandsGame({ user, onBack }) {
-            const puzzle = getStrandsOfTheDay();
-            const [selectedCells, setSelectedCells] = useState([]);
+        // NEW: Spelling Bee Game
+        function SpellingBeeGame({ user, onBack }) {
+            const puzzle = getSpellingBeeOfTheDay();
             const [currentWord, setCurrentWord] = useState('');
             const [foundWords, setFoundWords] = useState([]);
-            const [foundSpangram, setFoundSpangram] = useState(false);
+            const [score, setScore] = useState(0);
+            const [message, setMessage] = useState('');
             const [gameOver, setGameOver] = useState(false);
             const [hint, setHint] = useState('');
             const [hintsUsed, setHintsUsed] = useState(0);
-            const [foundWordsCells, setFoundWordsCells] = useState([]); // Track which cells belong to found words
-
-            const handleCellClick = (row, col) => {
-                const cellKey = `${row}-${col}`;
-                // Don't allow selecting cells that are part of found words
-                if (foundWordsCells.includes(cellKey)) return;
-                
-                const isAlreadySelected = selectedCells.some(c => c.key === cellKey);
-
-                if (isAlreadySelected) {
-                    // Deselect
-                    setSelectedCells([]);
-                    setCurrentWord('');
-                } else {
-                    // Select cell
-                    const newSelected = [...selectedCells, { row, col, key: cellKey, letter: puzzle.grid[row][col] }];
-                    setSelectedCells(newSelected);
-                    setCurrentWord(newSelected.map(c => c.letter).join(''));
-                }
+            
+            const allLetters = [puzzle.centerLetter, ...puzzle.outerLetters];
+            
+            const handleLetterClick = (letter) => {
+                setCurrentWord(currentWord + letter);
+                setMessage('');
             };
-
+            
+            const handleDelete = () => {
+                setCurrentWord(currentWord.slice(0, -1));
+            };
+            
+            const handleShuffle = () => {
+                // Shuffle outer letters
+                const shuffled = [...puzzle.outerLetters].sort(() => Math.random() - 0.5);
+                puzzle.outerLetters = shuffled;
+            };
+            
+            const calculateScore = (word) => {
+                if (word.length === 4) return 1;
+                if (puzzle.pangrams.includes(word.toUpperCase())) return word.length + 7;
+                return word.length;
+            };
+            
             const handleSubmit = () => {
                 const word = currentWord.toUpperCase();
                 
-                if (puzzle.words.includes(word) && !foundWords.includes(word)) {
-                    setFoundWords([...foundWords, word]);
-                    setFoundWordsCells([...foundWordsCells, ...selectedCells.map(c => c.key)]);
-                    
-                    if (word === puzzle.spangram) {
-                        setFoundSpangram(true);
-                    }
-
-                    // Check if game complete
-                    if (foundWords.length + 1 === puzzle.words.length) {
-                        setGameOver(true);
-                        updateStats(true);
-                    }
+                // Validation
+                if (word.length < 4) {
+                    setMessage('Word must be at least 4 letters');
+                    setTimeout(() => setMessage(''), 2000);
+                    return;
                 }
                 
-                setSelectedCells([]);
+                if (!word.includes(puzzle.centerLetter)) {
+                    setMessage(`Must include center letter: ${puzzle.centerLetter}`);
+                    setTimeout(() => setMessage(''), 2000);
+                    return;
+                }
+                
+                if (foundWords.includes(word)) {
+                    setMessage('Already found!');
+                    setTimeout(() => setMessage(''), 2000);
+                    return;
+                }
+                
+                if (!puzzle.words.includes(word)) {
+                    setMessage('Not in word list');
+                    setTimeout(() => setMessage(''), 2000);
+                    return;
+                }
+                
+                // Valid word!
+                const wordScore = calculateScore(word);
+                setFoundWords([...foundWords, word]);
+                setScore(score + wordScore);
+                
+                if (puzzle.pangrams.includes(word)) {
+                    setMessage('🎉 Pangram! +' + wordScore);
+                } else {
+                    setMessage('Good! +' + wordScore);
+                }
+                
+                setTimeout(() => setMessage(''), 2000);
                 setCurrentWord('');
+                
+                // Check if found all pangrams
+                const foundAllPangrams = puzzle.pangrams.every(p => [...foundWords, word].includes(p));
+                if (foundAllPangrams && foundWords.length + 1 >= puzzle.words.length * 0.7) {
+                    setGameOver(true);
+                    updateStats(true);
+                }
             };
-
+            
             const handleHint = () => {
-                // Find an unfound word and reveal its first letter
-                const unfoundWords = puzzle.words.filter(w => !foundWords.includes(w));
-                if (unfoundWords.length > 0) {
-                    const randomWord = unfoundWords[Math.floor(Math.random() * unfoundWords.length)];
-                    const isSpangram = randomWord === puzzle.spangram;
-                    setHint(`Try finding a word that starts with "${randomWord[0]}"${isSpangram ? ' (This is the spangram!)' : ''}`);
+                const unfound = puzzle.words.filter(w => !foundWords.includes(w));
+                if (unfound.length > 0) {
+                    const randomWord = unfound[Math.floor(Math.random() * unfound.length)];
+                    const isPangram = puzzle.pangrams.includes(randomWord);
+                    setHint(`Try: ${randomWord.substring(0, 2)}... (${randomWord.length} letters)${isPangram ? ' 🐝 PANGRAM!' : ''}`);
                     setHintsUsed(hintsUsed + 1);
                     setTimeout(() => setHint(''), 5000);
                 }
             };
-
+            
+            const getRank = () => {
+                const percentage = (score / puzzle.maxScore) * 100;
+                if (percentage >= 90) return '👑 Queen Bee';
+                if (percentage >= 70) return '🌟 Genius';
+                if (percentage >= 50) return '💪 Amazing';
+                if (percentage >= 30) return '👍 Great';
+                if (percentage >= 10) return '👌 Good';
+                return '🌱 Beginner';
+            };
+            
             const updateStats = async (won) => {
                 if (!user) return;
-
+                
                 try {
                     const userRef = db.collection('users').doc(user.uid);
                     const doc = await userRef.get();
                     const data = doc.data() || {};
-                    const strandsStats = data.strands || { played: 0, won: 0, streak: 0, maxStreak: 0, lastPlayed: '' };
-
+                    const beeStats = data.spellingBee || { played: 0, won: 0, streak: 0, maxStreak: 0, lastPlayed: '' };
+                    
                     const today = getTodayString();
                     const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
                     
-                    let newStreak = strandsStats.streak;
+                    let newStreak = beeStats.streak;
                     if (won) {
-                        if (strandsStats.lastPlayed === yesterday) {
+                        if (beeStats.lastPlayed === yesterday) {
                             newStreak += 1;
-                        } else if (strandsStats.lastPlayed !== today) {
+                        } else if (beeStats.lastPlayed !== today) {
                             newStreak = 1;
                         }
                     } else {
                         newStreak = 0;
                     }
-
+                    
                     await userRef.set({
                         ...data,
                         displayName: user.displayName,
                         email: user.email,
                         photoURL: user.photoURL,
-                        strands: {
-                            played: strandsStats.played + 1,
-                            won: strandsStats.won + (won ? 1 : 0),
+                        spellingBee: {
+                            played: beeStats.played + 1,
+                            won: beeStats.won + (won ? 1 : 0),
                             streak: newStreak,
-                            maxStreak: Math.max(newStreak, strandsStats.maxStreak),
+                            maxStreak: Math.max(newStreak, beeStats.maxStreak),
                             lastPlayed: today
                         }
                     }, { merge: true });
@@ -2472,85 +2645,105 @@
                     console.error('Error updating stats:', error);
                 }
             };
-
+            
             return (
                 <div className="game-container fullscreen">
                     <div className="game-header">
-                        <h2 className="game-title-main">Strands</h2>
-                        <p className="game-subtitle">Find all theme words</p>
+                        <h2 className="game-title-main">Spelling Bee 🐝</h2>
+                        <p className="game-subtitle">Make words with the letters</p>
                     </div>
-
-                    <div className="strands-theme">
-                        <h3>Today's Theme</h3>
-                        <div className="strands-theme-text">{puzzle.theme}</div>
-                    </div>
-
-                    {hint && (
-                        <div className="hint-container">
-                            <div className="hint-text">💡 {hint}</div>
+                    
+                    <div className="spelling-bee-container">
+                        <div className="bee-score">
+                            Score: {score} / {puzzle.maxScore}
                         </div>
-                    )}
-
-                    <div className="strands-current-word">
-                        {currentWord || '...'}
-                    </div>
-
-                    <div className="strands-grid">
-                        {puzzle.grid.map((row, rowIndex) =>
-                            row.map((cell, colIndex) => {
-                                const cellKey = `${rowIndex}-${colIndex}`;
-                                const isSelected = selectedCells.some(c => c.key === cellKey);
-                                const isFoundCell = foundWordsCells.includes(cellKey);
-                                
-                                // Determine if this cell is part of spangram or theme word
-                                let cellClass = 'strands-cell';
-                                if (isSelected) cellClass += ' selected';
-                                if (isFoundCell) {
-                                    // Check if it's part of the spangram
-                                    cellClass += foundSpangram && foundWords.includes(puzzle.spangram) ? ' found-spangram' : ' found-theme';
-                                }
-
-                                return (
-                                    <div
-                                        key={cellKey}
-                                        className={cellClass}
-                                        onClick={() => handleCellClick(rowIndex, colIndex)}
-                                    >
-                                        {cell}
-                                    </div>
-                                );
-                            })
-                        )}
-                    </div>
-
-                    <div className="connections-controls">
-                        <button className="hint-button" onClick={handleHint} disabled={foundWords.length === puzzle.words.length}>
-                            💡 Hint
-                        </button>
-                        <button className="control-button secondary" onClick={() => { setSelectedCells([]); setCurrentWord(''); }}>
-                            Clear
-                        </button>
-                        <button className="control-button primary" onClick={handleSubmit} disabled={currentWord.length < 4}>
-                            Submit
-                        </button>
-                    </div>
-
-                    <div className="strands-found-words">
-                        <div style={{fontSize: '14px', fontWeight: '600', marginBottom: '8px', textAlign: 'center'}}>
-                            Found: {foundWords.length} / {puzzle.words.length}
+                        <div className="bee-rank">{getRank()}</div>
+                        <div className="bee-progress-bar">
+                            <div className="bee-progress-fill" style={{width: `${(score / puzzle.maxScore) * 100}%`}}></div>
                         </div>
-                        {foundWords.map(word => (
-                            <div key={word} className={`found-word-chip ${word === puzzle.spangram ? 'spangram' : 'theme'}`}>
-                                {word}
+                        
+                        {hint && (
+                            <div className="hint-container">
+                                <div className="hint-text">💡 {hint}</div>
                             </div>
-                        ))}
+                        )}
+                        
+                        {message && (
+                            <div style={{padding: '12px', background: '#e7f3ff', borderRadius: '8px', margin: '12px 0', textAlign: 'center', fontWeight: '600'}}>
+                                {message}
+                            </div>
+                        )}
+                        
+                        <div className="bee-current-word">
+                            {currentWord || '...'}
+                        </div>
+                        
+                        <div className="bee-hive">
+                            <div className="bee-row">
+                                <div className="bee-hex" onClick={() => handleLetterClick(puzzle.outerLetters[0])}>
+                                    {puzzle.outerLetters[0]}
+                                </div>
+                            </div>
+                            <div className="bee-row">
+                                <div className="bee-hex" onClick={() => handleLetterClick(puzzle.outerLetters[1])}>
+                                    {puzzle.outerLetters[1]}
+                                </div>
+                                <div className="bee-hex center" onClick={() => handleLetterClick(puzzle.centerLetter)}>
+                                    {puzzle.centerLetter}
+                                </div>
+                                <div className="bee-hex" onClick={() => handleLetterClick(puzzle.outerLetters[2])}>
+                                    {puzzle.outerLetters[2]}
+                                </div>
+                            </div>
+                            <div className="bee-row">
+                                <div className="bee-hex" onClick={() => handleLetterClick(puzzle.outerLetters[3])}>
+                                    {puzzle.outerLetters[3]}
+                                </div>
+                                <div className="bee-hex" onClick={() => handleLetterClick(puzzle.outerLetters[4])}>
+                                    {puzzle.outerLetters[4]}
+                                </div>
+                                <div className="bee-hex" onClick={() => handleLetterClick(puzzle.outerLetters[5])}>
+                                    {puzzle.outerLetters[5]}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="connections-controls" style={{marginTop: '20px'}}>
+                            <button className="hint-button" onClick={handleHint} disabled={foundWords.length === puzzle.words.length}>
+                                💡 Hint
+                            </button>
+                            <button className="control-button secondary" onClick={handleDelete}>
+                                Delete
+                            </button>
+                            <button className="control-button secondary" onClick={handleShuffle}>
+                                Shuffle
+                            </button>
+                            <button className="control-button primary" onClick={handleSubmit} disabled={currentWord.length < 4}>
+                                Submit
+                            </button>
+                        </div>
+                        
+                        <div style={{marginTop: '24px', textAlign: 'center'}}>
+                            <p style={{fontWeight: '600', marginBottom: '8px'}}>Found Words: {foundWords.length} / {puzzle.words.length}</p>
+                            <div className="bee-word-list">
+                                {foundWords.map(word => (
+                                    <div key={word} className={`bee-found-word ${puzzle.pangrams.includes(word) ? 'pangram' : ''}`}>
+                                        {word} {puzzle.pangrams.includes(word) && '🐝'}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
-
+                    
                     {gameOver && (
                         <div className="modal-overlay">
                             <div className="modal">
-                                <h2 className="modal-title">🎉 Puzzle Complete!</h2>
+                                <h2 className="modal-title">🎉 Excellent Work!</h2>
                                 <div className="modal-stats">
+                                    <div className="stat-item">
+                                        <div className="stat-value">{score}</div>
+                                        <div className="stat-label">Total Score</div>
+                                    </div>
                                     <div className="stat-item">
                                         <div className="stat-value">{foundWords.length}</div>
                                         <div className="stat-label">Words Found</div>
@@ -2560,6 +2753,7 @@
                                         <div className="stat-label">Hints Used</div>
                                     </div>
                                 </div>
+                                <p style={{marginTop: '16px', fontSize: '18px', fontWeight: '600'}}>{getRank()}</p>
                                 <button className="modal-button" onClick={onBack}>Back to Home</button>
                             </div>
                         </div>
@@ -3308,6 +3502,17 @@
                 }
             };
 
+            const handleDeleteMessage = async (messageId) => {
+                if (!user || !window.confirm('Delete this message?')) return;
+                
+                try {
+                    await db.collection('chat').doc(messageId).delete();
+                } catch (error) {
+                    console.error('Error deleting message:', error);
+                    alert('Failed to delete message');
+                }
+            };
+
             const parseMessage = (text) => {
                 // Simple @mention detection
                 const parts = text.split(/(@\w+)/g);
@@ -3379,6 +3584,15 @@
                                             <span className="chat-timestamp">
                                                 {msg.timestamp?.toDate().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
                                             </span>
+                                            {isOwnMessage && (
+                                                <button 
+                                                    className="delete-message-btn" 
+                                                    onClick={() => handleDeleteMessage(msg.id)}
+                                                    title="Delete message"
+                                                >
+                                                    🗑️
+                                                </button>
+                                            )}
                                         </div>
                                         <div className="chat-message-text">
                                             {parseMessage(msg.message)}
